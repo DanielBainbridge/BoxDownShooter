@@ -65,10 +65,10 @@ public class PlayerController : MonoBehaviour
 
 
     [Header("Dodge")]
-    [Rename("Dodge Startup")]float f_dodgeStartDelay = 0.12f;
-    [Rename("Dodge Length")]float f_dodgeLength = 2.5f;
-    [Rename("Dodge Time")]float f_dodgeTime = 1;
-    [Rename("Dodge Invincible Time")]float f_dodgeInvincibleTime = 0.8f;
+    [Rename("Dodge Startup")] float f_dodgeStartDelay = 0.12f;
+    [Rename("Dodge Length")] float f_dodgeLength = 2.5f;
+    [Rename("Dodge Time")] float f_dodgeTime = 1;
+    [Rename("Dodge Invincible Time")] float f_dodgeInvincibleTime = 0.8f;
 
     // Setup for dodge refil for balancing later down the line
     //int i_dodgeMax = 3;
@@ -79,17 +79,17 @@ public class PlayerController : MonoBehaviour
     float f_standRadius = 0.8f;
     float f_dampStrength = 0.4f;
     float f_coyoteTime = 0.8f;
-    [Range(0, 1)] public float f_collisionBounciness = 0.45f;
+    [Rename("Collision Bounce Percentage"), Range(0, 1)] public float f_collisionBounciness = 0.45f;
 
     [Header("Game Variables")]
-    [Rename("Lives")]int i_lives = 3;
-    [Rename("Health")]float f_health = 100;
-    [Rename("Spawn Location")]Vector3 S_spawnLocation; // player set to this on start and before loading into new scene
+    [Rename("Lives")] int i_lives = 3;
+    [Rename("Health")] float f_health = 100;
+    [Rename("Spawn Location")] Vector3 S_spawnLocation; // player set to this on start and before loading into new scene
 
     // public Gun playerGun owned gun goes here.
 
 
-    public PlayerState e_playerState = PlayerState.Normal;
+    [HideInInspector] public PlayerState e_playerState = PlayerState.Normal;
 
 
     // run time

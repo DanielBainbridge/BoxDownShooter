@@ -39,9 +39,14 @@ namespace Gun
             }
         }
 
-        public void ResetToBaseStats()
+        public void SwapGunPiece()
         {
 
         }
+
+        public void ResetToBaseStats()
+        {
+
+        }        
     }
 }
