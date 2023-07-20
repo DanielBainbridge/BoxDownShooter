@@ -73,8 +73,6 @@ namespace Gun
         [Rename("Homing Strength"), Range(0, 1)] public float f_homingStrength;
         [Rename("Homing Delay")] public float f_homingDelayTime;
 
-
-
         //Clip Group
         [Rename("Reload Speed")] public float f_reloadSpeed;
         [Rename("Movement Penalty")] public float f_movementPenalty;
@@ -102,20 +100,14 @@ namespace Gun
         [Rename("Spread Angle")] public float f_spreadMaxAngle;
         [Rename("Spread Count")] public int i_spreadCount;
 
-
-
         //public AnimationCurve C_bulletArc;
         //public float f_bulletArcFrequency;
         //public float f_bulletArcAmplitude;
-
-
-
     }
 }
 namespace Guns.CustomEditor
 {
     using Gun;
-    using Unity.VisualScripting;
 #if UNITY_EDITOR
     using UnityEditor;
     using UnityEngine.Assertions;
@@ -123,8 +115,6 @@ namespace Guns.CustomEditor
     [CustomEditor(typeof(GunModule))]
     class BoxDownGunEditor : Editor
     {
-
-        // This needs to be fancier
         public override void OnInspectorGUI()
         {
 
@@ -255,8 +245,6 @@ namespace Guns.CustomEditor
 
                     break;
             }
-
-            //base.OnInspectorGUI();
 
             // we need to draw the modules assigned varaibles based on enum, then draw certain values after
 
