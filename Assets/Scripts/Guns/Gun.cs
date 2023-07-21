@@ -1,43 +1,31 @@
+using JetBrains.Annotations;
+using System.Collections;
+using System.Linq.Expressions;
 using UnityEngine;
+using UnityEngine.Pool;
 using Utility;
 
 namespace Gun
 {
     public class Gun : MonoBehaviour
     {
-        //reflection of stats inside of gun module
+        /// <summary>
+        /// Reflection of stats inside of gun module
+        /// </summary>
 
-
+        #region GunModuleReflection
         //Trigger Group
         float f_baseDamage;
         float f_fireRate;
         float f_bulletSpeed;
         float f_knockBack;
-        GunModule.BulletTrait e_bulletTrait;
-        //bullet trait dependent
-        int i_pierceCount;
-        float f_explosionSize;
-        GameObject C_explosionPrefab;
-        float f_explosionKnockbackDistance;
-        float f_explosionLingerTime;
-        float f_homingStrength;
-        float f_homingDelayTime;
-
-
+        GunModule.BulletTraitInfo S_bulletTraitInfo;
 
         //Clip Group
         float f_reloadSpeed;
         float f_movementPenalty;
         int i_clipSize;
-        GunModule.BulletEffect e_bulletEffects;
-        //bullet effect dependent
-        float f_effectTime;
-        float f_tickDamage;
-        int i_amountOfTicks;
-        float f_slowPercent;
-        int i_chainCount;
-        float f_chainLength;
-        float f_vampirePercent;
+        GunModule.BulletEffectInfo S_bulletEffectInfo;
 
 
         //Barrel Group
@@ -51,46 +39,90 @@ namespace Gun
         bool b_randomSpread;
         float f_spreadMaxAngle;
         int i_spreadCount;
+        #endregion
 
-        Vector3 muzzlePosition;
+        Vector3 S_muzzlePosition;
 
         public Transform C_gunHolder;
-        GunModule[] aC_moduleArray = new GunModule[3];
+        public GunModule[] aC_moduleArray = new GunModule[3];
 
         float f_lastFireTime = 0;
-        float f_timeSinceLastFire
-        {
-            get { return Time.time - f_lastFireTime; }
-        }
-        float f_timeBetweenBulletShots
-        {
-            get { return 1.0f / f_fireRate; }
-        }
+        float f_timeSinceLastFire { get { return Time.time - f_lastFireTime; } }
+        float f_timeBetweenBulletShots { get { return 1.0f / f_fireRate; } }
         float f_timeUntilNextFire = 0;
 
+        int i_effectiveCurrentAmmo;
+        int i_actualCurrentAmmo;
+
         bool b_isFiring = false;
+        bool b_reloadCancel = false;
+        BulletObjectPool C_bulletPool;
+
+        GameObject C_bulletPrefab;
+
+        Bullet.BulletBaseInfo S_bulletInfo { get { return new Bullet.BulletBaseInfo(tag.ToLower().Contains("player"), S_muzzlePosition, transform.forward, f_bulletRange, f_baseDamage, f_bulletSpeed); } }
 
 
         public void Fire()
         {
 
-            if(f_timeSinceLastFire < f_fireRate)
+            if (f_timeSinceLastFire < f_fireRate)
             {
                 return;
             }
+
+            if (i_effectiveCurrentAmmo == 0 || i_effectiveCurrentAmmo < i_burstCount)
+            {
+                Reload();
+            }
+
             b_isFiring = true;
 
             while (f_timeUntilNextFire < 0.0f)
             {
                 float timeIntoNextFrame = -f_timeUntilNextFire;
                 //Spawn Bullet, at muzzle position + (bullet trajectory * bulletspeed) * time into next frame
+
+                switch (e_shotPattern)
+                {
+                    case GunModule.ShotPattern.Straight:
+                        C_bulletPool.GetFirstOpen().FireBullet(Vector3.zero, Vector3.zero, S_bulletInfo, S_bulletTraitInfo, S_bulletEffectInfo);
+                        return;
+                    case GunModule.ShotPattern.Burst:
+                        //will need coroutine if you don't do something clever. Think.
+                        for (int i = 0; i < i_burstCount; i++)
+                        {
+
+                        }
+                        return;
+                    case GunModule.ShotPattern.Spread:
+
+                        if (b_randomSpread)
+                        {
+                            for (int i = 0; i < i_spreadCount; i++)
+                            {
+                                C_bulletPool.GetFirstOpen().FireBullet(Vector3.zero, Vector3.zero, S_bulletInfo, S_bulletTraitInfo, S_bulletEffectInfo);
+                            }
+                        }
+                        else
+                        {
+                            for (int i = 0; i < i_spreadCount; i++) 
+                            {
+                                C_bulletPool.GetFirstOpen().FireBullet(Vector3.zero, Vector3.zero, S_bulletInfo, S_bulletTraitInfo, S_bulletEffectInfo);
+                            }
+
+                        }
+
+                        return;
+                    case GunModule.ShotPattern.Spray:
+                        return;
+                }
+
                 f_timeUntilNextFire += f_timeBetweenBulletShots;
-                
+
             }
 
-
-            
-            //timebetweenbullets is 1/fire rate
+            f_lastFireTime = Time.time;
 
             //while time until next bullet is < 0, check time into next frame = -time until next bullet
             //time until next bullet += timeBetween bullets
@@ -110,7 +142,6 @@ namespace Gun
 
             //what variables do we need to apply to the bullet
             // size, range, speed, effect + effect parameters, bullet trait, knockback
-            f_lastFireTime = Time.time;
         }
 
         private void Update()
@@ -122,17 +153,13 @@ namespace Gun
 
         }
 
-        public void ShootBullet(Vector3 startPosition, Vector3 direction, float speed)
-        {
-
-        }
 
 
         public void Reload()
         {
             // read clip size and current bullet count and reload time
             // reload 1 at a time,
-            //optional cancelleale reload
+            //optional cancelleable reload
 
         }
 
@@ -175,17 +202,7 @@ namespace Gun
             f_knockBack = gunModule.f_knockBack;
 
 
-            e_bulletTrait = gunModule.e_bulletTrait;
-
-
-            i_pierceCount = gunModule.i_pierceCount;
-            f_explosionSize = gunModule.f_explosionSize;
-            C_explosionPrefab = gunModule.C_explosionPrefab;
-            f_explosionKnockbackDistance = gunModule.f_explosionKnockbackDistance;
-            f_explosionLingerTime = gunModule.f_explosionLingerTime;
-            f_homingStrength = gunModule.f_homingStrength;
-            f_homingDelayTime = gunModule.f_homingDelayTime;
-
+            S_bulletTraitInfo = gunModule.S_bulletTraitInformation;
 
         }
         private void UpdateClipStats(GunModule gunModule)
@@ -199,16 +216,7 @@ namespace Gun
             f_movementPenalty = gunModule.f_movementPenalty;
             i_clipSize = gunModule.i_clipSize;
 
-            e_bulletEffects = gunModule.e_bulletEffects;
-
-            f_effectTime = gunModule.f_effectTime;
-            f_tickDamage = gunModule.f_tickDamage;
-            f_effectTime = gunModule.f_effectTime;
-            i_amountOfTicks = gunModule.i_amountOfTicks;
-            f_slowPercent = gunModule.f_slowPercent;
-            i_chainCount = gunModule.i_chainCount;
-            f_chainLength = gunModule.f_chainLength;
-            f_vampirePercent = gunModule.f_vampirePercent;
+            S_bulletEffectInfo = gunModule.S_bulletEffectInformation;
 
         }
         private void UpdateBarrelStats(GunModule gunModule)
@@ -242,6 +250,16 @@ namespace Gun
         public void ResetToBaseStats()
         {
 
+        }
+
+        private IEnumerator FireVolley(int volleyCount, float waitTime)
+        {
+            int amountOfBulletsFired = 0;
+            while (amountOfBulletsFired < volleyCount)
+            {
+
+                yield return null;
+            }
         }
     }
 }

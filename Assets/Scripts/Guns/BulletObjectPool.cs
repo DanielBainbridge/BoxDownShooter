@@ -20,6 +20,7 @@ namespace Gun
 
         void ResizePool()
         {
+            
             //check difference between current pool size and new Gun clip size count
             //add/subtract the difference from object pool
         }
@@ -39,5 +40,5 @@ namespace Gun
             lC_inUseBullets.Add(bullet);
             lC_freeBullets.Remove(bullet);
         }
-    }
+    } 
 }

@@ -63,36 +63,50 @@ namespace Gun
         [Rename("Fire Rate")] public float f_fireRate;
         [Rename("Bullet Speed")] public float f_bulletSpeed;
         [Rename("Knock Back")] public float f_knockBack;
-        [Rename("Bullet Type")] public BulletTrait e_bulletTrait;
         //bullet trait deppendent
-        [Rename("Pierce Count")] public int i_pierceCount;
-        [Rename("Explosion Diameter")] public float f_explosionSize;
-        [Rename("Explosion Prefab")] public GameObject C_explosionPrefab;
-        [Rename("Explosion Knockback Distance")] public float f_explosionKnockbackDistance;
-        [Rename("Explosion Linger Time")] public float f_explosionLingerTime;
-        [Rename("Homing Strength"), Range(0, 1)] public float f_homingStrength;
-        [Rename("Homing Delay")] public float f_homingDelayTime;
+
+        public struct BulletTraitInfo
+        {
+            [Rename("Bullet Type")] public BulletTrait e_bulletTrait;
+            [Rename("Pierce Count")] public int i_pierceCount;
+            [Rename("Explosion Diameter")] public float f_explosionSize;
+            [Rename("Explosion Prefab")] public GameObject C_explosionPrefab;
+            [Rename("Explosion Knockback Distance")] public float f_explosionKnockbackDistance;
+            [Rename("Explosion Linger Time")] public float f_explosionLingerTime;
+            [Rename("Homing Strength"), Range(0, 1)] public float f_homingStrength;
+            [Rename("Homing Delay")] public float f_homingDelayTime;
+        }
+
+        public BulletTraitInfo S_bulletTraitInformation;
 
         //Clip Group
         [Rename("Reload Speed")] public float f_reloadSpeed;
         [Rename("Movement Penalty")] public float f_movementPenalty;
         [Rename("Clip Size")] public int i_clipSize;
-        [Rename("Bullet Effect")] public BulletEffect e_bulletEffects;
         //bullet effect dependent
-        [Rename("Effect Time")] public float f_effectTime;
-        [Rename("Damage Over Time - Damage Per Tick")] public float f_tickDamage;
-        [Rename("Damage Over Time - Tick Count")] public int i_amountOfTicks;
-        [Rename("Slow Percentage"), Range(0, 1)] public float f_slowPercent;
-        [Rename("Enemy Chain Count")] public int i_chainCount;
-        [Rename("Max Chain Length")] public float f_chainLength;
-        [Rename("Health Steal Percentage"), Range(0, 1)] public float f_vampirePercent;
+
+
+        public struct BulletEffectInfo
+        {
+            [Rename("Bullet Effect")] public BulletEffect e_bulletEffects;
+            [Rename("Effect Time")] public float f_effectTime;
+            [Rename("Damage Over Time - Damage Per Tick")] public float f_tickDamage;
+            [Rename("Damage Over Time - Tick Count")] public int i_amountOfTicks;
+            [Rename("Slow Percentage"), Range(0, 1)] public float f_slowPercent;
+            [Rename("Enemy Chain Count")] public int i_chainCount;
+            [Rename("Max Chain Length")] public float f_chainLength;
+            [Rename("Health Steal Percentage"), Range(0, 1)] public float f_vampirePercent;
+        }
+
+        public BulletEffectInfo S_bulletEffectInformation;
 
 
         //Barrel Group
-        [Rename("Shot Pattern")] public ShotPattern e_shotPattern;
         [Rename("Bullet Size")] public float f_bulletSize;
         [Rename("Bullet Range")] public float f_bulletRange;
         [Rename("Recoil Distance")] public float f_recoil;
+
+        [Rename("Shot Pattern")] public ShotPattern e_shotPattern;
         //shot pattern dependent
         [Rename("Burst Count")] public int i_burstCount;
         [Rename("Burst Interval")] public float f_burstInterval;
