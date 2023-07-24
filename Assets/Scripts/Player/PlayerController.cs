@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour
     [Rename("Spawn Location")] Vector3 S_spawnLocation; // player set to this on start and before loading into new scene
 
     // public Gun playerGun owned gun goes here.
-
+    public Gun.Gun C_playerGun;
 
     [HideInInspector] public PlayerState e_playerState = PlayerState.Normal;
 

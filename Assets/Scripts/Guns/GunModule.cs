@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using Utility;
@@ -34,20 +35,21 @@ namespace Gun
         public enum ShotPattern
         {
             Straight,
-            Burst,
-            Spread,
+            Multishot,
+            Buckshot,
             Spray,
+            Wave,
             Count
         }
 
         //Clip Module Enum
         public enum BulletEffect
         {
-            DamageOverTime,
-            Slow,
-            Freeze,
-            Chain, //chain ricochets
-            Vampire,
+            None,
+            DamageOverTime, //fire
+            Slow, // ice
+            Chain, //chain ricochets electricty
+            Vampire, //
             Count
         }
 
@@ -63,10 +65,10 @@ namespace Gun
         [Rename("Fire Rate")] public float f_fireRate;
         [Rename("Bullet Speed")] public float f_bulletSpeed;
         [Rename("Knock Back")] public float f_knockBack;
-        //bullet trait deppendent
 
-        public struct BulletTraitInfo
+        [Serializable]public struct BulletTraitInfo
         {
+            //bullet trait deppendent
             [Rename("Bullet Type")] public BulletTrait e_bulletTrait;
             [Rename("Pierce Count")] public int i_pierceCount;
             [Rename("Explosion Diameter")] public float f_explosionSize;
@@ -83,11 +85,11 @@ namespace Gun
         [Rename("Reload Speed")] public float f_reloadSpeed;
         [Rename("Movement Penalty")] public float f_movementPenalty;
         [Rename("Clip Size")] public int i_clipSize;
-        //bullet effect dependent
 
 
-        public struct BulletEffectInfo
+        [Serializable]public struct BulletEffectInfo
         {
+            //bullet effect dependent
             [Rename("Bullet Effect")] public BulletEffect e_bulletEffects;
             [Rename("Effect Time")] public float f_effectTime;
             [Rename("Damage Over Time - Damage Per Tick")] public float f_tickDamage;
@@ -95,6 +97,7 @@ namespace Gun
             [Rename("Slow Percentage"), Range(0, 1)] public float f_slowPercent;
             [Rename("Enemy Chain Count")] public int i_chainCount;
             [Rename("Max Chain Length")] public float f_chainLength;
+            [Rename("Ricochet Count")] public int i_ricochetCount;
             [Rename("Health Steal Percentage"), Range(0, 1)] public float f_vampirePercent;
         }
 
@@ -105,18 +108,23 @@ namespace Gun
         [Rename("Bullet Size")] public float f_bulletSize;
         [Rename("Bullet Range")] public float f_bulletRange;
         [Rename("Recoil Distance")] public float f_recoil;
-
-        [Rename("Shot Pattern")] public ShotPattern e_shotPattern;
-        //shot pattern dependent
+        [Rename("Burst Shot")] public bool b_burstTrue;
         [Rename("Burst Count")] public int i_burstCount;
         [Rename("Burst Interval")] public float f_burstInterval;
-        [Rename("Random Spread")] public bool b_randomSpread;
-        [Rename("Spread Angle")] public float f_spreadMaxAngle;
-        [Rename("Spread Count")] public int i_spreadCount;
 
-        //public AnimationCurve C_bulletArc;
-        //public float f_bulletArcFrequency;
-        //public float f_bulletArcAmplitude;
+        [Serializable]public struct ShotPatternInfo
+        {
+            //shot pattern dependent
+            [Rename("Shot Pattern")] public ShotPattern e_shotPattern;
+            [Rename("Random Spread")] public bool b_randomSpread;
+            [Rename("Shot Count")] public int i_shotCount;
+            [Rename("Multi Shot Distance")] public float f_multiShotDistance;
+            [Rename("Spread Angle")] public float f_maxAngle;
+            [Rename("Wave Speed")] public float f_waveSpeed;
+        }
+
+        public ShotPatternInfo S_shotPatternInformation;
+
     }
 }
 namespace Guns.CustomEditor
@@ -152,11 +160,12 @@ namespace Guns.CustomEditor
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("f_bulletSpeed"));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("f_knockBack"));
                     EditorGUILayout.Space(10);
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("e_bulletTrait"));
-                    Assert.IsFalse(serializedObject.FindProperty("e_bulletTrait").enumValueIndex == (int)GunModule.BulletTrait.Count, "A Bullet Trait cannot have the type 'Count' this is for programming use");
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletTraitInformation").FindPropertyRelative("e_bulletTrait"));
+
+                    Assert.IsFalse(serializedObject.FindProperty("S_bulletTraitInformation").FindPropertyRelative("e_bulletTrait").enumValueIndex == (int)GunModule.BulletTrait.Count, "A Bullet Trait cannot have the type 'Count' this is for programming use");
 
 
-                    switch (serializedObject.FindProperty("e_bulletTrait").enumValueIndex)
+                    switch (serializedObject.FindProperty("S_bulletTraitInformation").FindPropertyRelative("e_bulletTrait").enumValueIndex)
                     {
                         //do variables for Standard
                         case 0:
@@ -164,22 +173,22 @@ namespace Guns.CustomEditor
                             break;
                         //do variables for Pierce
                         case 1:
-                            EditorGUILayout.PropertyField(serializedObject.FindProperty("i_pierceCount"));
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletTraitInformation").FindPropertyRelative("i_pierceCount"));
 
                             break;
                         //do variables for Explosive
                         case 2:
-                            EditorGUILayout.PropertyField(serializedObject.FindProperty("C_explosionPrefab"));
-                            EditorGUILayout.PropertyField(serializedObject.FindProperty("f_explosionSize"));
-                            EditorGUILayout.PropertyField(serializedObject.FindProperty("f_explosionKnockbackDistance"));
-                            EditorGUILayout.PropertyField(serializedObject.FindProperty("f_explosionLingerTime"));
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletTraitInformation").FindPropertyRelative("C_explosionPrefab"));
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletTraitInformation").FindPropertyRelative("f_explosionSize"));
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletTraitInformation").FindPropertyRelative("f_explosionKnockbackDistance"));
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletTraitInformation").FindPropertyRelative("f_explosionLingerTime"));
 
                             break;
                         //do variables for Homing
                         case 3:
 
-                            EditorGUILayout.PropertyField(serializedObject.FindProperty("f_homingStrength"));
-                            EditorGUILayout.PropertyField(serializedObject.FindProperty("f_homingDelayTime"));
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletTraitInformation").FindPropertyRelative("f_homingStrength"));
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletTraitInformation").FindPropertyRelative("f_homingDelayTime"));
                             break;
                     }
                     break;
@@ -189,37 +198,37 @@ namespace Guns.CustomEditor
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("f_movementPenalty"));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("i_clipSize"));
                     EditorGUILayout.Space(10);
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("e_bulletEffects"));
-                    Assert.IsFalse(serializedObject.FindProperty("e_bulletEffects").enumValueIndex == (int)GunModule.BulletEffect.Count, "A Bullet Effect cannot have the type 'Count' this is for programming use");
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("f_effectTime"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletEffectInformation").FindPropertyRelative("e_bulletEffects"));
 
-                    switch (serializedObject.FindProperty("e_bulletEffects").enumValueIndex)
+                    Assert.IsFalse(serializedObject.FindProperty("S_bulletEffectInformation").FindPropertyRelative("e_bulletEffects").enumValueIndex == (int)GunModule.BulletEffect.Count, "A Bullet Effect cannot have the type 'Count' this is for programming use");
+                    
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletEffectInformation").FindPropertyRelative("f_effectTime"));
+
+                    switch (serializedObject.FindProperty("S_bulletEffectInformation").FindPropertyRelative("e_bulletEffects").enumValueIndex)
                     {
-                        //do variables for Damage Over Time
                         case 0:
-                            EditorGUILayout.PropertyField(serializedObject.FindProperty("f_tickDamage"));
-                            EditorGUILayout.PropertyField(serializedObject.FindProperty("i_amountOfTicks"));
+                            break;
+                        //do variables for Damage Over Time
+                        case 1:
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletEffectInformation").FindPropertyRelative("f_tickDamage"));
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletEffectInformation").FindPropertyRelative("i_amountOfTicks"));
                             break;
                         //do variables for Slow
-                        case 1:
-                            EditorGUILayout.PropertyField(serializedObject.FindProperty("f_slowPercent"));
-                            break;
-                        //do variables for Freeze
                         case 2:
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletEffectInformation").FindPropertyRelative("f_slowPercent"));
                             break;
 
-                        //do variables for Chain
+                        //do variables for Lightning
                         case 3:
-                            EditorGUILayout.PropertyField(serializedObject.FindProperty("i_chainCount"));
-                            EditorGUILayout.PropertyField(serializedObject.FindProperty("f_chainLength"));
-
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletEffectInformation").FindPropertyRelative("i_chainCount"));
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletEffectInformation").FindPropertyRelative("f_chainLength"));
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletEffectInformation").FindPropertyRelative("i_ricochetCount"));
                             break;
                         //do variables for Vampire
                         case 4:
-                            EditorGUILayout.PropertyField(serializedObject.FindProperty("f_vampirePercent"));
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletEffectInformation").FindPropertyRelative("f_vampirePercent"));
                             break;
                     }
-
                     break;
 
 
@@ -255,8 +264,6 @@ namespace Guns.CustomEditor
 
                             break;
                     }
-
-
                     break;
             }
 

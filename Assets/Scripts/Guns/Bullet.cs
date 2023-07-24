@@ -60,6 +60,10 @@ namespace Gun
             //bullet effect colour/ particles bullet trait mesh **stubbed**
             //UpdateBulletGraphics()
 
+            transform.position = bulletInfo.S_firingOrigin + originOffset;
+            transform.rotation = Quaternion.Euler(bulletInfo.S_firingDirection + directionOffset);
+
+
             //move bullet to closed list
             C_poolOwner.MoveToClosed(this);
 
