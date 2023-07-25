@@ -1,9 +1,6 @@
-using JetBrains.Annotations;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net.NetworkInformation;
-using UnityEditor.Rendering;
 using UnityEngine;
+using static Gun.GunModule;
+
 namespace Gun
 {
     public class Bullet : MonoBehaviour
@@ -32,13 +29,8 @@ namespace Gun
         [HideInInspector] public BulletObjectPool C_poolOwner;
         [HideInInspector] private BulletBaseInfo S_baseInformation;
 
-
-
-       
-
-
-        GunModule.BulletEffect bulletEffect;
-        GunModule.BulletTrait bulletTrait;
+        GunModule.BulletEffect e_bulletEffect;
+        GunModule.BulletTrait e_bulletTrait;
 
 
 
@@ -51,7 +43,10 @@ namespace Gun
             }
             // move in direction by speed, 
 
-            transform.position += S_baseInformation.S_firingDirection * S_baseInformation.f_speed * Time.deltaTime;
+
+
+            //TO DO, update differently based on bullet type
+            transform.position += transform.forward * S_baseInformation.f_speed * Time.deltaTime;
 
         }
 
@@ -60,13 +55,20 @@ namespace Gun
             //bullet effect colour/ particles bullet trait mesh **stubbed**
             //UpdateBulletGraphics()
 
-            transform.position = bulletInfo.S_firingOrigin + originOffset;
-            transform.rotation = Quaternion.Euler(bulletInfo.S_firingDirection + directionOffset);
-
-
             //move bullet to closed list
             C_poolOwner.MoveToClosed(this);
 
+            S_baseInformation = bulletInfo;
+
+
+            Debug.Log($"Firing Offset: {originOffset}");
+            Debug.Log($"Bullet Info Origin: {bulletInfo.S_firingOrigin}");
+
+            transform.position = bulletInfo.S_firingOrigin + originOffset;
+            transform.rotation = Quaternion.Euler(new Vector3(0,Mathf.Atan2(-bulletInfo.S_firingDirection.z, bulletInfo.S_firingDirection.x) * Mathf.Rad2Deg + 90 ,0) + directionOffset);
+
+            e_bulletEffect = bulletEffect.e_bulletEffects;
+            e_bulletTrait = bulletTrait.e_bulletTrait;
         }
 
         public void BulletChangeDirection(Vector3 direction)

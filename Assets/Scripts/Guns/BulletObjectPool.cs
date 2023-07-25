@@ -1,20 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Gun
 {
 
     public class BulletObjectPool : MonoBehaviour
     {
-        List<Bullet> lC_freeBullets;
-        List<Bullet> lC_inUseBullets;
+        List<Bullet> lC_freeBullets = new List<Bullet>();
+        List<Bullet> lC_inUseBullets = new List<Bullet>();
 
-        void CreatePool()
+        public void CreatePool(Gun gun)
         {
-            foreach (Gun gun in FindObjectsOfType<Gun>())
+            int shotCount = gun.aC_moduleArray[0].S_shotPatternInformation.i_shotCount == 0 ? 1 : gun.aC_moduleArray[0].S_shotPatternInformation.i_shotCount;
+            int bulletAmount = gun.aC_moduleArray[1].i_clipSize * shotCount;
+
+
+            for(int i = 0; i < (int)(bulletAmount * 1.3f); i++)
             {
-                // for each gun get clip size, add bullets per 
+                GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                obj.transform.parent = transform;
+                obj.name = $"Bullet: {i + 1}";
+                Bullet bulletRef = obj.AddComponent<Bullet>();
+                bulletRef.C_poolOwner = this;
+                lC_freeBullets.Add(bulletRef);
+                obj.SetActive(false);
             }
         }
 
@@ -26,7 +37,7 @@ namespace Gun
         }
         public Bullet GetFirstOpen()
         {
-            return null;
+            return lC_freeBullets[0];
         }
         public void MoveToOpen(Bullet bullet)
         {

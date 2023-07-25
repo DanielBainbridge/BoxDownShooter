@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour
     [Rename("Spawn Location")] Vector3 S_spawnLocation; // player set to this on start and before loading into new scene
 
     // public Gun playerGun owned gun goes here.
-    public Gun.Gun C_playerGun;
+    [Rename("Player Gun")]public Gun.Gun C_playerGun;
 
     [HideInInspector] public PlayerState e_playerState = PlayerState.Normal;
 
@@ -122,6 +122,7 @@ public class PlayerController : MonoBehaviour
         actionMap.FindAction("Dodge").performed += Dodge;
         actionMap.FindAction("Interact").performed += Interact;
         actionMap.FindAction("Fire").performed += Fire;
+        actionMap.FindAction("Fire").canceled += CancelFire;
         actionMap.FindAction("Reload").performed += Reload;
         actionMap.FindAction("Pause").performed += Pause;
     }
@@ -176,8 +177,11 @@ public class PlayerController : MonoBehaviour
 
     private void Fire(InputAction.CallbackContext context)
     {
-        //ammo check
-        //bullet
+        C_playerGun.Fire();
+    }
+    private void CancelFire(InputAction.CallbackContext context)
+    {
+        C_playerGun.CancelFire();
     }
     private void Dodge(InputAction.CallbackContext context)
     {
