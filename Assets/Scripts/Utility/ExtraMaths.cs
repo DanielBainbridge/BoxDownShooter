@@ -16,15 +16,15 @@ namespace Utility
 
         public static float FloatRandom(float min, float max)
         {
-            float returnNumber = Map(int.MinValue, int.MaxValue, min, max, rand.Next());
+            float returnNumber = Map(int.MinValue, int.MaxValue, min, max, rand.Next(int.MinValue, int.MaxValue));
 
             return returnNumber;
         }
-
+         
         public static int IntRandom(int min, int max)
         {
             
-            int returnNumber = (int)Map(int.MinValue, int.MaxValue, min, max, rand.Next());
+            int returnNumber = (int)Map(int.MinValue, int.MaxValue, min, max, rand.Next(int.MinValue, int.MaxValue));
 
             return returnNumber;
 

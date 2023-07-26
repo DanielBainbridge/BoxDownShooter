@@ -13,7 +13,7 @@ namespace Gun
 
         public void CreatePool(Gun gun)
         {
-            int shotCount = gun.aC_moduleArray[0].S_shotPatternInformation.i_shotCount == 0 ? 1 : gun.aC_moduleArray[0].S_shotPatternInformation.i_shotCount;
+            int shotCount = gun.aC_moduleArray[2].S_shotPatternInformation.i_shotCount == 0 ? 1 : gun.aC_moduleArray[2].S_shotPatternInformation.i_shotCount;
             int bulletAmount = gun.aC_moduleArray[1].i_clipSize * shotCount;
 
 

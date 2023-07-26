@@ -60,10 +60,6 @@ namespace Gun
 
             S_baseInformation = bulletInfo;
 
-
-            Debug.Log($"Firing Offset: {originOffset}");
-            Debug.Log($"Bullet Info Origin: {bulletInfo.S_firingOrigin}");
-
             transform.position = bulletInfo.S_firingOrigin + originOffset;
             transform.rotation = Quaternion.Euler(new Vector3(0,Mathf.Atan2(-bulletInfo.S_firingDirection.z, bulletInfo.S_firingDirection.x) * Mathf.Rad2Deg + 90 ,0) + directionOffset);
 

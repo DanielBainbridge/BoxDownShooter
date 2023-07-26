@@ -173,11 +173,9 @@ public class PlayerController : MonoBehaviour
                 S_rotationVec2Direction = inputValue;
         }
     }
-
-
     private void Fire(InputAction.CallbackContext context)
     {
-        C_playerGun.Fire();
+        C_playerGun.StartFire();
     }
     private void CancelFire(InputAction.CallbackContext context)
     {
@@ -229,6 +227,8 @@ public class PlayerController : MonoBehaviour
         //move smoothly towards our desired velocity from our current veolicty
         S_velocity.x = Mathf.MoveTowards(S_velocity.x, desiredVelocity.x, maxSpeedChange);
         S_velocity.z = Mathf.MoveTowards(S_velocity.z, desiredVelocity.z, maxSpeedChange);
+
+        // TO DO: LAYER MASK
 
         //collision detection
         RaycastHit hit;
