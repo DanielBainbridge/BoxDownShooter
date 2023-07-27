@@ -1,5 +1,6 @@
 using Gun;
 using Managers;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -46,6 +47,12 @@ public class PlayerController : MonoBehaviour
     {
         get { return new Vector3(S_movementVec2Direction.x, 0, S_movementVec2Direction.y); }
     }
+
+    public Vector3 GetRotationDirection()
+    {
+        return new Vector3(S_rotationVec2Direction.x, 0, S_rotationVec2Direction.y);
+    }
+
 
 
     [Header("Rotation")]
@@ -125,6 +132,7 @@ public class PlayerController : MonoBehaviour
         actionMap.FindAction("Fire").canceled += CancelFire;
         actionMap.FindAction("Reload").performed += Reload;
         actionMap.FindAction("Pause").performed += Pause;
+
     }
 
 
@@ -165,12 +173,12 @@ public class PlayerController : MonoBehaviour
         if (C_controlManagerReference.GetCurrentControllerType() == ControlManager.CurrentControllerType.KeyboardMouse)
         {
             Vector3 dir = new Vector3(inputValue.x, inputValue.y, 0) - Camera.main.WorldToScreenPoint(transform.position);
-            S_rotationVec2Direction = new Vector2(dir.x, dir.y);
+            S_rotationVec2Direction = Vector2.ClampMagnitude(new Vector2(dir.x, dir.y) / Screen.height, 1.0f);
         }
         else
         {
             if (inputValue.magnitude > f_controllerDeadZone)
-                S_rotationVec2Direction = inputValue;
+                S_rotationVec2Direction = Vector2.ClampMagnitude(inputValue, 1.0f);
         }
     }
     private void Fire(InputAction.CallbackContext context)
@@ -221,31 +229,34 @@ public class PlayerController : MonoBehaviour
         }
 
         //find our desired velocity and our maximum speed change
-        Vector3 desiredVelocity = S_movementInputDirection * f_maxSpeed * C_accelerationCurve.Evaluate(f_currentAccelerationStep);
+        Vector3 desiredVelocity = S_movementInputDirection * (f_maxSpeed - C_playerGun.aC_moduleArray[1].f_movementPenalty) * C_accelerationCurve.Evaluate(f_currentAccelerationStep);
         float maxSpeedChange = f_maxAcceleration * Time.deltaTime;
 
         //move smoothly towards our desired velocity from our current veolicty
         S_velocity.x = Mathf.MoveTowards(S_velocity.x, desiredVelocity.x, maxSpeedChange);
         S_velocity.z = Mathf.MoveTowards(S_velocity.z, desiredVelocity.z, maxSpeedChange);
 
-        // TO DO: LAYER MASK
-
         //collision detection
         RaycastHit hit;
 
-        if (Physics.SphereCast(transform.localPosition, 0.4f, Vector3.right, out hit, 0.4f) && S_velocity.x > 0)
+        int bulletLayerMask = LayerMask.GetMask("Bullet") + LayerMask.GetMask("Ignore Raycast");
+
+        bulletLayerMask = ~bulletLayerMask;
+
+
+        if (Physics.SphereCast(transform.localPosition, 0.4f, Vector3.right, out hit, 0.4f, bulletLayerMask) && S_velocity.x > 0)
         {
             S_velocity.x = -S_velocity.x * f_collisionBounciness;
         }
-        else if (Physics.SphereCast(transform.localPosition, 0.4f, -Vector3.right, out hit, 0.4f) && S_velocity.x < 0)
+        else if (Physics.SphereCast(transform.localPosition, 0.4f, -Vector3.right, out hit, 0.4f, bulletLayerMask) && S_velocity.x < 0)
         {
             S_velocity.x = -S_velocity.x * f_collisionBounciness;
         }
-        if (Physics.SphereCast(transform.localPosition, 0.4f, Vector3.forward, out hit, 0.4f) && S_velocity.z > 0)
+        if (Physics.SphereCast(transform.localPosition, 0.4f, Vector3.forward, out hit, 0.4f, bulletLayerMask) && S_velocity.z > 0)
         {
             S_velocity.z = -S_velocity.z * f_collisionBounciness;
         }
-        else if (Physics.SphereCast(transform.localPosition, 0.4f, -Vector3.forward, out hit, 0.4f) && S_velocity.z < 0)
+        else if (Physics.SphereCast(transform.localPosition, 0.4f, -Vector3.forward, out hit, 0.4f, bulletLayerMask) && S_velocity.z < 0)
         {
             S_velocity.z = -S_velocity.z * f_collisionBounciness;
         }
@@ -278,6 +289,11 @@ public class PlayerController : MonoBehaviour
             f_rotationalAcceleration = rotationAngleDifference * Time.deltaTime;
             f_rotationalVelocity += f_rotationalAcceleration * Time.deltaTime;
         }
+    }
+
+    public void AddVelocityToPlayer(Vector3 velocityToAdd)
+    {
+        S_velocity += velocityToAdd;
     }
 
     private void Die()

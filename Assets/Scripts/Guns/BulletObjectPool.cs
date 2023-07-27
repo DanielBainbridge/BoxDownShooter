@@ -22,6 +22,7 @@ namespace Gun
                 GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                 obj.transform.parent = transform;
                 obj.name = $"Bullet: {i + 1}";
+                obj.layer = 6;
                 Bullet bulletRef = obj.AddComponent<Bullet>();
                 bulletRef.C_poolOwner = this;
                 lC_freeBullets.Add(bulletRef);
@@ -29,9 +30,23 @@ namespace Gun
             }
         }
 
-        void ResizePool()
+        public void ResizePool(Gun gun)
         {
-            
+            int shotCount = gun.aC_moduleArray[2].S_shotPatternInformation.i_shotCount == 0 ? 1 : gun.aC_moduleArray[2].S_shotPatternInformation.i_shotCount;
+            int bulletAmount = gun.aC_moduleArray[1].i_clipSize * shotCount;
+
+
+            for (int i = 0; i < (int)(bulletAmount * 1.3f); i++)
+            {
+                GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                obj.transform.parent = transform;
+                obj.name = $"Bullet: {i + 1}";
+                obj.layer = 6;
+                Bullet bulletRef = obj.AddComponent<Bullet>();
+                bulletRef.C_poolOwner = this;
+                lC_freeBullets.Add(bulletRef);
+                obj.SetActive(false);
+            }
             //check difference between current pool size and new Gun clip size count
             //add/subtract the difference from object pool
         }

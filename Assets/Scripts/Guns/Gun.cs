@@ -46,8 +46,8 @@ namespace Gun
             get { return C_muzzle == null ? transform.position : C_muzzle.position; }
         }
 
-        public Transform C_gunHolder;
-        public GunModule[] aC_moduleArray = new GunModule[3];
+        [Rename("Gun Holder")] public Transform C_gunHolder;
+        [Rename("Gun Modules")]public GunModule[] aC_moduleArray = new GunModule[3];
 
         float f_lastFireTime = 0;
         float f_timeSinceLastFire { get { return Time.time - f_lastFireTime; } }
@@ -117,6 +117,9 @@ namespace Gun
             {
                 return;
             }
+
+            int timesFiredThisFrame = 0;
+
             while (f_timeUntilNextFire < 0.0f)
             {
                 float timeIntoNextFrame = -f_timeUntilNextFire;
@@ -127,29 +130,37 @@ namespace Gun
                     switch (S_shotPatternInfo.e_shotPattern)
                     {
                         case GunModule.ShotPattern.Straight:
-                            FireStraight(0);
+                            FireStraight(timeIntoNextFrame);
                             break;
                         case GunModule.ShotPattern.Multishot:
                             //will need coroutine if you don't do something clever. Think.
-                            FireMultiShot(0);
+                            FireMultiShot(timeIntoNextFrame);
                             break;
                         case GunModule.ShotPattern.Buckshot:
-                            FireBuckShot(0);
+                            FireBuckShot(timeIntoNextFrame);
                             break;
                         case GunModule.ShotPattern.Spray:
-                            FireSpray(0);
+                            FireSpray(timeIntoNextFrame);
                             break;
                         case GunModule.ShotPattern.Wave:
-                            FireWave(0);
+                            FireWave(timeIntoNextFrame);
                             break;
                     }
                 }
+                timesFiredThisFrame += 1;
 
                 f_timeUntilNextFire += f_timeBetweenBulletShots;
             }
 
+            if (C_gunHolder.GetComponent<PlayerController>())
+            {
+                C_gunHolder.GetComponent<PlayerController>().AddVelocityToPlayer(-C_gunHolder.forward * f_recoil);
+            }
+
             f_lastFireTime = Time.time;
-            i_currentAmmo -= 1;
+            i_currentAmmo -= timesFiredThisFrame;
+            Debug.Log(timesFiredThisFrame);
+
         }
 
         public void CancelFire()
@@ -165,6 +176,7 @@ namespace Gun
             // reload 1 at a time,
             //optional cancelleable reload
             i_currentAmmo = i_clipSize;
+
         }
 
         /// <summary>
@@ -189,7 +201,7 @@ namespace Gun
                     aC_moduleArray[(int)GunModule.ModuleSection.Barrel] = gunModule;
                     return;
             }
-
+            C_bulletPool.ResizePool(this);
         }        
         private void UpdateTriggerStats(GunModule gunModule)
         {
@@ -245,6 +257,7 @@ namespace Gun
         /// </summary>
         private void FireStraight(float timeIntoNextFrame)
         {
+            Debug.Log($"Firing Direction {S_bulletInfo.S_firingDirection}");
             C_bulletPool.GetFirstOpen().FireBullet(S_bulletInfo.S_firingDirection * timeIntoNextFrame, Vector3.zero, S_bulletInfo, S_bulletTraitInfo, S_bulletEffectInfo);
         }
         private void FireMultiShot(float timeIntoNextFrame)
@@ -263,7 +276,7 @@ namespace Gun
                 for (int i = 0; i < S_shotPatternInfo.i_shotCount; i++)
                 {
                     fireAngle = new Vector3(0, ExtraMaths.FloatRandom(-S_shotPatternInfo.f_maxAngle, S_shotPatternInfo.f_maxAngle), 0);
-                    C_bulletPool.GetFirstOpen().FireBullet((S_bulletInfo.S_firingDirection + fireAngle) * timeIntoNextFrame, fireAngle, S_bulletInfo, S_bulletTraitInfo, S_bulletEffectInfo);
+                    C_bulletPool.GetFirstOpen().FireBullet((S_bulletInfo.S_firingDirection) * timeIntoNextFrame, fireAngle, S_bulletInfo, S_bulletTraitInfo, S_bulletEffectInfo);
                 }
             }
             else
@@ -271,19 +284,19 @@ namespace Gun
                 for (int i = 0; i < S_shotPatternInfo.i_shotCount; i++)
                 {
                     fireAngle = new Vector3(0, -S_shotPatternInfo.f_maxAngle + (i * (2 * S_shotPatternInfo.f_maxAngle / (float)(S_shotPatternInfo.i_shotCount - 1))), 0);
-                    C_bulletPool.GetFirstOpen().FireBullet((S_bulletInfo.S_firingDirection + fireAngle) * timeIntoNextFrame, fireAngle, S_bulletInfo, S_bulletTraitInfo, S_bulletEffectInfo);
+                    C_bulletPool.GetFirstOpen().FireBullet((S_bulletInfo.S_firingDirection) * timeIntoNextFrame, fireAngle, S_bulletInfo, S_bulletTraitInfo, S_bulletEffectInfo);
                 }
             }
         }
         private void FireSpray(float timeIntoNextFrame)
         {
             Vector3 fireAngle = new Vector3(0, Random.Range(-S_shotPatternInfo.f_maxAngle, S_shotPatternInfo.f_maxAngle), 0);
-            C_bulletPool.GetFirstOpen().FireBullet((S_bulletInfo.S_firingDirection + fireAngle) * timeIntoNextFrame, fireAngle, S_bulletInfo, S_bulletTraitInfo, S_bulletEffectInfo);
+            C_bulletPool.GetFirstOpen().FireBullet((S_bulletInfo.S_firingDirection) * timeIntoNextFrame, fireAngle, S_bulletInfo, S_bulletTraitInfo, S_bulletEffectInfo);
         }
         private void FireWave(float timeIntoNextFrame)
         {
             Vector3 fireAngle = new Vector3(0, ExtraMaths.Map(-1, 1, -S_shotPatternInfo.f_maxAngle, S_shotPatternInfo.f_maxAngle, Mathf.Sin(f_fireHoldTime)), 0);
-            C_bulletPool.GetFirstOpen().FireBullet((S_bulletInfo.S_firingDirection + fireAngle) * timeIntoNextFrame, fireAngle, S_bulletInfo, S_bulletTraitInfo, S_bulletEffectInfo);
+            C_bulletPool.GetFirstOpen().FireBullet((S_bulletInfo.S_firingDirection) * timeIntoNextFrame, fireAngle, S_bulletInfo, S_bulletTraitInfo, S_bulletEffectInfo);
         }
 
         //stub
@@ -306,6 +319,11 @@ namespace Gun
 
                 yield return null;
             }
+        }
+        private IEnumerator ReloadOverTime()
+        {
+
+            yield return null;
         }
     }
 }
