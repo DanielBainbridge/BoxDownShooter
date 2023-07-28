@@ -169,13 +169,13 @@ namespace Guns.CustomEditor
                     }
                     EditorGUILayout.Space(10);
 
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletEffectInformation").FindPropertyRelative("e_bulletEffects"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletEffectInformation").FindPropertyRelative("e_bulletEffect"));
 
-                    Assert.IsFalse(serializedObject.FindProperty("S_bulletEffectInformation").FindPropertyRelative("e_bulletEffects").enumValueIndex == (int)GunModule.BulletEffect.Count, "A Bullet Effect cannot have the type 'Count' this is for programming use");
+                    Assert.IsFalse(serializedObject.FindProperty("S_bulletEffectInformation").FindPropertyRelative("e_bulletEffect").enumValueIndex == (int)GunModule.BulletEffect.Count, "A Bullet Effect cannot have the type 'Count' this is for programming use");
 
 
                     
-                    switch (serializedObject.FindProperty("S_bulletEffectInformation").FindPropertyRelative("e_bulletEffects").enumValueIndex)
+                    switch (serializedObject.FindProperty("S_bulletEffectInformation").FindPropertyRelative("e_bulletEffect").enumValueIndex)
                     {
                         case 0:
                             break;

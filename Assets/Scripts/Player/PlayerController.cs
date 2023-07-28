@@ -142,9 +142,7 @@ public class PlayerController : MonoBehaviour
         {
             MovePlayer();
             RotatePlayerToTarget();
-
         }
-
         C_controlManagerReference.ChangeInputDevice(C_playerInput.currentControlScheme);
     }
     private void LateUpdate()
@@ -183,7 +181,6 @@ public class PlayerController : MonoBehaviour
     }
     private void Fire(InputAction.CallbackContext context)
     {
-        Debug.Log(C_playerGun == null);
         C_playerGun.StartFire();
     }
     private void CancelFire(InputAction.CallbackContext context)
@@ -229,10 +226,8 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        Debug.Log($"Speed {f_maxSpeed}");
-
         //find our desired velocity and our maximum speed change
-        float effectiveSpeed = 0;//Mathf.Clamp((f_maxSpeed - C_playerGun.aC_moduleArray[1].f_movementPenalty), 0, f_maxSpeed);
+        float effectiveSpeed = Mathf.Clamp((f_maxSpeed - C_playerGun.aC_moduleArray[1].f_movementPenalty), 0, f_maxSpeed);
 
         Vector3 desiredVelocity = S_movementInputDirection * effectiveSpeed * C_accelerationCurve.Evaluate(f_currentAccelerationStep);
         float maxSpeedChange = f_maxAcceleration * Time.deltaTime;
