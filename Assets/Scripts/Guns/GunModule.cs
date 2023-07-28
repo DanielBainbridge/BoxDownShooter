@@ -49,7 +49,7 @@ namespace Gun
             DamageOverTime, //fire
             Slow, // ice
             Chain, //chain ricochets electricty
-            Vampire, //
+            Vampire, //health steal
             Count
         }
 
@@ -71,7 +71,7 @@ namespace Gun
         public struct BulletEffectInfo
         {
             //bullet effect dependent
-            [Rename("Bullet Effect")] public BulletEffect e_bulletEffects;
+            [Rename("Bullet Effect")] public BulletEffect e_bulletEffect;
             [Rename("Effect Time")] public float f_effectTime;
             [Rename("Damage Over Time - Damage Per Tick")] public float f_tickDamage;
             [Rename("Damage Over Time - Tick Count")] public int i_amountOfTicks;
@@ -169,13 +169,13 @@ namespace Guns.CustomEditor
                     }
                     EditorGUILayout.Space(10);
 
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletEffectInformation").FindPropertyRelative("e_bulletEffects"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletEffectInformation").FindPropertyRelative("e_bulletEffect"));
 
-                    Assert.IsFalse(serializedObject.FindProperty("S_bulletEffectInformation").FindPropertyRelative("e_bulletEffects").enumValueIndex == (int)GunModule.BulletEffect.Count, "A Bullet Effect cannot have the type 'Count' this is for programming use");
+                    Assert.IsFalse(serializedObject.FindProperty("S_bulletEffectInformation").FindPropertyRelative("e_bulletEffect").enumValueIndex == (int)GunModule.BulletEffect.Count, "A Bullet Effect cannot have the type 'Count' this is for programming use");
 
 
                     
-                    switch (serializedObject.FindProperty("S_bulletEffectInformation").FindPropertyRelative("e_bulletEffects").enumValueIndex)
+                    switch (serializedObject.FindProperty("S_bulletEffectInformation").FindPropertyRelative("e_bulletEffect").enumValueIndex)
                     {
                         case 0:
                             break;

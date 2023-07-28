@@ -59,30 +59,32 @@ namespace Gun
         bool b_isFiring = false;
         float f_fireHoldTime = 0;
         bool b_reloadCancel = false;
+        bool b_reloading = false;
         BulletObjectPool C_bulletPool;
 
         GameObject C_bulletPrefab;
 
-        Bullet.BulletBaseInfo S_bulletInfo { get { return new Bullet.BulletBaseInfo(tag.ToLower().Contains("player"), S_muzzlePosition, C_gunHolder.forward, f_bulletRange, f_baseDamage, f_bulletSpeed); } }
+        Bullet.BulletBaseInfo S_bulletInfo { get { return new Bullet.BulletBaseInfo(tag.ToLower().Contains("player"), S_muzzlePosition, C_gunHolder.forward, f_bulletRange, f_baseDamage, f_bulletSpeed, f_bulletSize); } }
 
         private void Awake()
         {
-            for (int i = 0; i < aC_moduleArray.Count(); i++)
-            {
-                UpdateGunStats(aC_moduleArray[i]);
-            }
 
             GameObject bulletPool = new GameObject();
             bulletPool.name = "Bullet Pool";
             C_bulletPool = bulletPool.AddComponent<BulletObjectPool>();
             bulletPool.GetComponent<BulletObjectPool>().CreatePool(this);
 
+            for (int i = 0; i < aC_moduleArray.Count(); i++)
+            {
+                UpdateGunStats(aC_moduleArray[i]);
+            }
+
             i_currentAmmo = i_clipSize;
         }
 
         private void Update()
         {
-            if (b_isFiring)
+            if (b_isFiring && !b_reloading)
             {
                 f_timeUntilNextFire -= Time.deltaTime;
                 f_fireHoldTime += Time.deltaTime;
@@ -102,19 +104,18 @@ namespace Gun
 
         public void StartFire()
         {
-            if (i_currentAmmo == 0 || i_currentAmmo < i_burstCount)
-            {
-                Reload();
-                return;
-            }
-
             b_isFiring = true;
         }
 
         private void Fire()
         {
-            if (f_timeSinceLastFire < f_timeBetweenBulletShots)
+            if (f_timeSinceLastFire < f_timeBetweenBulletShots || b_reloading)
             {
+                return;
+            }
+            if (i_currentAmmo <= 0 || i_currentAmmo < i_burstCount)
+            {
+                StartCoroutine(ReloadAfterTime());
                 return;
             }
 
@@ -159,7 +160,6 @@ namespace Gun
 
             f_lastFireTime = Time.time;
             i_currentAmmo -= timesFiredThisFrame;
-            Debug.Log(timesFiredThisFrame);
 
         }
 
@@ -191,15 +191,15 @@ namespace Gun
                 case GunModule.ModuleSection.Trigger:
                     UpdateTriggerStats(gunModule);
                     aC_moduleArray[(int)GunModule.ModuleSection.Trigger] = gunModule;
-                    return;
+                    break;
                 case GunModule.ModuleSection.Clip:
                     UpdateClipStats(gunModule);
                     aC_moduleArray[(int)GunModule.ModuleSection.Clip] = gunModule;
-                    return;
+                    break;
                 case GunModule.ModuleSection.Barrel:
                     UpdateBarrelStats(gunModule);
                     aC_moduleArray[(int)GunModule.ModuleSection.Barrel] = gunModule;
-                    return;
+                    break;
             }
             C_bulletPool.ResizePool(this);
         }        
@@ -248,7 +248,6 @@ namespace Gun
             i_burstCount = gunModule.i_burstCount;
 
             S_shotPatternInfo = gunModule.S_shotPatternInformation;
-
         }
 
 
@@ -257,7 +256,6 @@ namespace Gun
         /// </summary>
         private void FireStraight(float timeIntoNextFrame)
         {
-            Debug.Log($"Firing Direction {S_bulletInfo.S_firingDirection}");
             C_bulletPool.GetFirstOpen().FireBullet(S_bulletInfo.S_firingDirection * timeIntoNextFrame, Vector3.zero, S_bulletInfo, S_bulletTraitInfo, S_bulletEffectInfo);
         }
         private void FireMultiShot(float timeIntoNextFrame)
@@ -300,11 +298,23 @@ namespace Gun
         }
 
         //stub
-        public void SwapGunPiece()
+        public void SwapGunPiece(GunModule newModule)
         {
-
+            switch (newModule.e_moduleType)
+            {
+                case GunModule.ModuleSection.Trigger:
+                    aC_moduleArray[0] = newModule;
+                    break;
+                case GunModule.ModuleSection.Clip:
+                    aC_moduleArray[1] = newModule;
+                    break;
+                case GunModule.ModuleSection.Barrel:
+                    aC_moduleArray[2] = newModule;
+                    break;
+            }
+            UpdateGunStats(newModule);
         }
-        //stub
+        
         public void ResetToBaseStats()
         {
 
@@ -320,10 +330,25 @@ namespace Gun
                 yield return null;
             }
         }
+        //reload all at once
+        private IEnumerator ReloadAfterTime()
+        {
+            b_reloading = true;
+            yield return new WaitForSeconds(f_reloadSpeed);
+            Reload();
+            b_reloading = false;
+        }
+        //reload one bullet at a time
         private IEnumerator ReloadOverTime()
         {
-
-            yield return null;
+            b_reloading = true;
+            float reloadRate = i_clipSize / f_reloadSpeed;
+            while(i_currentAmmo != i_clipSize)
+            {
+                yield return new WaitForSeconds(reloadRate);
+                i_currentAmmo++;
+            }
+            b_reloading = false;
         }
     }
 }
