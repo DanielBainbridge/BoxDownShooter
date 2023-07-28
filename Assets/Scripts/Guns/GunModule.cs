@@ -49,7 +49,7 @@ namespace Gun
             DamageOverTime, //fire
             Slow, // ice
             Chain, //chain ricochets electricty
-            Vampire, //
+            Vampire, //health steal
             Count
         }
 
@@ -71,7 +71,7 @@ namespace Gun
         public struct BulletEffectInfo
         {
             //bullet effect dependent
-            [Rename("Bullet Effect")] public BulletEffect e_bulletEffects;
+            [Rename("Bullet Effect")] public BulletEffect e_bulletEffect;
             [Rename("Effect Time")] public float f_effectTime;
             [Rename("Damage Over Time - Damage Per Tick")] public float f_tickDamage;
             [Rename("Damage Over Time - Tick Count")] public int i_amountOfTicks;

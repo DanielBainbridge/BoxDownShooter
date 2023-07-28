@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour
     [Rename("Spawn Location")] Vector3 S_spawnLocation; // player set to this on start and before loading into new scene
 
     // public Gun playerGun owned gun goes here.
-    [Rename("Player Gun")]public Gun.Gun C_playerGun;
+    [Rename("Player Gun"), SerializeField] public Gun.Gun C_playerGun = null;
 
     [HideInInspector] public PlayerState e_playerState = PlayerState.Normal;
 
@@ -183,6 +183,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Fire(InputAction.CallbackContext context)
     {
+        Debug.Log(C_playerGun == null);
         C_playerGun.StartFire();
     }
     private void CancelFire(InputAction.CallbackContext context)
@@ -228,8 +229,12 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        Debug.Log($"Speed {f_maxSpeed}");
+
         //find our desired velocity and our maximum speed change
-        Vector3 desiredVelocity = S_movementInputDirection * (f_maxSpeed - C_playerGun.aC_moduleArray[1].f_movementPenalty) * C_accelerationCurve.Evaluate(f_currentAccelerationStep);
+        float effectiveSpeed = 0;//Mathf.Clamp((f_maxSpeed - C_playerGun.aC_moduleArray[1].f_movementPenalty), 0, f_maxSpeed);
+
+        Vector3 desiredVelocity = S_movementInputDirection * effectiveSpeed * C_accelerationCurve.Evaluate(f_currentAccelerationStep);
         float maxSpeedChange = f_maxAcceleration * Time.deltaTime;
 
         //move smoothly towards our desired velocity from our current veolicty
@@ -304,9 +309,13 @@ public class PlayerController : MonoBehaviour
     {
 
     }
-    private void DamagePlayer()
+    public void DamagePlayer(float damage)
     {
-
+        f_healthCurrent -= damage;
+        if(f_healthCurrent <= 0)
+        {
+            Die();
+        }
     }
     private void HealPlayer()
     {
