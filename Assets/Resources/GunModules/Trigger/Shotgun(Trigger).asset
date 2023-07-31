@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 071c43044ab867c418018aae7aec895f, type: 3}
-  m_Name: BaseClip
+  m_Name: Shotgun(Trigger)
   m_EditorClassIdentifier: 
   C_meshPrefab: {fileID: 0}
-  e_moduleType: 1
-  f_baseDamage: 0
-  f_fireRate: 0
-  f_bulletSpeed: 0
-  f_knockBack: 0
+  e_moduleType: 0
+  f_baseDamage: 45
+  f_fireRate: 1.3
+  f_bulletSpeed: 25
+  f_knockBack: 3
   S_bulletEffectInformation:
     e_bulletEffect: 0
     f_effectTime: 0
@@ -28,9 +28,9 @@ MonoBehaviour:
     f_chainLength: 0
     i_ricochetCount: 0
     f_vampirePercent: 0
-  f_reloadSpeed: 1.1
+  f_reloadSpeed: 0
   f_movementPenalty: 0
-  i_clipSize: 16
+  i_clipSize: 0
   S_bulletTraitInformation:
     e_bulletTrait: 0
     i_pierceCount: 0
@@ -44,8 +44,8 @@ MonoBehaviour:
   f_bulletRange: 0
   f_recoil: 0
   b_burstTrue: 0
-  i_burstCount: 0
-  f_burstInterval: 0
+  i_burstCount: 2
+  f_burstInterval: 1
   S_shotPatternInformation:
     e_shotPattern: 0
     b_randomSpread: 0
