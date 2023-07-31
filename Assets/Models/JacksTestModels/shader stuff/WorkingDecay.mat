@@ -23,7 +23,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: decay CIRCUITS
+  m_Name: WorkingDecay
   m_Shader: {fileID: -6465566751694194690, guid: 10980c8034161754f876d04d913c02bc, type: 3}
   m_ValidKeywords:
   - _DISABLE_SSR_TRANSPARENT
@@ -51,7 +51,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Secondary_decay:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 60a102ea350802d40a339e70533a6c84, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture2DAsset_2878b27e96004e08b09cd2cfeeb43ddb_Out_0:
@@ -121,8 +121,8 @@ Material:
     - _DECAY_AMOUNT: 0
     - _Decay_edge_size: 1.37
     - _DepthOffsetEnable: 0
-    - _Displacement: 0.34
-    - _Displacement_Scale: 8.64
+    - _Displacement: 0
+    - _Displacement_Scale: 1
     - _DoubleSidedEnable: 0
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 2
@@ -133,13 +133,13 @@ Material:
     - _Edge_texture_size: 2.11
     - _EnableBlendModePreserveSpecularLighting: 0
     - _EnableFogOnTransparent: 1
-    - _FadeSize_Careful: 0.56
-    - _Float: 0.05
+    - _FadeSize_Careful: 0.39
+    - _Float: 0.1
     - _Lines_Size: -0.09
     - _Lines_speed: 1
     - _Normal_Strength: 0.56
     - _OpaqueCullMode: 2
-    - _Overlay_Texture_size: 2.17
+    - _Overlay_Texture_size: 1.26
     - _Overlay_var_speed: 0.5
     - _RayTracing: 0
     - _ReceivesSSR: 1
@@ -147,7 +147,7 @@ Material:
     - _RefractionModel: 0
     - _RenderQueueType: 4
     - _RequireSplitLighting: 0
-    - _Secondary_Decay_size: 1
+    - _Secondary_Decay_size: 0.19
     - _Secondary_Edge_size: 5.5
     - _SrcBlend: 1
     - _StencilRef: 0
@@ -169,13 +169,14 @@ Material:
     - _TransparentSortPriority: 0
     - _TransparentWritingMotionVec: 0
     - _TransparentZWrite: 0
+    - _USE_GRADIENT_FOR_OVERLAY: 0
     - _UseShadowThreshold: 0
     - _ZTestDepthEqualForOpaque: 4
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
     - _ZWrite: 0
     - _edge_size: 1
-    - _norm_strength: 0.24
+    - _norm_strength: 0.82
     - _normalfloatstrength: 0.31
     - _scalefloat: 5.84
     m_Colors:
