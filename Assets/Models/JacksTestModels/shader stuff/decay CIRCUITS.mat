@@ -46,6 +46,14 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Overlay_Texture:
+        m_Texture: {fileID: 2800000, guid: 9f7dfcd0f0f902f4e9897217a10b1012, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Secondary_decay:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Texture2DAsset_2878b27e96004e08b09cd2cfeeb43ddb_Out_0:
         m_Texture: {fileID: 2800000, guid: af16fda78fd19ef45b6fa26f4e797c02, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -54,7 +62,15 @@ Material:
         m_Texture: {fileID: 2800000, guid: af16fda78fd19ef45b6fa26f4e797c02, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_462dcd41646e41dca1672645adc26dad_Out_0:
+        m_Texture: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Texture2DAsset_5984871cd7144d3da39d8667e1ade222_Out_0:
+        m_Texture: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_6e541c7b314b4c4fbefe4e10cdfb6df3_Out_0:
         m_Texture: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -99,29 +115,40 @@ Material:
     - _BlendMode: 0
     - _ConservativeDepthOffsetEnable: 0
     - _Cor_Base_Speed: 1
-    - _Corruption_Base_size: 5.3
+    - _Corruption_Base_size: 8.51
     - _CullMode: 2
     - _CullModeForward: 2
-    - _Decay_edge_size: 3.44
+    - _DECAY_AMOUNT: 0
+    - _Decay_edge_size: 1.37
     - _DepthOffsetEnable: 0
+    - _Displacement: 0.34
+    - _Displacement_Scale: 8.64
     - _DoubleSidedEnable: 0
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 2
     - _DstBlend: 10
+    - _Edge_Scale: 5.5
     - _Edge_size: 2.49
     - _Edge_speed: 1
+    - _Edge_texture_size: 2.11
     - _EnableBlendModePreserveSpecularLighting: 0
     - _EnableFogOnTransparent: 1
     - _FadeSize_Careful: 0.56
-    - _Lines_Size: 0.39
+    - _Float: 0.05
+    - _Lines_Size: -0.09
     - _Lines_speed: 1
+    - _Normal_Strength: 0.56
     - _OpaqueCullMode: 2
+    - _Overlay_Texture_size: 2.17
+    - _Overlay_var_speed: 0.5
     - _RayTracing: 0
     - _ReceivesSSR: 1
     - _ReceivesSSRTransparent: 0
     - _RefractionModel: 0
     - _RenderQueueType: 4
     - _RequireSplitLighting: 0
+    - _Secondary_Decay_size: 1
+    - _Secondary_Edge_size: 5.5
     - _SrcBlend: 1
     - _StencilRef: 0
     - _StencilRefDepth: 0
@@ -147,13 +174,21 @@ Material:
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
     - _ZWrite: 0
+    - _edge_size: 1
+    - _norm_strength: 0.24
+    - _normalfloatstrength: 0.31
+    - _scalefloat: 5.84
     m_Colors:
     - _Center: {r: 0, g: 0, b: 0, a: 0}
     - _Circuit_lines: {r: 0.6924444, g: 0.1496084, b: 0.7735849, a: 0}
     - _Circuit_lines_var: {r: 0.4622642, g: 0.128649, b: 0.3233497, a: 0}
     - _Corruption_Base_2: {r: 0.5377358, g: 0.21052864, b: 0.5251509, a: 0}
-    - _Corruption_base: {r: 0.6617612, g: 0.4709861, b: 0.6792453, a: 0}
+    - _Corruption_base: {r: 0.69822735, g: 0.3529281, b: 0.7264151, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Overlay_Colour_Var: {r: 0.4622642, g: 0.128649, b: 0.3233497, a: 0}
+    - _Overlay_colour: {r: 0.335944, g: 0.18093629, b: 0.3584906, a: 0}
     - _Panels: {r: 0.3597811, g: 0.45637, b: 0.46226418, a: 0}
+    - _Vector2: {r: 0.01, g: 68, b: 0, a: 0}
+    - _remap: {r: 27.24, g: -0.67, b: 0, a: 0}
   m_BuildTextureStacks: []
