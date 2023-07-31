@@ -19,7 +19,7 @@ MonoBehaviour:
   f_bulletSpeed: 0
   f_knockBack: 0
   S_bulletEffectInformation:
-    e_bulletEffects: 0
+    e_bulletEffect: 0
     f_effectTime: 0
     f_tickDamage: 0
     i_amountOfTicks: 0
@@ -41,15 +41,15 @@ MonoBehaviour:
     f_homingStrength: 0
     f_homingDelayTime: 0
   f_bulletSize: 1
-  f_bulletRange: 10
-  f_recoil: 0.1
+  f_bulletRange: 50
+  f_recoil: 10
   b_burstTrue: 0
   i_burstCount: 0
   f_burstInterval: 0
   S_shotPatternInformation:
     e_shotPattern: 0
     b_randomSpread: 0
-    i_shotCount: 5
-    f_multiShotDistance: 0.5
-    f_maxAngle: 45
+    i_shotCount: 3
+    f_multiShotDistance: 0.4
+    f_maxAngle: 10
     f_waveSpeed: 0

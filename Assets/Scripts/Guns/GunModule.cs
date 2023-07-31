@@ -5,7 +5,6 @@ using Utility;
 
 namespace Gun
 {
-    //TO DO CHANGE WIP WHEN READY
     [CreateAssetMenu(fileName = "GunModule", menuName = "Gun Module")]
     public class GunModule : ScriptableObject
     {
@@ -126,6 +125,14 @@ namespace Gun
         [Rename("Burst Interval")] public float f_burstInterval;
         public ShotPatternInfo S_shotPatternInformation;
         #endregion
+
+        public void Spawn(Vector3 worldPos)
+        {
+            GameObject newSpawn = C_meshPrefab;
+            newSpawn.name = this.name;
+            newSpawn.tag = "Gun Module";
+            newSpawn.transform.position = worldPos;
+        }
 
     }
 }

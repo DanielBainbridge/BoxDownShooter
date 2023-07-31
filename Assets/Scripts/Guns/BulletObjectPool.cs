@@ -21,7 +21,7 @@ namespace Gun
             i_totalBullets = (int)(bulletAmount);
 
 
-            for(int i = 0; i < i_totalBullets; i++)
+            for (int i = 0; i < i_totalBullets; i++)
             {
                 GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                 obj.transform.parent = transform;
@@ -42,23 +42,25 @@ namespace Gun
 
             int countDifference = bulletAmount - i_totalBullets;
 
-            if(countDifference == 0)
+            if (countDifference == 0)
             {
                 return;
             }
-            if(countDifference < 0)
+            if (countDifference < 0)
             {
-                for(int i = 0; i < -countDifference; i++)
+                for (int i = 0; i < -countDifference; i++)
                 {
                     Bullet bulletToRemove = lC_allBullets[lC_allBullets.Count - 1];
                     lC_allBullets.Remove(bulletToRemove);
                     if (bulletToRemove.gameObject.activeInHierarchy)
                     {
                         lC_inUseBullets.Remove(bulletToRemove);
+                        Destroy(bulletToRemove.gameObject);
                     }
                     else
                     {
                         lC_freeBullets.Remove(bulletToRemove);
+                        Destroy(bulletToRemove.gameObject);
                     }
                 }
             }
@@ -96,5 +98,5 @@ namespace Gun
             lC_inUseBullets.Add(bullet);
             lC_freeBullets.Remove(bullet);
         }
-    } 
+    }
 }

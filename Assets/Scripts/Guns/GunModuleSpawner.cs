@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UnityEngine;
 
-namespace Assets.Scripts.Guns
+
+namespace Gun
 {
-    static class GunModuleSpawner
+    public static class GunModuleSpawner
     {
-        static void SpawnGunModule(string gunModuleName)
+        public static void SpawnGunModule(string gunModuleName, Vector3 worldPos)
         {
-            
+            //Debug.Log(Resources.Load($"GunModules/Base/{gunModuleName}.asset").name);
+            GunModule moduleToLoad = (GunModule)Resources.Load($"\\..\\..\\{gunModuleName}.asset");
+            if(moduleToLoad == null)
+            {
+                throw new NullReferenceException("Module attempted to load is null");
+            }
+            moduleToLoad.Spawn(worldPos);
         }
     }
 }

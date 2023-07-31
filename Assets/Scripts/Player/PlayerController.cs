@@ -89,7 +89,7 @@ public class PlayerController : MonoBehaviour
     [Rename("Collision Bounce Percentage"), Range(0, 1)] public float f_collisionBounciness = 0.45f;
 
     [Header("Game Variables")]
-    [Rename("Lives")] int i_lives = 3;
+    [Rename("Interact Range")] public float f_interactRange = 3.0f;
     [Rename("Health")] float f_health = 100;
     [Rename("Spawn Location")] Vector3 S_spawnLocation; // player set to this on start and before loading into new scene
 
@@ -198,6 +198,27 @@ public class PlayerController : MonoBehaviour
         //check for interactables in radius, if none early out
         //find distance of all in radius
         //interact with shortest range
+        float closestDistance = float.MaxValue;
+        int closestCollisionReference = 0;
+        Collider[] collisions = Physics.OverlapSphere(transform.position, f_interactRange);
+        if(collisions.Length == 0)
+        {
+            return;
+        }
+        for (int i = 0; i < collisions.Length; i++)
+        {
+            float distance = (collisions[i].transform.position - transform.position).magnitude;
+            if(distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestCollisionReference = i;
+            }
+        }
+        if (collisions[closestCollisionReference].transform.tag == "Gun Module")
+        {
+            C_playerGun.SwapGunPiece((GunModule)Resources.Load($"GunModule\\..\\{collisions[closestCollisionReference].name}"));
+        }
+
 
     }
     private void Reload(InputAction.CallbackContext context)

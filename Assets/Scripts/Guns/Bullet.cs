@@ -138,7 +138,7 @@ namespace Gun
         private bool CheckHit()
         {
 
-            if (Physics.SphereCast(transform.position - (transform.forward * S_baseInformation.f_size * 1.01f), S_baseInformation.f_size * 2, (transform.position - S_previousPosition).normalized, out RaycastHit hitInfo, Vector3.Distance(S_previousPosition, transform.position)))
+            if (Physics.SphereCast(transform.position - (transform.forward * S_baseInformation.f_size * 1.01f), S_baseInformation.f_size * 2, (transform.position - S_previousPosition).normalized, out RaycastHit hitInfo, Vector3.Distance(S_previousPosition, transform.position), ~LayerMask.GetMask("Bullet")))
             {
                 OnHit(hitInfo);
                 return true;
