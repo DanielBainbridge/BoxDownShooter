@@ -156,7 +156,7 @@ Material:
     - _RenderQueueType: 4
     - _RequireSplitLighting: 0
     - _Secondary_Decay_size: 0.38
-    - _Secondary_Edge_size: 0.22
+    - _Secondary_Edge_size: 5.1
     - _SrcBlend: 1
     - _StencilRef: 0
     - _StencilRefDepth: 0
@@ -178,7 +178,7 @@ Material:
     - _TransparentWritingMotionVec: 0
     - _TransparentZWrite: 0
     - _USE_GRADIENT_FOR_OVERLAY: 0
-    - _USE_GRADIENT_FOR_SECONDARY: 0
+    - _USE_GRADIENT_FOR_SECONDARY: 1
     - _USE_VORONOI_FOR_TEXTURE: 1
     - _UseShadowThreshold: 0
     - _ZTestDepthEqualForOpaque: 4
