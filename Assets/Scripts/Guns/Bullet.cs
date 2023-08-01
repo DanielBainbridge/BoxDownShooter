@@ -29,11 +29,9 @@ namespace Gun
             }
         }
 
-
         [HideInInspector] public GameObject C_prefab;
         [HideInInspector] public BulletObjectPool C_poolOwner;
         [HideInInspector] private BulletBaseInfo S_baseInformation;
-        private Vector3 S_previousPosition;
 
         [HideInInspector] private float f_bulletAliveTime;
         private int i_bulletPiercedCount = 0;
@@ -48,12 +46,7 @@ namespace Gun
 
         void Update()
         {
-            if (CheckHit())
-            {
-                return;
-            }
-            S_previousPosition = transform.position;
-
+            CheckHit();
 
 
             if (S_baseInformation.f_speed == 0)
@@ -92,7 +85,6 @@ namespace Gun
 
             }
             f_bulletAliveTime += Time.deltaTime;
-
         }
 
         public void FireBullet(Vector3 originOffset, Vector3 directionOffset, BulletBaseInfo bulletInfo, GunModule.BulletTraitInfo bulletTrait, GunModule.BulletEffectInfo bulletEffect)
@@ -112,7 +104,7 @@ namespace Gun
 
             transform.localScale = new Vector3(S_baseInformation.f_size, S_baseInformation.f_size, S_baseInformation.f_size);
 
-            S_previousPosition = transform.position = bulletInfo.S_firingOrigin + originOffset;
+            transform.position = bulletInfo.S_firingOrigin + originOffset;
             transform.rotation = Quaternion.Euler(new Vector3(0, Mathf.Atan2(-bulletInfo.S_firingDirection.z, bulletInfo.S_firingDirection.x) * Mathf.Rad2Deg + 90, 0) + directionOffset);
 
             S_bulletEffect = bulletEffect;
@@ -131,33 +123,30 @@ namespace Gun
         //stub need bullet stuff in
         public void UpdateBulletGraphics()
         {
-            Vector4 colour;
+            Vector4 Colour;
             GameObject meshPrefab;
             GameObject particlePrefab;
         }
-        private bool CheckHit()
+        private void CheckHit()
         {
-
-            if (Physics.SphereCast(transform.position - (transform.forward * S_baseInformation.f_size * 1.01f), S_baseInformation.f_size * 2, (transform.position - S_previousPosition).normalized, out RaycastHit hitInfo, Vector3.Distance(S_previousPosition, transform.position)))
+            if (Physics.SphereCast(transform.position - transform.forward * S_baseInformation.f_size, S_baseInformation.f_size, transform.forward, out RaycastHit hitInfo, S_baseInformation.f_size + 0.1f))
             {
                 OnHit(hitInfo);
-                return true;
             }
-            return false;
         }
+
         public void OnHit(RaycastHit hit)
         {
             Transform objectHit = hit.transform;
 
-            Enemy.EnemyBase enemyBase = objectHit.GetComponent<Enemy.EnemyBase>();
+            EnemyBase enemyBase = objectHit.GetComponent<EnemyBase>();
             PlayerController playerController = objectHit.GetComponent<PlayerController>();
 
-            bool isPlayer = playerController == null ? false : true;
-            bool isEnemy = enemyBase == null ? false : true;
+            bool isPlayer = (playerController != null);
+            bool isEnemy = (enemyBase != null);
 
             if (!isPlayer && !isEnemy)
             {
-                C_poolOwner.MoveToOpen(this);
                 return;
             }
 
@@ -169,11 +158,6 @@ namespace Gun
                     {
                         //do damage
                         playerController.DamagePlayer(S_baseInformation.f_damage);
-                        C_poolOwner.MoveToOpen(this);
-                    }
-                    else if (isEnemy)
-                    {
-                        enemyBase.TakeDamage((int)S_baseInformation.f_damage);
                         C_poolOwner.MoveToOpen(this);
                     }
                     break;
