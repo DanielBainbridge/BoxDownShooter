@@ -55,7 +55,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Secondary_Edge_Texture:
-        m_Texture: {fileID: 2800000, guid: eef456f01d28fdf4a9c33c85a995c379, type: 3}
+        m_Texture: {fileID: 2800000, guid: af16fda78fd19ef45b6fa26f4e797c02, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Secondary_decay:
@@ -76,6 +76,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _Texture2DAsset_5984871cd7144d3da39d8667e1ade222_Out_0:
         m_Texture: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_6ccb924b71f94d8cb3aa21ce23eae330_Out_0:
+        m_Texture: {fileID: 2800000, guid: af16fda78fd19ef45b6fa26f4e797c02, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture2DAsset_6e541c7b314b4c4fbefe4e10cdfb6df3_Out_0:
@@ -142,7 +146,7 @@ Material:
     - _EnableBlendModePreserveSpecularLighting: 0
     - _EnableFogOnTransparent: 1
     - _FadeSize_Careful: 0.39
-    - _Float: 0.1
+    - _Float: 4.79
     - _Lines_Size: -0.09
     - _Lines_speed: 1
     - _Normal_Strength: 0.56
@@ -186,7 +190,7 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 0
     - _edge_size: 1
-    - _norm_strength: -0.2
+    - _norm_strength: -0.39
     - _normalfloatstrength: 0.31
     - _scalefloat: 5.84
     m_Colors:
