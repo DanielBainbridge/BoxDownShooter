@@ -19,7 +19,7 @@ MonoBehaviour:
   f_bulletSpeed: 0
   f_knockBack: 0
   S_bulletEffectInformation:
-    e_bulletEffects: 0
+    e_bulletEffect: 0
     f_effectTime: 0
     f_tickDamage: 0
     i_amountOfTicks: 0

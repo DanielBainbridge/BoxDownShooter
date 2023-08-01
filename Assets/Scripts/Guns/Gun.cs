@@ -127,7 +127,6 @@ namespace Gun
                 //Spawn Bullet, at muzzle position + (bullet trajectory * bulletspeed) * time into next frame
                 if (!b_burstTrue)
                 {
-                    // TO DO: FRAME STUFF
                     switch (S_shotPatternInfo.e_shotPattern)
                     {
                         case GunModule.ShotPattern.Straight:
@@ -150,13 +149,15 @@ namespace Gun
                 }
                 timesFiredThisFrame += 1;
 
+                if (C_gunHolder.GetComponent<PlayerController>())
+                {
+                    C_gunHolder.GetComponent<PlayerController>().AddVelocityToPlayer(-C_gunHolder.forward * f_recoil);
+                }
+
                 f_timeUntilNextFire += f_timeBetweenBulletShots;
             }
 
-            if (C_gunHolder.GetComponent<PlayerController>())
-            {
-                C_gunHolder.GetComponent<PlayerController>().AddVelocityToPlayer(-C_gunHolder.forward * f_recoil);
-            }
+            
 
             f_lastFireTime = Time.time;
             i_currentAmmo -= timesFiredThisFrame;
@@ -293,11 +294,17 @@ namespace Gun
         }
         private void FireWave(float timeIntoNextFrame)
         {
-            Vector3 fireAngle = new Vector3(0, ExtraMaths.Map(-1, 1, -S_shotPatternInfo.f_maxAngle, S_shotPatternInfo.f_maxAngle, Mathf.Sin(f_fireHoldTime)), 0);
+            Vector3 fireAngle = new Vector3(0, ExtraMaths.Map(-1, 1, -S_shotPatternInfo.f_maxAngle, S_shotPatternInfo.f_maxAngle, Mathf.Sin(f_fireHoldTime * (Mathf.PI))), 0);
             C_bulletPool.GetFirstOpen().FireBullet((S_bulletInfo.S_firingDirection) * timeIntoNextFrame, fireAngle, S_bulletInfo, S_bulletTraitInfo, S_bulletEffectInfo);
         }
 
-        //stub
+        //swap gun pieces to be in correct order when
+        private void SortModules()
+        {
+
+        }
+
+        
         public void SwapGunPiece(GunModule newModule)
         {
             switch (newModule.e_moduleType)
@@ -317,7 +324,12 @@ namespace Gun
         
         public void ResetToBaseStats()
         {
-
+            GunModule baseBarrel = (GunModule)Resources.Load($"GunModules\\..\\BaseBarrel");
+            GunModule baseClip = (GunModule)Resources.Load($"GunModules\\..\\BaseClip");
+            GunModule baseTrigger = (GunModule)Resources.Load($"GunModules\\..\\BaseTrigger");
+            UpdateGunStats(baseBarrel);
+            UpdateGunStats(baseClip);
+            UpdateGunStats(baseTrigger);
         }
 
         //stub BURST STUFF
