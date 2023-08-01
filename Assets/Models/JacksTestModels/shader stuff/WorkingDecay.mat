@@ -46,8 +46,16 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Edge_texture:
+        m_Texture: {fileID: 2800000, guid: 37fe8ec09c0dc0643a73f9a7b6c58482, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Overlay_Texture:
         m_Texture: {fileID: 2800000, guid: 9f7dfcd0f0f902f4e9897217a10b1012, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Secondary_Edge_Texture:
+        m_Texture: {fileID: 2800000, guid: eef456f01d28fdf4a9c33c85a995c379, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Secondary_decay:
@@ -114,8 +122,8 @@ Material:
     - _Amount: 0
     - _BlendMode: 0
     - _ConservativeDepthOffsetEnable: 0
-    - _Cor_Base_Speed: 1
-    - _Corruption_Base_size: 8.51
+    - _Cor_Base_Speed: 0.5
+    - _Corruption_Base_size: 0.5
     - _CullMode: 2
     - _CullModeForward: 2
     - _DECAY_AMOUNT: 0
@@ -129,8 +137,8 @@ Material:
     - _DstBlend: 10
     - _Edge_Scale: 5.5
     - _Edge_size: 2.49
-    - _Edge_speed: 1
-    - _Edge_texture_size: 2.11
+    - _Edge_speed: 0.55
+    - _Edge_texture_size: 1.57
     - _EnableBlendModePreserveSpecularLighting: 0
     - _EnableFogOnTransparent: 1
     - _FadeSize_Careful: 0.39
@@ -139,16 +147,16 @@ Material:
     - _Lines_speed: 1
     - _Normal_Strength: 0.56
     - _OpaqueCullMode: 2
-    - _Overlay_Texture_size: 1.26
-    - _Overlay_var_speed: 0.5
+    - _Overlay_Texture_size: 1.28
+    - _Overlay_var_speed: 0.25
     - _RayTracing: 0
     - _ReceivesSSR: 1
     - _ReceivesSSRTransparent: 0
     - _RefractionModel: 0
     - _RenderQueueType: 4
     - _RequireSplitLighting: 0
-    - _Secondary_Decay_size: 0.19
-    - _Secondary_Edge_size: 5.5
+    - _Secondary_Decay_size: 0.38
+    - _Secondary_Edge_size: 0.22
     - _SrcBlend: 1
     - _StencilRef: 0
     - _StencilRefDepth: 0
@@ -170,25 +178,27 @@ Material:
     - _TransparentWritingMotionVec: 0
     - _TransparentZWrite: 0
     - _USE_GRADIENT_FOR_OVERLAY: 0
+    - _USE_GRADIENT_FOR_SECONDARY: 0
+    - _USE_VORONOI_FOR_TEXTURE: 1
     - _UseShadowThreshold: 0
     - _ZTestDepthEqualForOpaque: 4
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
     - _ZWrite: 0
     - _edge_size: 1
-    - _norm_strength: 0.82
+    - _norm_strength: -0.2
     - _normalfloatstrength: 0.31
     - _scalefloat: 5.84
     m_Colors:
     - _Center: {r: 0, g: 0, b: 0, a: 0}
     - _Circuit_lines: {r: 0.6924444, g: 0.1496084, b: 0.7735849, a: 0}
     - _Circuit_lines_var: {r: 0.4622642, g: 0.128649, b: 0.3233497, a: 0}
-    - _Corruption_Base_2: {r: 0.5377358, g: 0.21052864, b: 0.5251509, a: 0}
+    - _Corruption_Base_2: {r: 0.3679245, g: 0.06768423, b: 0.3570724, a: 0}
     - _Corruption_base: {r: 0.69822735, g: 0.3529281, b: 0.7264151, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _Overlay_Colour_Var: {r: 0.4622642, g: 0.128649, b: 0.3233497, a: 0}
-    - _Overlay_colour: {r: 0.335944, g: 0.18093629, b: 0.3584906, a: 0}
+    - _Overlay_colour: {r: 0.2735997, g: 0.122774996, b: 0.2924528, a: 0}
     - _Panels: {r: 0.3597811, g: 0.45637, b: 0.46226418, a: 0}
     - _Vector2: {r: 0.01, g: 68, b: 0, a: 0}
     - _remap: {r: 27.24, g: -0.67, b: 0, a: 0}
