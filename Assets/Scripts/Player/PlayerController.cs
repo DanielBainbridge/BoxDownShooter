@@ -216,7 +216,10 @@ public class PlayerController : MonoBehaviour
         }
         if (collisions[closestCollisionReference].transform.tag == "Gun Module")
         {
-            C_playerGun.SwapGunPiece((GunModule)Resources.Load($"GunModule\\..\\{collisions[closestCollisionReference].name}"));
+            GunModule gunModuleToSwap = (GunModule)Resources.Load(GunModuleSpawner.GetGunModuleResourcesPath(collisions[closestCollisionReference].name));
+
+            C_playerGun.SwapGunPiece(gunModuleToSwap);
+            Destroy(collisions[closestCollisionReference].gameObject);
         }
 
 
@@ -224,6 +227,7 @@ public class PlayerController : MonoBehaviour
     private void Reload(InputAction.CallbackContext context)
     {
         // reload clip of bullets to max
+        C_playerGun.Reload();
     }
     private void Pause(InputAction.CallbackContext context)
     {

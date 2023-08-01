@@ -115,7 +115,7 @@ namespace Gun
             }
             if (i_currentAmmo <= 0 || i_currentAmmo < i_burstCount)
             {
-                StartCoroutine(ReloadAfterTime());
+                Reload();
                 return;
             }
 
@@ -176,8 +176,7 @@ namespace Gun
             // read clip size and current bullet count and reload time
             // reload 1 at a time,
             //optional cancelleable reload
-            i_currentAmmo = i_clipSize;
-
+            StartCoroutine(ReloadAfterTime());
         }
 
         /// <summary>
@@ -307,18 +306,23 @@ namespace Gun
         
         public void SwapGunPiece(GunModule newModule)
         {
+            GunModule oldModule = null;
             switch (newModule.e_moduleType)
             {
-                case GunModule.ModuleSection.Trigger:
+                case GunModule.ModuleSection.Trigger:                    
+                    oldModule = aC_moduleArray[0];
                     aC_moduleArray[0] = newModule;
                     break;
-                case GunModule.ModuleSection.Clip:
+                case GunModule.ModuleSection.Clip:                    
+                    oldModule = aC_moduleArray[1];
                     aC_moduleArray[1] = newModule;
                     break;
-                case GunModule.ModuleSection.Barrel:
+                case GunModule.ModuleSection.Barrel:                    
+                    oldModule = aC_moduleArray[2];
                     aC_moduleArray[2] = newModule;
                     break;
             }
+            GunModuleSpawner.SpawnGunModule(oldModule.name, new Vector3(transform.position.x, 0, transform.position.z));
             UpdateGunStats(newModule);
         }
         
@@ -347,7 +351,7 @@ namespace Gun
         {
             b_reloading = true;
             yield return new WaitForSeconds(f_reloadSpeed);
-            Reload();
+            i_currentAmmo = i_clipSize;
             b_reloading = false;
         }
         //reload one bullet at a time
