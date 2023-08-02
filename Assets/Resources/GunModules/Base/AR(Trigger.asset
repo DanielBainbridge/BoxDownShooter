@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 071c43044ab867c418018aae7aec895f, type: 3}
-  m_Name: BaseTrigger
+  m_Name: AR(Trigger
   m_EditorClassIdentifier: 
   C_meshPrefab: {fileID: 0}
   e_moduleType: 0
-  f_baseDamage: 13
-  f_fireRate: 8.5
-  f_bulletSpeed: 30
+  f_baseDamage: 14
+  f_fireRate: 12
+  f_bulletSpeed: 35
   f_knockBack: 0
   S_bulletEffectInformation:
     e_bulletEffect: 0

@@ -15,7 +15,7 @@ MonoBehaviour:
   C_meshPrefab: {fileID: 0}
   e_moduleType: 0
   f_baseDamage: 20
-  f_fireRate: 1
+  f_fireRate: 2.4
   f_bulletSpeed: 35
   f_knockBack: 3
   S_bulletEffectInformation:

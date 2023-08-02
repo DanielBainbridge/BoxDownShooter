@@ -40,7 +40,7 @@ MonoBehaviour:
     f_explosionLingerTime: 0
     f_homingStrength: 0
     f_homingDelayTime: 0
-  f_bulletSize: 0.2
+  f_bulletSize: 0.25
   f_bulletRange: 4
   f_recoil: 1.5
   b_burstTrue: 0

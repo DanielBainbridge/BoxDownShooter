@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 071c43044ab867c418018aae7aec895f, type: 3}
-  m_Name: BaseTrigger
+  m_Name: DualAR(Trigger)
   m_EditorClassIdentifier: 
   C_meshPrefab: {fileID: 0}
   e_moduleType: 0
-  f_baseDamage: 13
-  f_fireRate: 8.5
-  f_bulletSpeed: 30
-  f_knockBack: 0
+  f_baseDamage: 18
+  f_fireRate: 6
+  f_bulletSpeed: 35
+  f_knockBack: 2
   S_bulletEffectInformation:
     e_bulletEffect: 0
     f_effectTime: 0
@@ -40,12 +40,12 @@ MonoBehaviour:
     f_explosionLingerTime: 0
     f_homingStrength: 0
     f_homingDelayTime: 0
-  f_bulletSize: 0
-  f_bulletRange: 0
-  f_recoil: 0
+  f_bulletSize: 0.3
+  f_bulletRange: 8
+  f_recoil: 2
   b_burstTrue: 0
-  i_burstCount: 3
-  f_burstInterval: 2
+  i_burstCount: 0
+  f_burstInterval: 0
   S_shotPatternInformation:
     e_shotPattern: 0
     b_randomSpread: 0

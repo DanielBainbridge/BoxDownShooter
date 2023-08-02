@@ -47,9 +47,9 @@ MonoBehaviour:
   i_burstCount: 0
   f_burstInterval: 0
   S_shotPatternInformation:
-    e_shotPattern: 0
+    e_shotPattern: 3
     b_randomSpread: 0
     i_shotCount: 5
     f_multiShotDistance: 0.5
-    f_maxAngle: 45
+    f_maxAngle: 2
     f_waveSpeed: 0
