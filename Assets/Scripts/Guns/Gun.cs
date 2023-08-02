@@ -63,8 +63,7 @@ namespace Gun
         BulletObjectPool C_bulletPool;
 
         GameObject C_bulletPrefab;
-
-        Bullet.BulletBaseInfo S_bulletInfo { get { return new Bullet.BulletBaseInfo(tag.ToLower().Contains("player"), S_muzzlePosition, C_gunHolder.forward, f_bulletRange, f_baseDamage, f_bulletSpeed, f_bulletSize); } }
+        Bullet.BulletBaseInfo S_bulletInfo { get { return new Bullet.BulletBaseInfo(C_gunHolder.tag.ToLower().Contains("player"), S_muzzlePosition, C_gunHolder.forward, f_bulletRange, f_baseDamage, f_bulletSpeed, f_bulletSize); } }
 
         private void Awake()
         {
@@ -215,8 +214,7 @@ namespace Gun
             f_bulletSpeed = gunModule.f_bulletSpeed;
             f_knockBack = gunModule.f_knockBack;
 
-
-            S_bulletTraitInfo = gunModule.S_bulletTraitInformation;
+            S_bulletEffectInfo = gunModule.S_bulletEffectInformation;
 
         }
         private void UpdateClipStats(GunModule gunModule)
@@ -230,7 +228,7 @@ namespace Gun
             f_movementPenalty = gunModule.f_movementPenalty;
             i_clipSize = gunModule.i_clipSize;
 
-            S_bulletEffectInfo = gunModule.S_bulletEffectInformation;
+            S_bulletTraitInfo = gunModule.S_bulletTraitInformation;
 
         }
         private void UpdateBarrelStats(GunModule gunModule)

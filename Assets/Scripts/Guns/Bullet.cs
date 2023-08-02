@@ -1,6 +1,10 @@
+using Enemy;
 using System.Linq.Expressions;
+using System.Net.Http.Headers;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UIElements;
 using static Gun.GunModule;
 
 namespace Gun
@@ -34,11 +38,34 @@ namespace Gun
         [HideInInspector] public BulletObjectPool C_poolOwner;
         [HideInInspector] private BulletBaseInfo S_baseInformation;
         private Vector3 S_previousPosition;
+        private float f_rotationalAcceleration;
+        private float f_rotationalVelocity;
+        private float f_desiredRotationAngle
+        {
+            get
+            {
+                Vector3 direction = (C_homingTarget.position - transform.position).normalized;
+                return (-Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg) + 90;
+            }
+        }
+        private float f_currentRotationAngle
+        {
+            get
+            {
+                Vector3 direction = transform.forward;
+                return (-Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg) + 90;
+            }
+        }
+
+
+        private float f_adjustedRotationAngle;
+
 
         [HideInInspector] private float f_bulletAliveTime;
         private int i_bulletPiercedCount = 0;
         private int i_ricochetCount = 0;
         private int i_enemiesChained = 0;
+        private Transform C_homingTarget;
 
 
         BulletEffectInfo S_bulletEffect;
@@ -55,15 +82,12 @@ namespace Gun
             S_previousPosition = transform.position;
 
 
-
-            if (S_baseInformation.f_speed == 0)
+            if (f_bulletAliveTime > S_baseInformation.f_range)
             {
-                if (f_bulletAliveTime > S_baseInformation.f_range)
-                {
-                    C_poolOwner.MoveToOpen(this);
-                    return;
-                }
+                C_poolOwner.MoveToOpen(this);
+                return;
             }
+
 
             //check that it hasn't gone past its range, set inactive
             if (Vector3.Distance(S_baseInformation.S_firingOrigin, transform.position) > S_baseInformation.f_range)
@@ -72,9 +96,6 @@ namespace Gun
                 return;
             }
 
-
-
-            //TO DO, update differently based on bullet type
             switch (S_bulletTrait.e_bulletTrait)
             {
                 case BulletTrait.Standard:
@@ -88,6 +109,23 @@ namespace Gun
                     transform.position += transform.forward * S_baseInformation.f_speed * Time.deltaTime;
                     break;
                 case BulletTrait.Homing:
+                    //Dot Product of thing multiplied by rad2deg multiplied by homing intensity
+                    if (f_bulletAliveTime > S_bulletTrait.f_homingDelayTime && C_homingTarget != null)
+                    {
+
+                        float angleToTarget = f_desiredRotationAngle - f_currentRotationAngle;
+                        if (angleToTarget < -180)
+                        {
+                            angleToTarget += 360;
+                        }
+                        else if (angleToTarget > 180)
+                        {
+                            angleToTarget -= 360;
+                        }
+
+                        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y + angleToTarget * S_bulletTrait.f_homingStrength, 0);
+                    }
+                    transform.position += transform.forward * S_baseInformation.f_speed * Time.deltaTime;
                     break;
 
             }
@@ -117,6 +155,37 @@ namespace Gun
 
             S_bulletEffect = bulletEffect;
             S_bulletTrait = bulletTrait;
+            if (S_bulletTrait.e_bulletTrait == BulletTrait.Homing)
+            {
+                FindHomingTarget();
+            }
+        }
+        void FindHomingTarget()
+        {
+            if (S_baseInformation.b_playerOwned)
+            {
+                float closestEnemyRotation = float.MaxValue;
+                int closestEnemy = int.MaxValue;
+                EnemyBase[] enemiesOnScreen = FindObjectsOfType<EnemyBase>();
+
+                for (int i = 0; i < enemiesOnScreen.Length; i++)
+                {
+                    float angleToTarget = Vector3.Angle(transform.position, enemiesOnScreen[i].transform.position);
+                    if (angleToTarget < closestEnemyRotation)
+                    {
+                        closestEnemy = i;
+                    }
+                }
+                if (closestEnemy == int.MaxValue)
+                {
+                    return;
+                }
+                C_homingTarget = enemiesOnScreen[closestEnemy].transform;
+            }
+            else
+            {
+                C_homingTarget = FindObjectOfType<PlayerController>().transform;
+            }
         }
 
         public void BulletChangeDirection(Vector3 direction)
@@ -199,9 +268,16 @@ namespace Gun
                     }
                     break;
                 case BulletTrait.Homing:
-                    if (isPlayer && !S_baseInformation.b_playerOwned)
+                    if (isPlayer && !S_baseInformation.b_playerOwned && (playerController.e_playerState != PlayerController.PlayerState.Invincible || playerController.e_playerState != PlayerController.PlayerState.Dodge))
                     {
-
+                        playerController.DamagePlayer(S_baseInformation.f_damage);
+                        C_homingTarget = null;
+                        C_poolOwner.MoveToOpen(this);
+                    }
+                    else if (isEnemy)
+                    {
+                        enemyBase.TakeDamage((int)S_baseInformation.f_damage);
+                        C_poolOwner.MoveToOpen(this);
                     }
                     break;
             }
