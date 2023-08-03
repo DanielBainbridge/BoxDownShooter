@@ -219,7 +219,7 @@ Transform:
   m_GameObject: {fileID: 240730636}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.39, y: 0.44, z: 5.61}
-  m_LocalScale: {x: 2.2392, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1128,15 +1128,15 @@ PrefabInstance:
     - target: {fileID: 3986387071626004617, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
       propertyPath: aC_moduleArray.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: cc51bd2b80ba7bd4cbfd43422c6e7d90, type: 2}
+      objectReference: {fileID: 11400000, guid: 15e3501066e093248a4f17213a74d038, type: 2}
     - target: {fileID: 3986387071626004617, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
       propertyPath: aC_moduleArray.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: 93e363d3e04013944bb7f10b17a32a15, type: 2}
+      objectReference: {fileID: 11400000, guid: 770ac7f8376e99e49b3d91b14e47caee, type: 2}
     - target: {fileID: 3986387071626004617, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
       propertyPath: aC_moduleArray.Array.data[2]
       value: 
-      objectReference: {fileID: 11400000, guid: 0631f4e63c2664247864db83bbd3c5a6, type: 2}
+      objectReference: {fileID: 11400000, guid: 7a0dff10cedf06844881c19dc22a713b, type: 2}
     - target: {fileID: 4292797111230307391, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
       propertyPath: m_Name
       value: TestCharacter

@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 071c43044ab867c418018aae7aec895f, type: 3}
-  m_Name: Sniper(Trigger)
+  m_Name: Small(Trigger)
   m_EditorClassIdentifier: 
   C_meshPrefab: {fileID: 0}
   e_moduleType: 0
-  f_baseDamage: 110
-  f_fireRate: 1
-  f_bulletSpeed: 60
-  f_knockBack: 2
+  f_baseDamage: 4
+  f_fireRate: 18
+  f_bulletSpeed: 25
+  f_knockBack: 0
   S_bulletEffectInformation:
     e_bulletEffect: 0
     f_effectTime: 0
@@ -40,9 +40,9 @@ MonoBehaviour:
     f_explosionLingerTime: 0
     f_homingStrength: 0
     f_homingDelayTime: 0
-  f_bulletSize: 3.5
-  f_bulletRange: 12
-  f_recoil: 3
+  f_bulletSize: 0
+  f_bulletRange: 0
+  f_recoil: 0
   b_burstTrue: 0
   i_burstCount: 0
   f_burstInterval: 0

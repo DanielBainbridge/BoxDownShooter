@@ -44,8 +44,8 @@ MonoBehaviour:
   f_bulletRange: 8
   f_recoil: 2
   b_burstTrue: 0
-  i_burstCount: 0
-  f_burstInterval: 0
+  i_burstCount: 3
+  f_burstInterval: 3
   S_shotPatternInformation:
     e_shotPattern: 0
     b_randomSpread: 0
