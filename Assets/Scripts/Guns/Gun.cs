@@ -63,8 +63,7 @@ namespace Gun
         BulletObjectPool C_bulletPool;
 
         GameObject C_bulletPrefab;
-
-        Bullet.BulletBaseInfo S_bulletInfo { get { return new Bullet.BulletBaseInfo(tag.ToLower().Contains("player"), S_muzzlePosition, C_gunHolder.forward, f_bulletRange, f_baseDamage, f_bulletSpeed, f_bulletSize); } }
+        Bullet.BulletBaseInfo S_bulletInfo { get { return new Bullet.BulletBaseInfo(C_gunHolder.tag.ToLower().Contains("player"), S_muzzlePosition, C_gunHolder.forward, f_bulletRange, f_baseDamage, f_bulletSpeed, f_bulletSize, f_knockBack); } }
 
         private void Awake()
         {
@@ -104,6 +103,7 @@ namespace Gun
 
         public void StartFire()
         {
+            f_timeUntilNextFire = 0;
             b_isFiring = true;
         }
 
@@ -115,19 +115,17 @@ namespace Gun
             }
             if (i_currentAmmo <= 0 || i_currentAmmo < i_burstCount)
             {
-                StartCoroutine(ReloadAfterTime());
+                Reload();
                 return;
             }
 
             int timesFiredThisFrame = 0;
-
             while (f_timeUntilNextFire < 0.0f)
             {
                 float timeIntoNextFrame = -f_timeUntilNextFire;
                 //Spawn Bullet, at muzzle position + (bullet trajectory * bulletspeed) * time into next frame
                 if (!b_burstTrue)
                 {
-                    // TO DO: FRAME STUFF
                     switch (S_shotPatternInfo.e_shotPattern)
                     {
                         case GunModule.ShotPattern.Straight:
@@ -150,13 +148,15 @@ namespace Gun
                 }
                 timesFiredThisFrame += 1;
 
+                if (C_gunHolder.GetComponent<PlayerController>())
+                {
+                    C_gunHolder.GetComponent<PlayerController>().AddVelocityToPlayer(-C_gunHolder.forward * f_recoil);
+                }
+
                 f_timeUntilNextFire += f_timeBetweenBulletShots;
             }
 
-            if (C_gunHolder.GetComponent<PlayerController>())
-            {
-                C_gunHolder.GetComponent<PlayerController>().AddVelocityToPlayer(-C_gunHolder.forward * f_recoil);
-            }
+            
 
             f_lastFireTime = Time.time;
             i_currentAmmo -= timesFiredThisFrame;
@@ -166,6 +166,7 @@ namespace Gun
         public void CancelFire()
         {
             f_fireHoldTime = 0;
+            f_timeUntilNextFire = 0;
             b_isFiring = false;
         }
 
@@ -175,8 +176,7 @@ namespace Gun
             // read clip size and current bullet count and reload time
             // reload 1 at a time,
             //optional cancelleable reload
-            i_currentAmmo = i_clipSize;
-
+            StartCoroutine(ReloadAfterTime());
         }
 
         /// <summary>
@@ -215,8 +215,7 @@ namespace Gun
             f_bulletSpeed = gunModule.f_bulletSpeed;
             f_knockBack = gunModule.f_knockBack;
 
-
-            S_bulletTraitInfo = gunModule.S_bulletTraitInformation;
+            S_bulletEffectInfo = gunModule.S_bulletEffectInformation;
 
         }
         private void UpdateClipStats(GunModule gunModule)
@@ -230,7 +229,7 @@ namespace Gun
             f_movementPenalty = gunModule.f_movementPenalty;
             i_clipSize = gunModule.i_clipSize;
 
-            S_bulletEffectInfo = gunModule.S_bulletEffectInformation;
+            S_bulletTraitInfo = gunModule.S_bulletTraitInformation;
 
         }
         private void UpdateBarrelStats(GunModule gunModule)
@@ -293,31 +292,47 @@ namespace Gun
         }
         private void FireWave(float timeIntoNextFrame)
         {
-            Vector3 fireAngle = new Vector3(0, ExtraMaths.Map(-1, 1, -S_shotPatternInfo.f_maxAngle, S_shotPatternInfo.f_maxAngle, Mathf.Sin(f_fireHoldTime)), 0);
+            Vector3 fireAngle = new Vector3(0, ExtraMaths.Map(-1, 1, -S_shotPatternInfo.f_maxAngle, S_shotPatternInfo.f_maxAngle, Mathf.Sin(f_fireHoldTime * (Mathf.PI))), 0);
             C_bulletPool.GetFirstOpen().FireBullet((S_bulletInfo.S_firingDirection) * timeIntoNextFrame, fireAngle, S_bulletInfo, S_bulletTraitInfo, S_bulletEffectInfo);
         }
 
-        //stub
+        //swap gun pieces to be in correct order when
+        private void SortModules()
+        {
+
+        }
+
+        
         public void SwapGunPiece(GunModule newModule)
         {
+            GunModule oldModule = null;
             switch (newModule.e_moduleType)
             {
-                case GunModule.ModuleSection.Trigger:
+                case GunModule.ModuleSection.Trigger:                    
+                    oldModule = aC_moduleArray[0];
                     aC_moduleArray[0] = newModule;
                     break;
-                case GunModule.ModuleSection.Clip:
+                case GunModule.ModuleSection.Clip:                    
+                    oldModule = aC_moduleArray[1];
                     aC_moduleArray[1] = newModule;
                     break;
-                case GunModule.ModuleSection.Barrel:
+                case GunModule.ModuleSection.Barrel:                    
+                    oldModule = aC_moduleArray[2];
                     aC_moduleArray[2] = newModule;
                     break;
             }
+            GunModuleSpawner.SpawnGunModule(oldModule.name, new Vector3(transform.position.x, 0, transform.position.z));
             UpdateGunStats(newModule);
         }
         
         public void ResetToBaseStats()
         {
-
+            GunModule baseBarrel = (GunModule)Resources.Load($"GunModules\\..\\BaseBarrel");
+            GunModule baseClip = (GunModule)Resources.Load($"GunModules\\..\\BaseClip");
+            GunModule baseTrigger = (GunModule)Resources.Load($"GunModules\\..\\BaseTrigger");
+            UpdateGunStats(baseBarrel);
+            UpdateGunStats(baseClip);
+            UpdateGunStats(baseTrigger);
         }
 
         //stub BURST STUFF
@@ -335,7 +350,7 @@ namespace Gun
         {
             b_reloading = true;
             yield return new WaitForSeconds(f_reloadSpeed);
-            Reload();
+            i_currentAmmo = i_clipSize;
             b_reloading = false;
         }
         //reload one bullet at a time

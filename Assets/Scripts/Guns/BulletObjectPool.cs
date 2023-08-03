@@ -5,7 +5,6 @@ using UnityEngine.UIElements;
 
 namespace Gun
 {
-
     public class BulletObjectPool : MonoBehaviour
     {
         List<Bullet> lC_allBullets = new List<Bullet>();
@@ -21,7 +20,7 @@ namespace Gun
             i_totalBullets = (int)(bulletAmount);
 
 
-            for(int i = 0; i < i_totalBullets; i++)
+            for (int i = 0; i < i_totalBullets; i++)
             {
                 GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                 obj.transform.parent = transform;
@@ -38,27 +37,29 @@ namespace Gun
         public void ResizePool(Gun gun)
         {
             int shotCount = gun.aC_moduleArray[2].S_shotPatternInformation.i_shotCount == 0 ? 1 : gun.aC_moduleArray[2].S_shotPatternInformation.i_shotCount;
-            int bulletAmount = gun.aC_moduleArray[1].i_clipSize * shotCount * (int)gun.aC_moduleArray[0].f_fireRate;
+            int bulletAmount = (int)(gun.aC_moduleArray[1].i_clipSize * shotCount * gun.aC_moduleArray[0].f_fireRate);
 
             int countDifference = bulletAmount - i_totalBullets;
 
-            if(countDifference == 0)
+            if (countDifference == 0)
             {
                 return;
             }
-            if(countDifference < 0)
+            if (countDifference < 0)
             {
-                for(int i = 0; i < -countDifference; i++)
+                for (int i = 0; i < -countDifference; i++)
                 {
                     Bullet bulletToRemove = lC_allBullets[lC_allBullets.Count - 1];
                     lC_allBullets.Remove(bulletToRemove);
                     if (bulletToRemove.gameObject.activeInHierarchy)
                     {
                         lC_inUseBullets.Remove(bulletToRemove);
+                        Destroy(bulletToRemove.gameObject);
                     }
                     else
                     {
                         lC_freeBullets.Remove(bulletToRemove);
+                        Destroy(bulletToRemove.gameObject);
                     }
                 }
             }
@@ -96,5 +97,5 @@ namespace Gun
             lC_inUseBullets.Add(bullet);
             lC_freeBullets.Remove(bullet);
         }
-    } 
+    }
 }

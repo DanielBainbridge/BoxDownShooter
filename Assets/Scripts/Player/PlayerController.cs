@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour
     [Rename("Max Acceleration")] public float f_maxAcceleration = 40;
     private float f_currentAccelerationStep = 0;
     [Rename("Acceleration Curve")] public AnimationCurve C_accelerationCurve;
+    float f_playerSize = 0.4f;
 
 
     private Vector2 S_movementVec2Direction;
@@ -89,7 +90,7 @@ public class PlayerController : MonoBehaviour
     [Rename("Collision Bounce Percentage"), Range(0, 1)] public float f_collisionBounciness = 0.45f;
 
     [Header("Game Variables")]
-    [Rename("Lives")] int i_lives = 3;
+    [Rename("Interact Range")] public float f_interactRange = 3.0f;
     [Rename("Health")] float f_health = 100;
     [Rename("Spawn Location")] Vector3 S_spawnLocation; // player set to this on start and before loading into new scene
 
@@ -104,10 +105,12 @@ public class PlayerController : MonoBehaviour
     private Vector3 S_velocity = Vector3.zero;
     private float f_rotationalAcceleration;
     private float f_rotationalVelocity;
-    ControlManager C_controlManagerReference = null;
-    float f_healthCurrent; // to be set on start
-    int i_livesCurrent; // to be set on start
-    bool b_isDead = false;
+    private ControlManager C_controlManagerReference = null;
+    private float f_healthCurrent; // to be set on start
+    private int i_livesCurrent; // to be set on start
+    private bool b_isDead = false;
+    private int i_bulletLayerMask;
+
 
     ///<summary>
     /// Player methods, the method name should be self explanitory if not there is reference 
@@ -132,7 +135,7 @@ public class PlayerController : MonoBehaviour
         actionMap.FindAction("Fire").canceled += CancelFire;
         actionMap.FindAction("Reload").performed += Reload;
         actionMap.FindAction("Pause").performed += Pause;
-
+        i_bulletLayerMask = ~(LayerMask.GetMask("Bullet") + LayerMask.GetMask("Ignore Raycast"));
     }
 
 
@@ -181,7 +184,8 @@ public class PlayerController : MonoBehaviour
     }
     private void Fire(InputAction.CallbackContext context)
     {
-        C_playerGun.StartFire();
+        if (e_playerState != PlayerState.Dodge && e_playerState != PlayerState.NoAttack && e_playerState != PlayerState.NoControl)
+            C_playerGun.StartFire();
     }
     private void CancelFire(InputAction.CallbackContext context)
     {
@@ -189,6 +193,10 @@ public class PlayerController : MonoBehaviour
     }
     private void Dodge(InputAction.CallbackContext context)
     {
+        if (e_playerState != PlayerState.Dodge && e_playerState != PlayerState.NoAttack && e_playerState != PlayerState.NoControl)
+        {
+
+        }
         //set invincible, don't let player control direction
         //move certain amount quickly
         //set state to normal
@@ -198,11 +206,36 @@ public class PlayerController : MonoBehaviour
         //check for interactables in radius, if none early out
         //find distance of all in radius
         //interact with shortest range
+        float closestDistance = float.MaxValue;
+        int closestCollisionReference = 0;
+        Collider[] collisions = Physics.OverlapSphere(transform.position, f_interactRange);
+        if (collisions.Length == 0)
+        {
+            return;
+        }
+        for (int i = 0; i < collisions.Length; i++)
+        {
+            float distance = (collisions[i].transform.position - transform.position).magnitude;
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestCollisionReference = i;
+            }
+        }
+        if (collisions[closestCollisionReference].transform.tag == "Gun Module")
+        {
+            GunModule gunModuleToSwap = (GunModule)Resources.Load(GunModuleSpawner.GetGunModuleResourcesPath(collisions[closestCollisionReference].name));
+
+            C_playerGun.SwapGunPiece(gunModuleToSwap);
+            Destroy(collisions[closestCollisionReference].gameObject);
+        }
+
 
     }
     private void Reload(InputAction.CallbackContext context)
     {
         // reload clip of bullets to max
+        C_playerGun.Reload();
     }
     private void Pause(InputAction.CallbackContext context)
     {
@@ -235,31 +268,7 @@ public class PlayerController : MonoBehaviour
         //move smoothly towards our desired velocity from our current veolicty
         S_velocity.x = Mathf.MoveTowards(S_velocity.x, desiredVelocity.x, maxSpeedChange);
         S_velocity.z = Mathf.MoveTowards(S_velocity.z, desiredVelocity.z, maxSpeedChange);
-
-        //collision detection
-        RaycastHit hit;
-
-        int bulletLayerMask = LayerMask.GetMask("Bullet") + LayerMask.GetMask("Ignore Raycast");
-
-        bulletLayerMask = ~bulletLayerMask;
-
-
-        if (Physics.SphereCast(transform.localPosition, 0.4f, Vector3.right, out hit, 0.4f, bulletLayerMask) && S_velocity.x > 0)
-        {
-            S_velocity.x = -S_velocity.x * f_collisionBounciness;
-        }
-        else if (Physics.SphereCast(transform.localPosition, 0.4f, -Vector3.right, out hit, 0.4f, bulletLayerMask) && S_velocity.x < 0)
-        {
-            S_velocity.x = -S_velocity.x * f_collisionBounciness;
-        }
-        if (Physics.SphereCast(transform.localPosition, 0.4f, Vector3.forward, out hit, 0.4f, bulletLayerMask) && S_velocity.z > 0)
-        {
-            S_velocity.z = -S_velocity.z * f_collisionBounciness;
-        }
-        else if (Physics.SphereCast(transform.localPosition, 0.4f, -Vector3.forward, out hit, 0.4f, bulletLayerMask) && S_velocity.z < 0)
-        {
-            S_velocity.z = -S_velocity.z * f_collisionBounciness;
-        }
+        CheckCollisions();
     }
 
     private void RotatePlayerToTarget()
@@ -290,6 +299,27 @@ public class PlayerController : MonoBehaviour
             f_rotationalVelocity += f_rotationalAcceleration * Time.deltaTime;
         }
     }
+    
+    private void CheckCollisions()
+    {
+        RaycastHit hit;
+        if (Physics.SphereCast(transform.localPosition, 0.4f, Vector3.right, out hit, f_playerSize, i_bulletLayerMask) && S_velocity.x > 0)
+        {
+            S_velocity.x = -S_velocity.x * f_collisionBounciness;
+        }
+        else if (Physics.SphereCast(transform.localPosition, 0.4f, -Vector3.right, out hit, f_playerSize, i_bulletLayerMask) && S_velocity.x < 0)
+        {
+            S_velocity.x = -S_velocity.x * f_collisionBounciness;
+        }
+        if (Physics.SphereCast(transform.localPosition, 0.4f, Vector3.forward, out hit, f_playerSize, i_bulletLayerMask) && S_velocity.z > 0)
+        {
+            S_velocity.z = -S_velocity.z * f_collisionBounciness;
+        }
+        else if (Physics.SphereCast(transform.localPosition, 0.4f, -Vector3.forward, out hit, f_playerSize, i_bulletLayerMask) && S_velocity.z < 0)
+        {
+            S_velocity.z = -S_velocity.z * f_collisionBounciness;
+        }
+    }
 
     public void AddVelocityToPlayer(Vector3 velocityToAdd)
     {
@@ -307,7 +337,7 @@ public class PlayerController : MonoBehaviour
     public void DamagePlayer(float damage)
     {
         f_healthCurrent -= damage;
-        if(f_healthCurrent <= 0)
+        if (f_healthCurrent <= 0)
         {
             Die();
         }
@@ -328,13 +358,9 @@ public class PlayerController : MonoBehaviour
     {
 
     }
-    private void FireGun()
-    {
-
-    }
     private void NormaliseState()
     {
-
+        e_playerState = PlayerState.Normal;
     }
     private void ChangeStateForSeconds()
     {
