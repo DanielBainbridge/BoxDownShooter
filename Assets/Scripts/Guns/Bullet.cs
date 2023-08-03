@@ -1,4 +1,5 @@
 using Enemy;
+using Newtonsoft.Json.Bson;
 using System.Linq.Expressions;
 using System.Net.Http.Headers;
 using Unity.VisualScripting;
@@ -20,8 +21,9 @@ namespace Gun
             [HideInInspector] public float f_damage;
             [HideInInspector] public float f_speed;
             [HideInInspector] public float f_size;
+            [HideInInspector] public float f_knockBack;
 
-            public BulletBaseInfo(bool playerOwned, Vector3 origin, Vector3 direction, float range, float damage, float speed, float size)
+            public BulletBaseInfo(bool playerOwned, Vector3 origin, Vector3 direction, float range, float damage, float speed, float size, float knockBack)
             {
                 b_playerOwned = playerOwned;
                 S_firingOrigin = origin;
@@ -30,6 +32,7 @@ namespace Gun
                 f_damage = damage;
                 f_speed = speed;
                 f_size = size;
+                f_knockBack = knockBack;
             }
         }
 
@@ -110,6 +113,7 @@ namespace Gun
                     break;
                 case BulletTrait.Homing:
                     //Dot Product of thing multiplied by rad2deg multiplied by homing intensity
+                    CheckHomingTarget();
                     if (f_bulletAliveTime > S_bulletTrait.f_homingDelayTime && C_homingTarget != null)
                     {
 
@@ -170,12 +174,17 @@ namespace Gun
 
                 for (int i = 0; i < enemiesOnScreen.Length; i++)
                 {
-                    float angleToTarget = Vector3.Angle(transform.position, enemiesOnScreen[i].transform.position);
+                    Vector3 toEnemy = (transform.position - enemiesOnScreen[i].transform.position).normalized;
+                    float angleToTarget = Vector3.Angle(toEnemy, transform.forward);
+                    angleToTarget = -angleToTarget;
+
                     if (angleToTarget < closestEnemyRotation)
                     {
+                        closestEnemyRotation = angleToTarget;
                         closestEnemy = i;
                     }
                 }
+
                 if (closestEnemy == int.MaxValue)
                 {
                     return;
@@ -185,6 +194,24 @@ namespace Gun
             else
             {
                 C_homingTarget = FindObjectOfType<PlayerController>().transform;
+            }
+        }
+
+        void CheckHomingTarget()
+        {
+            if (C_homingTarget == null)
+            {
+                return;
+            }
+            if (C_homingTarget.gameObject.activeInHierarchy)
+            {
+                return;
+            }
+            C_homingTarget = null;
+
+            if (S_baseInformation.b_playerOwned)
+            {
+                FindHomingTarget();
             }
         }
 
@@ -207,7 +234,7 @@ namespace Gun
         private bool CheckHit()
         {
 
-            if (Physics.SphereCast(transform.position - (transform.forward * S_baseInformation.f_size * 1.01f), S_baseInformation.f_size * 2, (transform.position - S_previousPosition).normalized, out RaycastHit hitInfo, Vector3.Distance(S_previousPosition, transform.position), ~LayerMask.GetMask("Bullet")))
+            if (Physics.SphereCast(transform.position - (transform.forward * S_baseInformation.f_size * 1.01f), S_baseInformation.f_size, (transform.position - S_previousPosition).normalized, out RaycastHit hitInfo, Vector3.Distance(S_previousPosition, transform.position), ~LayerMask.GetMask("Bullet")))
             {
                 OnHit(hitInfo);
                 return true;
@@ -218,7 +245,11 @@ namespace Gun
         {
             Transform objectHit = hit.transform;
 
-            Enemy.EnemyBase enemyBase = objectHit.GetComponent<Enemy.EnemyBase>();
+
+            Vector3 hitDirection = (objectHit.position - transform.position);
+            hitDirection = new Vector3(hitDirection.x, 0, hitDirection.z);
+
+            Enemy.EnemyBase enemyBase = objectHit.GetComponent<EnemyBase>();
             PlayerController playerController = objectHit.GetComponent<PlayerController>();
 
             bool isPlayer = playerController == null ? false : true;
@@ -238,11 +269,14 @@ namespace Gun
                     {
                         //do damage
                         playerController.DamagePlayer(S_baseInformation.f_damage);
+                        playerController.AddVelocityToPlayer(hitDirection * S_baseInformation.f_knockBack);
                         C_poolOwner.MoveToOpen(this);
                     }
                     else if (isEnemy)
                     {
-                        enemyBase.TakeDamage((int)S_baseInformation.f_damage);
+                        enemyBase.DamageEnemy((int)S_baseInformation.f_damage);
+                        enemyBase.AddVelocityToEnemy(hitDirection * S_baseInformation.f_knockBack);
+
                         C_poolOwner.MoveToOpen(this);
                     }
                     break;
@@ -271,17 +305,23 @@ namespace Gun
                     if (isPlayer && !S_baseInformation.b_playerOwned && (playerController.e_playerState != PlayerController.PlayerState.Invincible || playerController.e_playerState != PlayerController.PlayerState.Dodge))
                     {
                         playerController.DamagePlayer(S_baseInformation.f_damage);
+                        playerController.AddVelocityToPlayer(hitDirection * S_baseInformation.f_knockBack);
                         C_homingTarget = null;
                         C_poolOwner.MoveToOpen(this);
                     }
                     else if (isEnemy)
                     {
-                        enemyBase.TakeDamage((int)S_baseInformation.f_damage);
+                        enemyBase.DamageEnemy((int)S_baseInformation.f_damage);
+                        enemyBase.AddVelocityToEnemy(hitDirection * S_baseInformation.f_knockBack);
                         C_poolOwner.MoveToOpen(this);
                     }
                     break;
             }
 
+
+        }
+        private void ApplyBulletEffect(bool isPlayer)
+        {
             switch (S_bulletEffect.e_bulletEffect)
             {
                 case BulletEffect.None:
@@ -311,6 +351,7 @@ namespace Gun
                     }
                     break;
             }
+
         }
     }
 }

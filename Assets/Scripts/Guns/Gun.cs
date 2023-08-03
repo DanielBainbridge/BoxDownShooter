@@ -63,7 +63,7 @@ namespace Gun
         BulletObjectPool C_bulletPool;
 
         GameObject C_bulletPrefab;
-        Bullet.BulletBaseInfo S_bulletInfo { get { return new Bullet.BulletBaseInfo(C_gunHolder.tag.ToLower().Contains("player"), S_muzzlePosition, C_gunHolder.forward, f_bulletRange, f_baseDamage, f_bulletSpeed, f_bulletSize); } }
+        Bullet.BulletBaseInfo S_bulletInfo { get { return new Bullet.BulletBaseInfo(C_gunHolder.tag.ToLower().Contains("player"), S_muzzlePosition, C_gunHolder.forward, f_bulletRange, f_baseDamage, f_bulletSpeed, f_bulletSize, f_knockBack); } }
 
         private void Awake()
         {
@@ -103,6 +103,7 @@ namespace Gun
 
         public void StartFire()
         {
+            f_timeUntilNextFire = 0;
             b_isFiring = true;
         }
 
@@ -119,7 +120,6 @@ namespace Gun
             }
 
             int timesFiredThisFrame = 0;
-
             while (f_timeUntilNextFire < 0.0f)
             {
                 float timeIntoNextFrame = -f_timeUntilNextFire;
@@ -166,6 +166,7 @@ namespace Gun
         public void CancelFire()
         {
             f_fireHoldTime = 0;
+            f_timeUntilNextFire = 0;
             b_isFiring = false;
         }
 
