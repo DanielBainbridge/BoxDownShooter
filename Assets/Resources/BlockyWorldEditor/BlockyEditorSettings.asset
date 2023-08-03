@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-853894797948596580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2e383d25ea648d98a8dc8f0628661c3, type: 3}
+  m_Name: BlockyDefaultParentSetter
+  m_EditorClassIdentifier: 
+  parent: {fileID: 0}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68c2f971812c46e28c2bd15ab9364a00, type: 3}
+  m_Name: BlockyEditorSettings
+  m_EditorClassIdentifier: 
+  target: {x: -29, y: 1, z: 8}
+  editMode: 0
+  gridHeight: 1
+  rotation: {x: 0, y: 180, z: 0}
+  randomRotation: 0
+  brushSize: 0
+  palette: {fileID: 11400000, guid: eac3f8eaf5c1f2c4db3f02825f33c7aa, type: 2}
+  parentSetter: {fileID: -853894797948596580}
+  useUndo: 0
