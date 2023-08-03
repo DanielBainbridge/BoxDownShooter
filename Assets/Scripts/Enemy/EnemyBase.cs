@@ -62,19 +62,19 @@ namespace Enemy
         private void CheckCollisions()
         {
             RaycastHit hit;
-            if (Physics.SphereCast(transform.localPosition, 0.4f, Vector3.right, out hit, f_enemySize, i_bulletLayerMask) && S_velocity.x > 0)
+            if (Physics.SphereCast(transform.localPosition, f_enemySize, Vector3.right, out hit, f_enemySize, i_bulletLayerMask) && S_velocity.x > 0)
             {
                 S_velocity.x = -S_velocity.x * f_collisionBounciness;
             }
-            else if (Physics.SphereCast(transform.localPosition, 0.4f, -Vector3.right, out hit, f_enemySize, i_bulletLayerMask) && S_velocity.x < 0)
+            else if (Physics.SphereCast(transform.localPosition, f_enemySize, -Vector3.right, out hit, f_enemySize, i_bulletLayerMask) && S_velocity.x < 0)
             {
                 S_velocity.x = -S_velocity.x * f_collisionBounciness;
             }
-            if (Physics.SphereCast(transform.localPosition, 0.4f, Vector3.forward, out hit, f_enemySize, i_bulletLayerMask) && S_velocity.z > 0)
+            if (Physics.SphereCast(transform.localPosition, f_enemySize, Vector3.forward, out hit, f_enemySize, i_bulletLayerMask) && S_velocity.z > 0)
             {
                 S_velocity.z = -S_velocity.z * f_collisionBounciness;
             }
-            else if (Physics.SphereCast(transform.localPosition, 0.4f, -Vector3.forward, out hit, f_enemySize, i_bulletLayerMask) && S_velocity.z < 0)
+            else if (Physics.SphereCast(transform.localPosition, f_enemySize, -Vector3.forward, out hit, f_enemySize, i_bulletLayerMask) && S_velocity.z < 0)
             {
                 S_velocity.z = -S_velocity.z * f_collisionBounciness;
             }

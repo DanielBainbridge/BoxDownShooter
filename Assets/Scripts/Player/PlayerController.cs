@@ -2,6 +2,7 @@ using Gun;
 using Managers;
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utility;
@@ -73,10 +74,9 @@ public class PlayerController : MonoBehaviour
 
 
     [Header("Dodge")]
-    [Rename("Dodge Startup")] float f_dodgeStartDelay = 0.12f;
-    [Rename("Dodge Length")] float f_dodgeLength = 2.5f;
-    [Rename("Dodge Time")] float f_dodgeTime = 1;
-    [Rename("Dodge Invincible Time")] float f_dodgeInvincibleTime = 0.8f;
+    [Rename("Dodge Startup")] public float f_dodgeStartDelay = 0.12f;
+    [Rename("Dodge Length")] public float f_dodgeLength = 2.5f;
+    [Rename("Dodge Time")] public float f_dodgeTime = 1;
 
     // Setup for dodge refil for balancing later down the line
     //int i_dodgeMax = 3;
@@ -195,7 +195,7 @@ public class PlayerController : MonoBehaviour
     {
         if (e_playerState != PlayerState.Dodge && e_playerState != PlayerState.NoAttack && e_playerState != PlayerState.NoControl)
         {
-
+            StartCoroutine(DoDodge());
         }
         //set invincible, don't let player control direction
         //move certain amount quickly
@@ -229,8 +229,6 @@ public class PlayerController : MonoBehaviour
             C_playerGun.SwapGunPiece(gunModuleToSwap);
             Destroy(collisions[closestCollisionReference].gameObject);
         }
-
-
     }
     private void Reload(InputAction.CallbackContext context)
     {
@@ -299,23 +297,47 @@ public class PlayerController : MonoBehaviour
             f_rotationalVelocity += f_rotationalAcceleration * Time.deltaTime;
         }
     }
+
+    private IEnumerator DoDodge()
+    {
+        e_playerState = PlayerState.Dodge;
+        Vector3 startPosition = transform.localPosition;
+        float dodgeDistance = f_dodgeLength;
+        float startTime = Time.time;
+
+        RaycastHit hit;
+        if (Physics.SphereCast(transform.localPosition, f_playerSize, S_movementInputDirection, out hit, f_playerSize, i_bulletLayerMask))
+        {
+            dodgeDistance = hit.distance;
+        }
+
+        Vector3 goalPosition = transform.position + (S_movementInputDirection * dodgeDistance);
+
+        while(f_dodgeTime > Time.time - startTime)
+        {
+            transform.position = Vector3.Slerp(startPosition, goalPosition, Time.time - startTime / f_dodgeTime);
+            yield return 0;
+        }
+
+        NormaliseState();
+    }
     
     private void CheckCollisions()
     {
         RaycastHit hit;
-        if (Physics.SphereCast(transform.localPosition, 0.4f, Vector3.right, out hit, f_playerSize, i_bulletLayerMask) && S_velocity.x > 0)
+        if (Physics.SphereCast(transform.localPosition, f_playerSize, Vector3.right, out hit, f_playerSize, i_bulletLayerMask) && S_velocity.x > 0)
         {
             S_velocity.x = -S_velocity.x * f_collisionBounciness;
         }
-        else if (Physics.SphereCast(transform.localPosition, 0.4f, -Vector3.right, out hit, f_playerSize, i_bulletLayerMask) && S_velocity.x < 0)
+        else if (Physics.SphereCast(transform.localPosition, f_playerSize, -Vector3.right, out hit, f_playerSize, i_bulletLayerMask) && S_velocity.x < 0)
         {
             S_velocity.x = -S_velocity.x * f_collisionBounciness;
         }
-        if (Physics.SphereCast(transform.localPosition, 0.4f, Vector3.forward, out hit, f_playerSize, i_bulletLayerMask) && S_velocity.z > 0)
+        if (Physics.SphereCast(transform.localPosition, f_playerSize, Vector3.forward, out hit, f_playerSize, i_bulletLayerMask) && S_velocity.z > 0)
         {
             S_velocity.z = -S_velocity.z * f_collisionBounciness;
         }
-        else if (Physics.SphereCast(transform.localPosition, 0.4f, -Vector3.forward, out hit, f_playerSize, i_bulletLayerMask) && S_velocity.z < 0)
+        else if (Physics.SphereCast(transform.localPosition, f_playerSize, -Vector3.forward, out hit, f_playerSize, i_bulletLayerMask) && S_velocity.z < 0)
         {
             S_velocity.z = -S_velocity.z * f_collisionBounciness;
         }

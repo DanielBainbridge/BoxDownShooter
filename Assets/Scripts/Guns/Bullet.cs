@@ -60,11 +60,8 @@ namespace Gun
             }
         }
 
-
-        private float f_adjustedRotationAngle;
-
-
-        [HideInInspector] private float f_bulletAliveTime;
+        private float f_bulletAliveTime;
+        private float f_distanceTravelled;
         private int i_bulletPiercedCount = 0;
         private int i_ricochetCount = 0;
         private int i_enemiesChained = 0;
@@ -85,15 +82,8 @@ namespace Gun
             S_previousPosition = transform.position;
 
 
-            if (f_bulletAliveTime > S_baseInformation.f_range)
-            {
-                C_poolOwner.MoveToOpen(this);
-                return;
-            }
-
-
             //check that it hasn't gone past its range, set inactive
-            if (Vector3.Distance(S_baseInformation.S_firingOrigin, transform.position) > S_baseInformation.f_range)
+            if (f_bulletAliveTime > S_baseInformation.f_range || f_distanceTravelled > S_baseInformation.f_range)
             {
                 C_poolOwner.MoveToOpen(this);
                 return;
@@ -134,7 +124,7 @@ namespace Gun
 
             }
             f_bulletAliveTime += Time.deltaTime;
-
+            f_distanceTravelled += Vector3.Distance(transform.position, S_previousPosition);
         }
 
         public void FireBullet(Vector3 originOffset, Vector3 directionOffset, BulletBaseInfo bulletInfo, GunModule.BulletTraitInfo bulletTrait, GunModule.BulletEffectInfo bulletEffect)
