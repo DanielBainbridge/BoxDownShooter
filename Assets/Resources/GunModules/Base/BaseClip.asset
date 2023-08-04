@@ -32,13 +32,13 @@ MonoBehaviour:
   f_movementPenalty: 0
   i_clipSize: 16
   S_bulletTraitInformation:
-    e_bulletTrait: 0
+    e_bulletTrait: 3
     i_pierceCount: 0
     f_explosionSize: 0
     C_explosionPrefab: {fileID: 0}
     f_explosionKnockbackDistance: 0
     f_explosionLingerTime: 0
-    f_homingStrength: 0
+    f_homingStrength: 0.2
     f_homingDelayTime: 0
   f_bulletSize: 0
   f_bulletRange: 0

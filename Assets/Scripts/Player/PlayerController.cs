@@ -56,7 +56,6 @@ public class PlayerController : MonoBehaviour
     }
 
 
-
     [Header("Rotation")]
     [Rename("Rotation Time"), Range(0, 0.5f)] public float f_rotationTime = 0.1f;
 
@@ -77,6 +76,7 @@ public class PlayerController : MonoBehaviour
     [Rename("Dodge Startup")] public float f_dodgeStartDelay = 0.12f;
     [Rename("Dodge Length")] public float f_dodgeLength = 2.5f;
     [Rename("Dodge Time")] public float f_dodgeTime = 1;
+    [Rename("Dodge Animation Curve")] public AnimationCurve C_dodgeCurve;
 
     // Setup for dodge refil for balancing later down the line
     //int i_dodgeMax = 3;
@@ -93,6 +93,8 @@ public class PlayerController : MonoBehaviour
     [Rename("Interact Range")] public float f_interactRange = 3.0f;
     [Rename("Health")] float f_health = 100;
     [Rename("Spawn Location")] Vector3 S_spawnLocation; // player set to this on start and before loading into new scene
+    [Rename("Default Player Material")] public Material C_defaultMaterial;
+    [Rename("Dodge Player Material")] public Material C_dodgeMaterial;
 
     // public Gun playerGun owned gun goes here.
     [Rename("Player Gun"), SerializeField] public Gun.Gun C_playerGun = null;
@@ -110,7 +112,7 @@ public class PlayerController : MonoBehaviour
     private int i_livesCurrent; // to be set on start
     private bool b_isDead = false;
     private int i_bulletLayerMask;
-
+    private bool b_fireCancelWhileDodging;
 
     ///<summary>
     /// Player methods, the method name should be self explanitory if not there is reference 
@@ -144,6 +146,9 @@ public class PlayerController : MonoBehaviour
         if (e_playerState != PlayerState.NoControl || e_playerState != PlayerState.Dodge)
         {
             MovePlayer();
+        }
+        if (e_playerState != PlayerState.NoControl)
+        {
             RotatePlayerToTarget();
         }
         C_controlManagerReference.ChangeInputDevice(C_playerInput.currentControlScheme);
@@ -190,6 +195,10 @@ public class PlayerController : MonoBehaviour
     private void CancelFire(InputAction.CallbackContext context)
     {
         C_playerGun.CancelFire();
+        if(e_playerState == PlayerState.Dodge)
+        {
+            b_fireCancelWhileDodging = true;
+        }
     }
     private void Dodge(InputAction.CallbackContext context)
     {
@@ -298,30 +307,56 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+
+    //TO DO proper dodge collision handling
     private IEnumerator DoDodge()
     {
+        yield return new WaitForSeconds(f_dodgeStartDelay);
+        bool firingAtStartOfDodge = C_playerGun.b_isFiring;
+        if (firingAtStartOfDodge)
+        {
+            C_playerGun.CancelFire();
+        }
+        
+
         e_playerState = PlayerState.Dodge;
+        GetComponent<Renderer>().material = C_dodgeMaterial;
+        
         Vector3 startPosition = transform.localPosition;
         float dodgeDistance = f_dodgeLength;
-        float startTime = Time.time;
+        float dodgeTime = f_dodgeTime;
+        float timeSinceStart = 0;
 
         RaycastHit hit;
-        if (Physics.SphereCast(transform.localPosition, f_playerSize, S_movementInputDirection, out hit, f_playerSize, i_bulletLayerMask))
+        if (Physics.SphereCast(transform.localPosition, f_playerSize, S_movementInputDirection, out hit, f_dodgeLength, i_bulletLayerMask))
         {
-            dodgeDistance = hit.distance;
+            dodgeDistance = hit.distance - f_playerSize;
+            float dodgePercentage = dodgeDistance / f_dodgeLength;
+            dodgeTime = f_dodgeTime * dodgePercentage;
+
         }
 
-        Vector3 goalPosition = transform.position + (S_movementInputDirection * dodgeDistance);
+        Vector3 goalPosition = transform.position + (S_movementInputDirection.normalized * dodgeDistance);
 
-        while(f_dodgeTime > Time.time - startTime)
+
+        while (dodgeTime > timeSinceStart)
         {
-            transform.position = Vector3.Slerp(startPosition, goalPosition, Time.time - startTime / f_dodgeTime);
+            transform.position = Vector3.Lerp(startPosition, goalPosition, C_dodgeCurve.Evaluate(timeSinceStart / dodgeTime));
             yield return 0;
+            timeSinceStart += Time.deltaTime;
         }
+
+        transform.rotation = transform.rotation * Quaternion.Euler(0, 0, 0);
 
         NormaliseState();
+        GetComponent<Renderer>().material = C_defaultMaterial;
+        if(!b_fireCancelWhileDodging && firingAtStartOfDodge)
+        {
+            C_playerGun.StartFire();
+        }
+        b_fireCancelWhileDodging = false;
     }
-    
+
     private void CheckCollisions()
     {
         RaycastHit hit;

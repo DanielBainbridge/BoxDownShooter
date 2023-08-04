@@ -130,6 +130,7 @@ namespace Gun
         public void FireBullet(Vector3 originOffset, Vector3 directionOffset, BulletBaseInfo bulletInfo, GunModule.BulletTraitInfo bulletTrait, GunModule.BulletEffectInfo bulletEffect)
         {
             f_bulletAliveTime = 0;
+            f_distanceTravelled = 0;
             i_bulletPiercedCount = 0;
             i_ricochetCount = 0;
             i_enemiesChained = 0;
@@ -189,13 +190,12 @@ namespace Gun
 
         void CheckHomingTarget()
         {
-            if (C_homingTarget == null)
+            if (C_homingTarget != null)
             {
-                return;
-            }
-            if (C_homingTarget.gameObject.activeInHierarchy)
-            {
-                return;
+                if (C_homingTarget.gameObject.activeInHierarchy)
+                {
+                    return;
+                }
             }
             C_homingTarget = null;
 
