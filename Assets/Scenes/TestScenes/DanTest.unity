@@ -589,7 +589,7 @@ PrefabInstance:
     - target: {fileID: 2347475236609015274, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 6e70b1ed3437ea54baa6b5bffb71ee2d, type: 2}
+      objectReference: {fileID: 2100000, guid: 5928a24e075668f4c93dd2020687c918, type: 2}
     - target: {fileID: 3519779261089367685, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -641,6 +641,94 @@ PrefabInstance:
     - target: {fileID: 3986387071126839658, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
       propertyPath: m_DefaultActionMap
       value: UI
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986387071126839659, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
+      propertyPath: f_dodgeTime
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986387071126839659, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
+      propertyPath: f_dodgeLength
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986387071126839659, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
+      propertyPath: C_dodgeMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 1b8d97e68f3481d428f1e9ea76eb8547, type: 2}
+    - target: {fileID: 3986387071126839659, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
+      propertyPath: C_defaultMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 5928a24e075668f4c93dd2020687c918, type: 2}
+    - target: {fileID: 3986387071126839659, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
+      propertyPath: f_dodgeStartDelay
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986387071126839659, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
+      propertyPath: C_dodgeCurve.m_Curve.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986387071126839659, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
+      propertyPath: C_dodgeCurve.m_Curve.Array.data[1].time
+      value: 0.10697332
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986387071126839659, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
+      propertyPath: C_dodgeCurve.m_Curve.Array.data[2].time
+      value: 0.6411878
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986387071126839659, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
+      propertyPath: C_dodgeCurve.m_Curve.Array.data[3].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986387071126839659, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
+      propertyPath: C_dodgeCurve.m_Curve.Array.data[1].value
+      value: 0.059502363
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986387071126839659, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
+      propertyPath: C_dodgeCurve.m_Curve.Array.data[2].value
+      value: 0.9557579
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986387071126839659, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
+      propertyPath: C_dodgeCurve.m_Curve.Array.data[3].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986387071126839659, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
+      propertyPath: C_dodgeCurve.m_Curve.Array.data[0].inSlope
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986387071126839659, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
+      propertyPath: C_dodgeCurve.m_Curve.Array.data[1].inSlope
+      value: 1.4333329
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986387071126839659, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
+      propertyPath: C_dodgeCurve.m_Curve.Array.data[2].inSlope
+      value: 0.20762761
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986387071126839659, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
+      propertyPath: C_dodgeCurve.m_Curve.Array.data[0].outSlope
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986387071126839659, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
+      propertyPath: C_dodgeCurve.m_Curve.Array.data[1].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986387071126839659, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
+      propertyPath: C_dodgeCurve.m_Curve.Array.data[1].outSlope
+      value: 1.4333329
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986387071126839659, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
+      propertyPath: C_dodgeCurve.m_Curve.Array.data[2].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986387071126839659, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
+      propertyPath: C_dodgeCurve.m_Curve.Array.data[2].outSlope
+      value: 0.20762761
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986387071126839659, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
+      propertyPath: C_dodgeCurve.m_Curve.Array.data[1].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986387071126839659, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
+      propertyPath: C_dodgeCurve.m_Curve.Array.data[2].outWeight
+      value: 0.20422353
       objectReference: {fileID: 0}
     - target: {fileID: 4292797111230307391, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
       propertyPath: m_Name
