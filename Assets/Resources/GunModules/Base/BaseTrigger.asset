@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 071c43044ab867c418018aae7aec895f, type: 3}
   m_Name: BaseTrigger
   m_EditorClassIdentifier: 
-  C_meshPrefab: {fileID: 0}
+  C_meshPrefab: {fileID: 6151913605158031369, guid: 1090190d4d97c004592a98ce37366db8, type: 3}
   e_moduleType: 0
   f_baseDamage: 13
   f_fireRate: 8.5
