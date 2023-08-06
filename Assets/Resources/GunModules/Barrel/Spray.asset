@@ -51,5 +51,5 @@ MonoBehaviour:
     b_randomSpread: 1
     i_shotCount: 4
     f_multiShotDistance: 0
-    f_maxAngle: 5
+    f_maxAngle: 10
     f_waveSpeed: 0
