@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 071c43044ab867c418018aae7aec895f, type: 3}
   m_Name: Wave
   m_EditorClassIdentifier: 
-  C_meshPrefab: {fileID: 0}
+  C_meshPrefab: {fileID: 5268787989144197901, guid: a358ee53771264145813f14981053410, type: 3}
   e_moduleType: 2
   f_baseDamage: 0
   f_fireRate: 0

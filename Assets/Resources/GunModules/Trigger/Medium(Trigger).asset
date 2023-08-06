@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 071c43044ab867c418018aae7aec895f, type: 3}
   m_Name: Medium(Trigger)
   m_EditorClassIdentifier: 
-  C_meshPrefab: {fileID: 0}
+  C_meshPrefab: {fileID: 7590545507729207469, guid: 7a79342c3be006f4f952227d60d869c6, type: 3}
   e_moduleType: 0
   f_baseDamage: 0
   f_fireRate: 0
