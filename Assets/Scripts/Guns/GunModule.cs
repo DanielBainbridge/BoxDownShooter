@@ -131,6 +131,7 @@ namespace Gun
             GameObject newGunModule = Instantiate(C_meshPrefab, worldPos, Quaternion.identity);
             newGunModule.name = name;
             newGunModule.tag = "Gun Module";
+            newGunModule.layer = 6;
         }
 
     }

@@ -26,7 +26,7 @@ namespace Enemy
         public Transform barrel;
         public float reloadTime;
         public float force;
-        private bool canShoot;
+        [SerializeField]private bool canShoot;
 
 
 
@@ -121,7 +121,7 @@ namespace Enemy
                 canShoot = false;
                 var clone = Instantiate(bullet, barrel.position, Quaternion.identity);
                 clone.GetComponent<Rigidbody>().AddForce(transform.forward * force, ForceMode.Impulse);
-                Invoke("Reload", reloadTime);
+                //Invoke("Reload", reloadTime);
             //}   
         }
 
