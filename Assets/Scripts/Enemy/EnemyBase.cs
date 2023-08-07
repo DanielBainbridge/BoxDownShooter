@@ -17,13 +17,29 @@ namespace Enemy
 
         private Vector3 S_velocity;
 
-        private int i_bulletLayerMask; 
+        private int i_bulletLayerMask;
+
+
+        //Kyles Enemy Variables
+        private GameObject player;
+        public GameObject bullet;
+        public Transform barrel;
+        public float reloadTime;
+        public float force;
+        [SerializeField]private bool canShoot;
+
+
+
 
 
         private void Start()
         {
             f_currentHealth = f_baseHealth;
             i_bulletLayerMask = ~(LayerMask.GetMask("Bullet") + LayerMask.GetMask("Ignore Raycast"));
+
+            //Kyles
+            player = GameObject.Find("TestCharacter");
+            canShoot = true;
         }
 
         private void Update()
@@ -32,13 +48,19 @@ namespace Enemy
             {
                 gameObject.SetActive(false);
 
-                Invoke("Revive", 1.5f);
+                Invoke("Revive", 10);
                 return;
             }
             if (!b_lockEnemyPosition)
             {
                 MoveEnemy();
             }
+
+
+            //Kyles Enemy Code
+            gameObject.transform.LookAt(player.transform.position);
+            if (canShoot) Shoot();
+
         }
 
         private void MoveEnemy()
@@ -84,5 +106,29 @@ namespace Enemy
         {
             S_velocity += velocityToAdd;
         }
+
+
+
+
+
+
+
+        //Kyle's Basic Enemy Look at player and Shoot
+        private void Shoot()
+        {
+            //if (canShoot)
+           // {
+                canShoot = false;
+                var clone = Instantiate(bullet, barrel.position, Quaternion.identity);
+                clone.GetComponent<Rigidbody>().AddForce(transform.forward * force, ForceMode.Impulse);
+                //Invoke("Reload", reloadTime);
+            //}   
+        }
+
+        private void Reload()
+        {
+            canShoot = true;
+        }
+
     }
 }
