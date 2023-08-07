@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 071c43044ab867c418018aae7aec895f, type: 3}
-  m_Name: Wave
+  m_Name: Largest Trigger
   m_EditorClassIdentifier: 
-  C_meshPrefab: {fileID: 5268787989144197901, guid: a358ee53771264145813f14981053410, type: 3}
-  e_moduleType: 2
-  f_baseDamage: 0
-  f_fireRate: 0
-  f_bulletSpeed: 0
+  C_meshPrefab: {fileID: 2588628592235324270, guid: 9196d5eaf6b485c4aba0813e2552793e, type: 3}
+  e_moduleType: 0
+  f_baseDamage: 26
+  f_fireRate: 2
+  f_bulletSpeed: 14
   f_knockBack: 0
   S_bulletEffectInformation:
     e_bulletEffect: 0
@@ -40,16 +40,16 @@ MonoBehaviour:
     f_explosionLingerTime: 0
     f_homingStrength: 0
     f_homingDelayTime: 0
-  f_bulletSize: 0.3
-  f_bulletRange: 10
-  f_recoil: 1
+  f_bulletSize: 0
+  f_bulletRange: 0
+  f_recoil: 0
   b_burstTrue: 0
   i_burstCount: 0
   f_burstInterval: 0
   S_shotPatternInformation:
-    e_shotPattern: 4
-    b_randomSpread: 1
-    i_shotCount: 4
+    e_shotPattern: 0
+    b_randomSpread: 0
+    i_shotCount: 0
     f_multiShotDistance: 0
-    f_maxAngle: 30
+    f_maxAngle: 0
     f_waveSpeed: 0
