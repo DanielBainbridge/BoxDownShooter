@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 071c43044ab867c418018aae7aec895f, type: 3}
-  m_Name: Small(Trigger)
+  m_Name: Smallest Trigger
   m_EditorClassIdentifier: 
   C_meshPrefab: {fileID: 7967008281835788938, guid: 3e730eccf149d164aac166c769e9ef86, type: 3}
   e_moduleType: 0
-  f_baseDamage: 8
-  f_fireRate: 11
-  f_bulletSpeed: 16
+  f_baseDamage: 5
+  f_fireRate: 16
+  f_bulletSpeed: 12
   f_knockBack: 0
   S_bulletEffectInformation:
     e_bulletEffect: 0

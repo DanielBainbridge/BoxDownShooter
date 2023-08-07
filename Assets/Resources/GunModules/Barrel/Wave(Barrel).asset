@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 071c43044ab867c418018aae7aec895f, type: 3}
-  m_Name: MultiShot
+  m_Name: Wave(Barrel)
   m_EditorClassIdentifier: 
-  C_meshPrefab: {fileID: 627584051598180029, guid: 96f1ae12589bf174295762fc5a8f779e, type: 3}
+  C_meshPrefab: {fileID: 5268787989144197901, guid: a358ee53771264145813f14981053410, type: 3}
   e_moduleType: 2
   f_baseDamage: 0
   f_fireRate: 0
@@ -40,16 +40,16 @@ MonoBehaviour:
     f_explosionLingerTime: 0
     f_homingStrength: 0
     f_homingDelayTime: 0
-  f_bulletSize: 0.35
-  f_bulletRange: 7
-  f_recoil: 2
+  f_bulletSize: 0.3
+  f_bulletRange: 10
+  f_recoil: 1
   b_burstTrue: 0
   i_burstCount: 0
   f_burstInterval: 0
   S_shotPatternInformation:
-    e_shotPattern: 1
-    b_randomSpread: 0
-    i_shotCount: 2
-    f_multiShotDistance: 0.65
-    f_maxAngle: 0
+    e_shotPattern: 4
+    b_randomSpread: 1
+    i_shotCount: 4
+    f_multiShotDistance: 0
+    f_maxAngle: 30
     f_waveSpeed: 0
