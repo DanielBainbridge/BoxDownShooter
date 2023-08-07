@@ -34,12 +34,12 @@ MonoBehaviour:
   S_bulletTraitInformation:
     e_bulletTrait: 0
     i_pierceCount: 0
-    f_explosionSize: 0
+    f_explosionSize: 1
     C_explosionPrefab: {fileID: 0}
-    f_explosionKnockbackDistance: 0
-    f_explosionLingerTime: 0
-    f_homingStrength: 0
-    f_homingDelayTime: 0
+    f_explosionKnockbackDistance: 1
+    f_explosionLingerTime: 1
+    f_homingStrength: 0.05
+    f_homingDelayTime: 0.09
   f_bulletSize: 0
   f_bulletRange: 0
   f_recoil: 0

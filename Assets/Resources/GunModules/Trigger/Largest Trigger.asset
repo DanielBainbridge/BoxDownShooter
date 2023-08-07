@@ -16,7 +16,7 @@ MonoBehaviour:
   e_moduleType: 0
   f_baseDamage: 26
   f_fireRate: 2
-  f_bulletSpeed: 14
+  f_bulletSpeed: 20
   f_knockBack: 0
   S_bulletEffectInformation:
     e_bulletEffect: 0
