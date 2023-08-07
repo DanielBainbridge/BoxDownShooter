@@ -5,7 +5,6 @@ using Utility;
 
 namespace Gun
 {
-    //TO DO CHANGE WIP WHEN READY
     [CreateAssetMenu(fileName = "GunModule", menuName = "Gun Module")]
     public class GunModule : ScriptableObject
     {
@@ -109,14 +108,14 @@ namespace Gun
         [Rename("Knock Back")] public float f_knockBack;
         public BulletEffectInfo S_bulletEffectInformation;
 
-       
+
         //Clip Group
         [Rename("Reload Speed")] public float f_reloadSpeed;
         [Rename("Movement Penalty")] public float f_movementPenalty;
         [Rename("Clip Size")] public int i_clipSize;
         public BulletTraitInfo S_bulletTraitInformation;
 
-        
+
         //Barrel Group
         [Rename("Bullet Size")] public float f_bulletSize;
         [Rename("Bullet Range")] public float f_bulletRange;
@@ -126,6 +125,13 @@ namespace Gun
         [Rename("Burst Interval")] public float f_burstInterval;
         public ShotPatternInfo S_shotPatternInformation;
         #endregion
+
+        public void Spawn(Vector3 worldPos)
+        {
+            GameObject newGunModule = Instantiate(C_meshPrefab, worldPos, Quaternion.identity);
+            newGunModule.name = name;
+            newGunModule.tag = "Gun Module";
+        }
 
     }
 }
@@ -174,7 +180,7 @@ namespace Guns.CustomEditor
                     Assert.IsFalse(serializedObject.FindProperty("S_bulletEffectInformation").FindPropertyRelative("e_bulletEffect").enumValueIndex == (int)GunModule.BulletEffect.Count, "A Bullet Effect cannot have the type 'Count' this is for programming use");
 
 
-                    
+
                     switch (serializedObject.FindProperty("S_bulletEffectInformation").FindPropertyRelative("e_bulletEffect").enumValueIndex)
                     {
                         case 0:
@@ -245,8 +251,8 @@ namespace Guns.CustomEditor
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("f_bulletSize"));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("f_bulletRange"));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("f_recoil"));
-                    
-                    
+
+
                     EditorGUILayout.Space(10);
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("S_shotPatternInformation").FindPropertyRelative("e_shotPattern"));
                     serializedObject.ApplyModifiedProperties();
@@ -261,7 +267,7 @@ namespace Guns.CustomEditor
                         case 1:
                             //do variables for Multi
                             EditorGUILayout.PropertyField(serializedObject.FindProperty("S_shotPatternInformation").FindPropertyRelative("i_shotCount"));
-                            EditorGUILayout.PropertyField(serializedObject.FindProperty("S_shotPatternInformation").FindPropertyRelative("f_multiShotDistance")); 
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty("S_shotPatternInformation").FindPropertyRelative("f_multiShotDistance"));
 
                             break;
                         case 2:

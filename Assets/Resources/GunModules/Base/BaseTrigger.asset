@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 071c43044ab867c418018aae7aec895f, type: 3}
   m_Name: BaseTrigger
   m_EditorClassIdentifier: 
-  C_meshPrefab: {fileID: 0}
+  C_meshPrefab: {fileID: 6151913605158031369, guid: 1090190d4d97c004592a98ce37366db8, type: 3}
   e_moduleType: 0
-  f_baseDamage: 5
-  f_fireRate: 10
-  f_bulletSpeed: 20
-  f_knockBack: 1
+  f_baseDamage: 13
+  f_fireRate: 8.5
+  f_bulletSpeed: 30
+  f_knockBack: 0
   S_bulletEffectInformation:
-    e_bulletEffects: 0
+    e_bulletEffect: 0
     f_effectTime: 0
     f_tickDamage: 0
     i_amountOfTicks: 0
@@ -44,8 +44,8 @@ MonoBehaviour:
   f_bulletRange: 0
   f_recoil: 0
   b_burstTrue: 0
-  i_burstCount: 0
-  f_burstInterval: 0
+  i_burstCount: 3
+  f_burstInterval: 2
   S_shotPatternInformation:
     e_shotPattern: 0
     b_randomSpread: 0
