@@ -17,13 +17,29 @@ namespace Enemy
 
         private Vector3 S_velocity;
 
-        private int i_bulletLayerMask; 
+        private int i_bulletLayerMask;
+
+
+        //Kyles Enemy Variables
+        private GameObject player;
+        public GameObject bullet;
+        public Transform barrel;
+        public float reloadTime;
+        public float force;
+        [SerializeField]private bool canShoot;
+
+
+
 
 
         private void Start()
         {
             f_currentHealth = f_baseHealth;
             i_bulletLayerMask = ~(LayerMask.GetMask("Bullet") + LayerMask.GetMask("Ignore Raycast"));
+
+            //Kyles
+            player = GameObject.Find("TestCharacter");
+            canShoot = true;
         }
 
         private void Update()
@@ -32,13 +48,19 @@ namespace Enemy
             {
                 gameObject.SetActive(false);
 
-                Invoke("Revive", 1.5f);
+                Invoke("Revive", 10);
                 return;
             }
             if (!b_lockEnemyPosition)
             {
                 MoveEnemy();
             }
+
+
+            //Kyles Enemy Code
+            gameObject.transform.LookAt(player.transform.position);
+            if (canShoot) Shoot();
+
         }
 
         private void MoveEnemy()
@@ -62,19 +84,19 @@ namespace Enemy
         private void CheckCollisions()
         {
             RaycastHit hit;
-            if (Physics.SphereCast(transform.localPosition, 0.4f, Vector3.right, out hit, f_enemySize, i_bulletLayerMask) && S_velocity.x > 0)
+            if (Physics.SphereCast(transform.localPosition, f_enemySize, Vector3.right, out hit, f_enemySize, i_bulletLayerMask) && S_velocity.x > 0)
             {
                 S_velocity.x = -S_velocity.x * f_collisionBounciness;
             }
-            else if (Physics.SphereCast(transform.localPosition, 0.4f, -Vector3.right, out hit, f_enemySize, i_bulletLayerMask) && S_velocity.x < 0)
+            else if (Physics.SphereCast(transform.localPosition, f_enemySize, -Vector3.right, out hit, f_enemySize, i_bulletLayerMask) && S_velocity.x < 0)
             {
                 S_velocity.x = -S_velocity.x * f_collisionBounciness;
             }
-            if (Physics.SphereCast(transform.localPosition, 0.4f, Vector3.forward, out hit, f_enemySize, i_bulletLayerMask) && S_velocity.z > 0)
+            if (Physics.SphereCast(transform.localPosition, f_enemySize, Vector3.forward, out hit, f_enemySize, i_bulletLayerMask) && S_velocity.z > 0)
             {
                 S_velocity.z = -S_velocity.z * f_collisionBounciness;
             }
-            else if (Physics.SphereCast(transform.localPosition, 0.4f, -Vector3.forward, out hit, f_enemySize, i_bulletLayerMask) && S_velocity.z < 0)
+            else if (Physics.SphereCast(transform.localPosition, f_enemySize, -Vector3.forward, out hit, f_enemySize, i_bulletLayerMask) && S_velocity.z < 0)
             {
                 S_velocity.z = -S_velocity.z * f_collisionBounciness;
             }
@@ -84,5 +106,29 @@ namespace Enemy
         {
             S_velocity += velocityToAdd;
         }
+
+
+
+
+
+
+
+        //Kyle's Basic Enemy Look at player and Shoot
+        private void Shoot()
+        {
+            //if (canShoot)
+           // {
+                canShoot = false;
+                var clone = Instantiate(bullet, barrel.position, Quaternion.identity);
+                clone.GetComponent<Rigidbody>().AddForce(transform.forward * force, ForceMode.Impulse);
+                //Invoke("Reload", reloadTime);
+            //}   
+        }
+
+        private void Reload()
+        {
+            canShoot = true;
+        }
+
     }
 }

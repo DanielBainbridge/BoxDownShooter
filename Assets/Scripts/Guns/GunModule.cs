@@ -103,14 +103,14 @@ namespace Gun
 
         //Trigger Group
         [Rename("Base Damage")] public float f_baseDamage;
-        [Rename("Fire Rate")] public float f_fireRate;
+        [Rename("Bullets Fired Per Second")] public float f_fireRate;
         [Rename("Bullet Speed")] public float f_bulletSpeed;
         [Rename("Knock Back")] public float f_knockBack;
         public BulletEffectInfo S_bulletEffectInformation;
 
 
         //Clip Group
-        [Rename("Reload Speed")] public float f_reloadSpeed;
+        [Rename("Reload Time")] public float f_reloadSpeed;
         [Rename("Movement Penalty")] public float f_movementPenalty;
         [Rename("Clip Size")] public int i_clipSize;
         public BulletTraitInfo S_bulletTraitInformation;
@@ -131,6 +131,7 @@ namespace Gun
             GameObject newGunModule = Instantiate(C_meshPrefab, worldPos, Quaternion.identity);
             newGunModule.name = name;
             newGunModule.tag = "Gun Module";
+            newGunModule.layer = 6;
         }
 
     }

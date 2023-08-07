@@ -31,6 +31,7 @@ namespace Gun
                 lC_freeBullets.Add(bulletRef);
                 lC_allBullets.Add(bulletRef);
                 obj.SetActive(false);
+                obj.GetComponent<Renderer>().material = Resources.Load<Material>("Materials/POC_BulletMaterial");
             }
         }
 
@@ -76,6 +77,8 @@ namespace Gun
                     lC_allBullets.Add(bulletRef);
                     lC_freeBullets.Add(bulletRef);
                     obj.SetActive(false);
+                    obj.GetComponent<Renderer>().material = Resources.Load<Material>("Materials/POC_BulletMaterial");
+
                 }
             }
 
