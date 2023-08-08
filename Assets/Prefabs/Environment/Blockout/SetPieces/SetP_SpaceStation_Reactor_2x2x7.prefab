@@ -175,6 +175,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 918106042186143293}
+  - component: {fileID: 5938608739516616443}
   m_Layer: 0
   m_Name: SetP_SpaceStation_Reactor_2x2x7
   m_TagString: Untagged
@@ -221,6 +222,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &5938608739516616443
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 573668233892416647}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.8936758, y: 2.2416742, z: 1.902936}
+  m_Center: {x: 0.005279064, y: 1.0823253, z: -1.0196381}
 --- !u!1 &618583958369001330
 GameObject:
   m_ObjectHideFlags: 0
