@@ -56,7 +56,7 @@ namespace Gun
 
         int i_currentAmmo;
 
-        bool b_isFiring = false;
+        [HideInInspector] public bool b_isFiring = false;
         float f_fireHoldTime = 0;
         bool b_reloadCancel = false;
         bool b_reloading = false;
