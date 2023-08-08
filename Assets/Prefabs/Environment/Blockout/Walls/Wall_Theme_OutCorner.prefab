@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1054050069704591103}
   - component: {fileID: 4111618652904147290}
   - component: {fileID: 2228032944288054672}
+  - component: {fileID: 4912043658748106865}
   m_Layer: 0
   m_Name: Wall_Theme_OutCorner
   m_TagString: Untagged
@@ -83,3 +84,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &4912043658748106865
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 426553717991906373}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.0026999, y: 1.9915507, z: 0.9999999}
+  m_Center: {x: -1.0143232, y: 1.0001284, z: 0.49999994}

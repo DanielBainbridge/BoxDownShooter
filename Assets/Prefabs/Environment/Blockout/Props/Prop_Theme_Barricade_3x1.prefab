@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6346726897668174788}
   - component: {fileID: 8051241969283939425}
   - component: {fileID: 5214946954373646507}
+  - component: {fileID: 2420543024648527908}
   m_Layer: 0
   m_Name: Prop_Theme_Barricade_3x1
   m_TagString: Untagged
@@ -83,3 +84,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &2420543024648527908
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6007743423566440830}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.553856, y: 0.6549999, z: 0.54499996}
+  m_Center: {x: 1.276928, y: 0.3275003, z: 0.27249998}

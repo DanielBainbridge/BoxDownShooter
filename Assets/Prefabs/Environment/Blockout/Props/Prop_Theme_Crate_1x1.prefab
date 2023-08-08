@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1777424945335025005}
   - component: {fileID: 3388242969060684488}
   - component: {fileID: 639935896761878018}
+  - component: {fileID: 6882513512565288063}
   m_Layer: 0
   m_Name: Prop_Theme_Crate_1x1
   m_TagString: Untagged
@@ -83,3 +84,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6882513512565288063
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432564963568576471}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.74, y: 0.77999985, z: 0.7799998}
+  m_Center: {x: 0.3700009, y: 0.39000028, z: 0.3899999}

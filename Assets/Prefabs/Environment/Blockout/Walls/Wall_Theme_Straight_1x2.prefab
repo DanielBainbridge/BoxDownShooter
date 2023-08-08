@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8672444162525821354}
   - component: {fileID: 5761631768630130191}
   - component: {fileID: 7498945110371795653}
+  - component: {fileID: 6995795135217239687}
   m_Layer: 0
   m_Name: Wall_Theme_Straight_1x2
   m_TagString: Untagged
@@ -83,3 +84,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6995795135217239687
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8291521264790709008}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.8856641, y: 1.9999998, z: 0.99999976}
+  m_Center: {x: 0.55716807, y: 1.0000187, z: 0.5000002}
