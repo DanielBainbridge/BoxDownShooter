@@ -18,11 +18,10 @@ public class PlayerController : MonoBehaviour
         Normal,
         Invincible,
         Dodge,
+        NoControl,
         NoAttack,
-        InvertedControl,
         Slowed,
         Burn,
-        NoControl,
         Count
     }
 
