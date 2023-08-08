@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1095560233833469826}
   - component: {fileID: 2941063258714465096}
   m_Layer: 0
-  m_Name: Floor_Theme_Flooring_1x4
+  m_Name: Prop_Theme_Door_1x4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 866afdeeca4e92d4888f582e0d5ab7cd, type: 2}
+  - {fileID: 2100000, guid: e7e32d1edc81d5e469d6d6088c89f66a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
