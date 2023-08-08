@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   C_meshPrefab: {fileID: 6151913605158031369, guid: 1090190d4d97c004592a98ce37366db8, type: 3}
   e_moduleType: 0
-  f_baseDamage: 13
-  f_fireRate: 8.5
-  f_bulletSpeed: 30
+  f_baseDamage: 9
+  f_fireRate: 5
+  f_bulletSpeed: 15
   f_knockBack: 0
   S_bulletEffectInformation:
     e_bulletEffect: 0

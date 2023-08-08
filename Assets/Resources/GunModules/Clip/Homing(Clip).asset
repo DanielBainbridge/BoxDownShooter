@@ -29,7 +29,7 @@ MonoBehaviour:
     i_ricochetCount: 0
     f_vampirePercent: 0
   f_reloadSpeed: 1.5
-  f_movementPenalty: 2
+  f_movementPenalty: 2.5
   i_clipSize: 6
   S_bulletTraitInformation:
     e_bulletTrait: 3

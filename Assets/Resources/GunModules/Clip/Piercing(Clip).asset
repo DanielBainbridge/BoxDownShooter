@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 071c43044ab867c418018aae7aec895f, type: 3}
-  m_Name: BaseBarrel
+  m_Name: Piercing(Clip)
   m_EditorClassIdentifier: 
-  C_meshPrefab: {fileID: 1927829737835354445, guid: 1cb2d88b92e79254daa122e9acb094e8, type: 3}
-  e_moduleType: 2
+  C_meshPrefab: {fileID: 5685094855679449847, guid: b6a1130fb723eb246b287ebd5514b93d, type: 3}
+  e_moduleType: 1
   f_baseDamage: 0
   f_fireRate: 0
   f_bulletSpeed: 0
@@ -28,28 +28,28 @@ MonoBehaviour:
     f_chainLength: 0
     i_ricochetCount: 0
     f_vampirePercent: 0
-  f_reloadSpeed: 0
-  f_movementPenalty: 0
-  i_clipSize: 0
+  f_reloadSpeed: 2.3
+  f_movementPenalty: 1
+  i_clipSize: 6
   S_bulletTraitInformation:
-    e_bulletTrait: 0
-    i_pierceCount: 0
+    e_bulletTrait: 1
+    i_pierceCount: 4
     f_explosionSize: 0
     C_explosionPrefab: {fileID: 0}
     f_explosionKnockbackDistance: 0
     f_explosionLingerTime: 0
     f_homingStrength: 0
     f_homingDelayTime: 0
-  f_bulletSize: 0.25
-  f_bulletRange: 7
+  f_bulletSize: 0
+  f_bulletRange: 0
   f_recoil: 0
   b_burstTrue: 0
   i_burstCount: 0
   f_burstInterval: 0
   S_shotPatternInformation:
-    e_shotPattern: 3
+    e_shotPattern: 0
     b_randomSpread: 0
-    i_shotCount: 5
-    f_multiShotDistance: 0.5
-    f_maxAngle: 2
+    i_shotCount: 0
+    f_multiShotDistance: 0
+    f_maxAngle: 0
     f_waveSpeed: 0
