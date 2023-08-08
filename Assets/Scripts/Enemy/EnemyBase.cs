@@ -15,6 +15,8 @@ namespace Enemy
 
         [Rename("Lock Enemy Position")] public bool b_lockEnemyPosition;
 
+        [Rename("Invincible Time")] public float f_invincibleTime = 0.05f;
+
         private Vector3 S_velocity;
 
         private int i_bulletLayerMask;
@@ -26,14 +28,27 @@ namespace Enemy
         public Transform barrel;
         public float reloadTime;
         public float force;
-        private bool canShoot;
+        [SerializeField]private bool canShoot;
 
-
+        public enum EnemyState
+        {
+            Normal,
+            Invincible,
+            Dodge,
+            NoControl,
+            NoAttack,
+            Slowed,
+            Burn,
+            Chained,
+            Count
+        }
+        [HideInInspector] public EnemyState e_enemyState;
 
 
 
         private void Start()
         {
+            e_enemyState = EnemyState.Normal;
             f_currentHealth = f_baseHealth;
             i_bulletLayerMask = ~(LayerMask.GetMask("Bullet") + LayerMask.GetMask("Ignore Raycast"));
 
@@ -72,6 +87,8 @@ namespace Enemy
         public void DamageEnemy(float damage)
         {
             f_currentHealth -= damage;
+            e_enemyState = EnemyState.Invincible;
+            Invoke("NormalizeState", f_invincibleTime);
         }
 
         private void Revive()
@@ -84,19 +101,19 @@ namespace Enemy
         private void CheckCollisions()
         {
             RaycastHit hit;
-            if (Physics.SphereCast(transform.localPosition, 0.4f, Vector3.right, out hit, f_enemySize, i_bulletLayerMask) && S_velocity.x > 0)
+            if (Physics.SphereCast(transform.localPosition, f_enemySize, Vector3.right, out hit, f_enemySize, i_bulletLayerMask) && S_velocity.x > 0)
             {
                 S_velocity.x = -S_velocity.x * f_collisionBounciness;
             }
-            else if (Physics.SphereCast(transform.localPosition, 0.4f, -Vector3.right, out hit, f_enemySize, i_bulletLayerMask) && S_velocity.x < 0)
+            else if (Physics.SphereCast(transform.localPosition, f_enemySize, -Vector3.right, out hit, f_enemySize, i_bulletLayerMask) && S_velocity.x < 0)
             {
                 S_velocity.x = -S_velocity.x * f_collisionBounciness;
             }
-            if (Physics.SphereCast(transform.localPosition, 0.4f, Vector3.forward, out hit, f_enemySize, i_bulletLayerMask) && S_velocity.z > 0)
+            if (Physics.SphereCast(transform.localPosition, f_enemySize, Vector3.forward, out hit, f_enemySize, i_bulletLayerMask) && S_velocity.z > 0)
             {
                 S_velocity.z = -S_velocity.z * f_collisionBounciness;
             }
-            else if (Physics.SphereCast(transform.localPosition, 0.4f, -Vector3.forward, out hit, f_enemySize, i_bulletLayerMask) && S_velocity.z < 0)
+            else if (Physics.SphereCast(transform.localPosition, f_enemySize, -Vector3.forward, out hit, f_enemySize, i_bulletLayerMask) && S_velocity.z < 0)
             {
                 S_velocity.z = -S_velocity.z * f_collisionBounciness;
             }
@@ -107,9 +124,11 @@ namespace Enemy
             S_velocity += velocityToAdd;
         }
 
-
-
-
+        private void NormalizeState()
+        {
+            e_enemyState = EnemyState.Normal;
+            Debug.Log("Enemy State is now Normal");
+        }
 
 
 
@@ -121,7 +140,7 @@ namespace Enemy
                 canShoot = false;
                 var clone = Instantiate(bullet, barrel.position, Quaternion.identity);
                 clone.GetComponent<Rigidbody>().AddForce(transform.forward * force, ForceMode.Impulse);
-                Invoke("Reload", reloadTime);
+                //Invoke("Reload", reloadTime);
             //}   
         }
 

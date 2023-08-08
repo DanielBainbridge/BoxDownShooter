@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 071c43044ab867c418018aae7aec895f, type: 3}
-  m_Name: Straight
+  m_Name: Largest(Clip)
   m_EditorClassIdentifier: 
-  C_meshPrefab: {fileID: 3369844738261340037, guid: 4ad23e9cd4f89b249a8605530fbe5dff, type: 3}
-  e_moduleType: 2
+  C_meshPrefab: {fileID: 5538309128185340946, guid: 963e2daeee83b4a419dd6346e3ce0f51, type: 3}
+  e_moduleType: 1
   f_baseDamage: 0
   f_fireRate: 0
   f_bulletSpeed: 0
@@ -28,9 +28,9 @@ MonoBehaviour:
     f_chainLength: 0
     i_ricochetCount: 0
     f_vampirePercent: 0
-  f_reloadSpeed: 0
-  f_movementPenalty: 0
-  i_clipSize: 0
+  f_reloadSpeed: 3.3
+  f_movementPenalty: 2.75
+  i_clipSize: 50
   S_bulletTraitInformation:
     e_bulletTrait: 0
     i_pierceCount: 0
@@ -40,9 +40,9 @@ MonoBehaviour:
     f_explosionLingerTime: 0
     f_homingStrength: 0
     f_homingDelayTime: 0
-  f_bulletSize: 0.35
-  f_bulletRange: 13
-  f_recoil: 0.5
+  f_bulletSize: 0
+  f_bulletRange: 0
+  f_recoil: 0
   b_burstTrue: 0
   i_burstCount: 0
   f_burstInterval: 0
