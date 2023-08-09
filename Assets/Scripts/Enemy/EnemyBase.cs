@@ -127,7 +127,6 @@ namespace Enemy
         private void NormalizeState()
         {
             e_enemyState = EnemyState.Normal;
-            Debug.Log("Enemy State is now Normal");
         }
 
 
