@@ -1,11 +1,6 @@
 using Enemy;
-using Newtonsoft.Json.Bson;
-using System.Linq.Expressions;
-using System.Net.Http.Headers;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.UIElements;
+using Explosion;
 using static Gun.GunModule;
 
 namespace Gun
@@ -249,7 +244,11 @@ namespace Gun
 
             if (!isPlayer && !isEnemy)
             {
-                C_poolOwner.MoveToOpen(this);
+                if (S_bulletTrait.e_bulletTrait == BulletTrait.Explosive)
+                {
+                    ExplosionGenerator.MakeExplosion(transform.position, S_bulletTrait.C_explosionPrefab, S_bulletTrait.f_explosionSize, S_bulletTrait.f_explosionDamage, S_bulletTrait.f_explosionKnockbackDistance, S_bulletTrait.f_explosionLifeTime);
+                }
+                C_poolOwner.MoveToOpen(this);                
                 return true;
             }
 
@@ -307,10 +306,13 @@ namespace Gun
                     if (isPlayer && !S_baseInformation.b_playerOwned && (playerController.e_playerState != PlayerController.PlayerState.Invincible && playerController.e_playerState != PlayerController.PlayerState.Dodge))
                     {
                         playerController.DamagePlayer(S_baseInformation.f_damage);
-                        //create explosion with explosion size for amount of time and then 
                         C_poolOwner.MoveToOpen(this);
+                        
                         return true;
                     }
+                    //create explosion with explosion size for amount of time and then
+                        C_poolOwner.MoveToOpen(this);
+                    ExplosionGenerator.MakeExplosion(transform.position, S_bulletTrait.C_explosionPrefab, S_bulletTrait.f_explosionSize, S_bulletTrait.f_explosionDamage, S_bulletTrait.f_explosionKnockbackDistance, S_bulletTrait.f_explosionLifeTime);
                     break;
                 case BulletTrait.Homing:
                     if (isPlayer && !S_baseInformation.b_playerOwned && (playerController.e_playerState != PlayerController.PlayerState.Invincible && playerController.e_playerState != PlayerController.PlayerState.Dodge))
