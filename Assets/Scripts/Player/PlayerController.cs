@@ -6,6 +6,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utility;
+using static Enemy.EnemyBase;
+using static Gun.GunModule;
 
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerController : MonoBehaviour
@@ -20,7 +22,7 @@ public class PlayerController : MonoBehaviour
         Dodge,
         NoControl,
         NoAttack,
-        Slowed,
+        Frozen,
         Burn,
         Count
     }
@@ -69,8 +71,6 @@ public class PlayerController : MonoBehaviour
         get { return (-Mathf.Atan2(S_rotationVec2Direction.y, S_rotationVec2Direction.x) * Mathf.Rad2Deg) + 90; }
     }
 
-
-
     [Header("Dodge")]
     [Rename("Dodge Startup")] public float f_dodgeStartDelay = 0.12f;
     [Rename("Dodge Length")] public float f_dodgeLength = 2.5f;
@@ -112,6 +112,7 @@ public class PlayerController : MonoBehaviour
     private bool b_isDead = false;
     private int i_bulletLayerMask;
     private bool b_fireCancelWhileDodging;
+    [Range(0,1)]private float f_slowMultiplier = 0;
 
     ///<summary>
     /// Player methods, the method name should be self explanitory if not there is reference 
@@ -398,6 +399,33 @@ public class PlayerController : MonoBehaviour
             Die();
         }
     }
+    public void ApplyBulletElement(GunModule.BulletEffectInfo bulletEffectInfo, float damage)
+    {
+        switch (bulletEffectInfo.e_bulletEffect)
+        {
+            case BulletEffect.None:
+                break;
+            case BulletEffect.DamageOverTime:
+
+                break;
+            case BulletEffect.Slow:
+                if (e_playerState != PlayerState.Frozen)
+                    if(f_slowMultiplier > 0)
+                    {
+                        f_slowMultiplier -= bulletEffectInfo.f_slowPercent;
+                        f_slowMultiplier = Mathf.Clamp(f_slowMultiplier, 0, 1);
+                    }
+                break;
+            case BulletEffect.Chain:
+
+                break;
+            case BulletEffect.Vampire:
+
+                break;
+        }
+    }
+
+
     private void HealPlayer()
     {
 
