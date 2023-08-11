@@ -2,7 +2,6 @@ using Enemy;
 using UnityEngine;
 using Explosion;
 using static Gun.GunModule;
-using UnityEngine.UIElements;
 using Utility;
 
 namespace Gun
@@ -55,6 +54,11 @@ namespace Gun
                 Vector3 direction = transform.forward;
                 return (-Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg) + 90;
             }
+        }
+
+        Vector3 S_hitDirection
+        {
+            get { return new Vector3(transform.forward.x, 0, transform.forward.z); }
         }
 
         private float f_bulletAliveTime;
@@ -254,6 +258,13 @@ namespace Gun
             GameObject particlePrefab;
         }
 
+        private void DoBaseHit(Combatant combatant)
+        {
+            combatant.Damage(S_baseInformation.f_damage);
+            combatant.AddVelocity(S_hitDirection * S_baseInformation.f_knockBack);
+            combatant.ApplyBulletElement(S_bulletEffect, S_baseInformation.f_damage);
+        }
+
         // bool returned early outs of update, if a bullet is destroyed return true else false
         private bool CheckHit()
         {
@@ -268,16 +279,11 @@ namespace Gun
         public bool OnHit(Transform objectHit)
         {
 
-            Vector3 hitDirection = (objectHit.position - transform.position);
-            hitDirection = new Vector3(transform.forward.x, 0, transform.forward.z);
 
-            Enemy.EnemyBase enemyBase = objectHit.GetComponent<EnemyBase>();
-            PlayerController playerController = objectHit.GetComponent<PlayerController>();
 
-            bool isPlayer = playerController == null ? false : true;
-            bool isEnemy = enemyBase == null ? false : true;
+            Combatant combatant = objectHit.GetComponent<Combatant>();
 
-            if (!isPlayer && !isEnemy)
+            if (combatant == null)
             {
                 if (S_bulletEffect.e_bulletEffect == BulletEffect.Chain && S_bulletEffect.i_ricochetCount >= i_ricochetCount)
                 {
@@ -295,106 +301,82 @@ namespace Gun
                 C_poolOwner.MoveToOpen(this);
                 return true;
             }
+
+
+
+            //do boolean calcs
+            bool isPlayer = combatant.CompareTag("Player");
+            bool isDodging = (combatant.e_combatState != Combatant.CombatState.Dodge && combatant.e_combatState != Combatant.CombatState.Invincible);
+            bool shouldHit = (isPlayer && !S_baseInformation.b_playerOwned) && isDodging ||
+                (!isPlayer && S_baseInformation.b_playerOwned) && isDodging;
+
+
             switch (S_bulletTrait.e_bulletTrait)
             {
                 case BulletTrait.Standard:
-                    if (isPlayer && !S_baseInformation.b_playerOwned && (playerController.e_playerState != PlayerController.PlayerState.Invincible && playerController.e_playerState != PlayerController.PlayerState.Dodge))
+                    if (shouldHit)
                     {
                         //do damage
-                        playerController.DamagePlayer(S_baseInformation.f_damage);
-                        playerController.AddVelocityToPlayer(hitDirection * S_baseInformation.f_knockBack);
-                        playerController.ApplyBulletElement(S_bulletEffect, S_baseInformation.f_damage);
-                    }
-                    else if (isEnemy && S_baseInformation.b_playerOwned && (enemyBase.e_enemyState != EnemyBase.EnemyState.Invincible && enemyBase.e_enemyState != EnemyBase.EnemyState.Dodge))
-                    {
-                        enemyBase.DamageEnemy((int)S_baseInformation.f_damage);
-                        enemyBase.AddVelocityToEnemy(hitDirection * S_baseInformation.f_knockBack);
-                        enemyBase.ApplyBulletElement(S_bulletEffect, S_baseInformation.f_damage);
+                        DoBaseHit(combatant);
                     }
                     C_poolOwner.MoveToOpen(this);
                     return true;
-                    break;
                 case BulletTrait.Pierce:
-                    if (isPlayer && !S_baseInformation.b_playerOwned && (playerController.e_playerState != PlayerController.PlayerState.Invincible && playerController.e_playerState != PlayerController.PlayerState.Dodge))
+                    if (shouldHit)
                     {
                         //do damage
-                        playerController.DamagePlayer(S_baseInformation.f_damage);
-                        playerController.AddVelocityToPlayer(hitDirection * S_baseInformation.f_knockBack);
-                        playerController.ApplyBulletElement(S_bulletEffect, S_baseInformation.f_damage);
+                        DoBaseHit(combatant);
                         i_bulletPiercedCount += 1;
-
-                        if (S_bulletEffect.e_bulletEffect == BulletEffect.Chain && S_bulletEffect.i_ricochetCount >= i_ricochetCount)
-                        {
-                            i_ricochetCount += 1;
-                            transform.rotation = Quaternion.Euler(new Vector3(0, ExtraMaths.FloatRandom(0, 360), 0));
-                        }
-                        return false;
-                    }
-                    else if (isEnemy && S_baseInformation.b_playerOwned && (enemyBase.e_enemyState != EnemyBase.EnemyState.Invincible && enemyBase.e_enemyState != EnemyBase.EnemyState.Dodge))
-                    {
-                        enemyBase.DamageEnemy(S_baseInformation.f_damage);
-                        enemyBase.AddVelocityToEnemy(hitDirection * S_baseInformation.f_knockBack);
-                        enemyBase.ApplyBulletElement(S_bulletEffect, S_baseInformation.f_damage);
-                        i_bulletPiercedCount += 1;
-
 
                         if (i_bulletPiercedCount == S_bulletTrait.i_pierceCount)
                         {
                             C_poolOwner.MoveToOpen(this);
                             return true;
                         }
+
                         if (S_bulletEffect.e_bulletEffect == BulletEffect.Chain && S_bulletEffect.i_ricochetCount >= i_ricochetCount)
                         {
-                            i_ricochetCount += 1;
-                            Transform newTarget = FindRicochetTarget(enemyBase.transform);
-                            if(newTarget != null)
+                            if (isPlayer)
                             {
-                                transform.LookAt(newTarget);
+                                i_ricochetCount += 1;
+                                transform.rotation = Quaternion.Euler(new Vector3(0, ExtraMaths.FloatRandom(0, 360), 0));
                             }
-                            return false;
+                            else
+                            {
+                                i_ricochetCount += 1;
+                                Transform newTarget = FindRicochetTarget(combatant.transform);
+                                if (newTarget != null)
+                                {
+                                    transform.LookAt(newTarget);
+                                    transform.forward = new Vector3(transform.forward.x, 0, transform.forward.z);
+                                }
+                            }
                         }
-                        C_poolOwner.MoveToOpen(this);
-                        return true;
+                        return false;
                     }
-                    break;
-                case BulletTrait.Explosive:
-                    if (isPlayer && !S_baseInformation.b_playerOwned && (playerController.e_playerState != PlayerController.PlayerState.Invincible && playerController.e_playerState != PlayerController.PlayerState.Dodge))
-                    {
-                        playerController.DamagePlayer(S_baseInformation.f_damage);
-                        playerController.AddVelocityToPlayer(hitDirection * S_baseInformation.f_knockBack);
-                        playerController.ApplyBulletElement(S_bulletEffect, S_baseInformation.f_damage);
-                    }
-                    else if (isEnemy && S_baseInformation.b_playerOwned && (enemyBase.e_enemyState != EnemyBase.EnemyState.Invincible && enemyBase.e_enemyState != EnemyBase.EnemyState.Dodge))
-                    {
-                        enemyBase.DamageEnemy(S_baseInformation.f_damage);
-                        enemyBase.AddVelocityToEnemy(hitDirection * S_baseInformation.f_knockBack);
-                        enemyBase.ApplyBulletElement(S_bulletEffect, S_baseInformation.f_damage);
-                    }
-                    //create explosion with explosion size for amount of time and then
                     C_poolOwner.MoveToOpen(this);
-                    ExplosionGenerator.MakeExplosion(transform.position, S_bulletTrait.C_explosionPrefab, S_bulletTrait.f_explosionSize, S_bulletTrait.f_explosionDamage, S_bulletTrait.f_explosionKnockbackDistance, S_bulletTrait.f_explosionLifeTime);
+                    return true;
+
                     return true;
                     break;
-                case BulletTrait.Homing:
-                    if (isPlayer && !S_baseInformation.b_playerOwned && (playerController.e_playerState != PlayerController.PlayerState.Invincible && playerController.e_playerState != PlayerController.PlayerState.Dodge))
+                case BulletTrait.Explosive:
+                    if (shouldHit)
                     {
-                        playerController.DamagePlayer(S_baseInformation.f_damage);
-                        playerController.AddVelocityToPlayer(hitDirection * S_baseInformation.f_knockBack);
-                        playerController.ApplyBulletElement(S_bulletEffect, S_baseInformation.f_damage);
+                        DoBaseHit(combatant);
+                        //create explosion with explosion size for amount of time and then
+                        C_poolOwner.MoveToOpen(this);
+                        ExplosionGenerator.MakeExplosion(transform.position, S_bulletTrait.C_explosionPrefab, S_bulletTrait.f_explosionSize, S_bulletTrait.f_explosionDamage, S_bulletTrait.f_explosionKnockbackDistance, S_bulletTrait.f_explosionLifeTime);
+                    }
+                    return true;
+                case BulletTrait.Homing:
+                    if (shouldHit)
+                    {
+                        DoBaseHit(combatant);
                         C_homingTarget = null;
                         C_poolOwner.MoveToOpen(this);
                         return true;
                     }
-                    else if (isEnemy && S_baseInformation.b_playerOwned && (enemyBase.e_enemyState != EnemyBase.EnemyState.Invincible && enemyBase.e_enemyState != EnemyBase.EnemyState.Dodge))
-                    {
-                        enemyBase.DamageEnemy((int)S_baseInformation.f_damage);
-                        enemyBase.AddVelocityToEnemy(hitDirection * S_baseInformation.f_knockBack);
-                        enemyBase.ApplyBulletElement(S_bulletEffect, S_baseInformation.f_damage);
-                        C_poolOwner.MoveToOpen(this);
-                        return true;
-                    }
                     return false;
-                    break;
             }
             return false;
 

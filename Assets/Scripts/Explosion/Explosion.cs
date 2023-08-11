@@ -54,29 +54,22 @@ namespace Explosion
                 }
 
                 lC_alreadyCollided.Add(collisions[i].transform);
-                PlayerController playerController = collisions[i].transform.GetComponent<PlayerController>();
-                EnemyBase enemy = collisions[i].transform.GetComponent<EnemyBase>();
+                Combatant combatant = collisions[i].transform.GetComponent<PlayerController>();
 
 
                 Vector3 hitDirection = collisions[i].transform.position - transform.position;
                 hitDirection = new Vector3(hitDirection.x, 0, hitDirection.z);
                 float notCollisionDepth = Vector3.ClampMagnitude(hitDirection, 1.0f).magnitude;
-                notCollisionDepth = ExtraMaths.Map(0, 1, 1, 0, notCollisionDepth);
+                notCollisionDepth = 1 - notCollisionDepth;
 
-                if (playerController == null && enemy == null && collisions[i].gameObject.layer != LayerMask.GetMask("Explosive"))
+                if (combatant == null && collisions[i].gameObject.layer != LayerMask.GetMask("Explosive"))
                 {
                     continue;
                 }
-                else if (playerController != null)
+                else if (combatant != null)
                 {
-                    playerController.DamagePlayer(f_explosionDamage);
-                    playerController.AddVelocityToPlayer(hitDirection * (f_explosionKnockbackStrength * notCollisionDepth));
-                    continue;
-                }
-                else if (enemy != null)
-                {
-                    enemy.DamageEnemy(f_explosionDamage);
-                    enemy.AddVelocityToEnemy(hitDirection * (f_explosionKnockbackStrength * notCollisionDepth));
+                    combatant.Damage(f_explosionDamage);
+                    combatant.AddVelocity(hitDirection * (f_explosionKnockbackStrength * notCollisionDepth));
                     continue;
                 }
             }

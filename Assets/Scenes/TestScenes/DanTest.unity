@@ -591,6 +591,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4e5d89fa93ea8284591d0017cc2e032a, type: 3}
+--- !u!114 &2072840352 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3986387071626004617, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
+  m_PrefabInstance: {fileID: 3986387071385035893}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 911235d2104675347913823cf0bc84c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2102047659
 GameObject:
   m_ObjectHideFlags: 0
@@ -755,6 +766,10 @@ PrefabInstance:
       propertyPath: m_DefaultActionMap
       value: UI
       objectReference: {fileID: 0}
+    - target: {fileID: 3986387071126839659, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
+      propertyPath: C_ownedGun
+      value: 
+      objectReference: {fileID: 2072840352}
     - target: {fileID: 3986387071126839659, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
       propertyPath: f_maxSpeed
       value: 5.5
