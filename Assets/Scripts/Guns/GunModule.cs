@@ -58,10 +58,11 @@ namespace Gun
             //bullet trait deppendent
             [Rename("Bullet Type")] public BulletTrait e_bulletTrait;
             [Rename("Pierce Count")] public int i_pierceCount;
-            [Rename("Explosion Diameter")] public float f_explosionSize;
             [Rename("Explosion Prefab")] public GameObject C_explosionPrefab;
+            [Rename("Explosion Diameter")] public float f_explosionSize;
+            [Rename("Explosion Damage")] public float f_explosionDamage;
             [Rename("Explosion Knockback Distance")] public float f_explosionKnockbackDistance;
-            [Rename("Explosion Linger Time")] public float f_explosionLingerTime;
+            [Rename("Explosion Life Time")] public float f_explosionLifeTime;
             [Rename("Homing Strength"), Range(0, 1)] public float f_homingStrength;
             [Rename("Homing Delay")] public float f_homingDelayTime;
         }
@@ -235,9 +236,10 @@ namespace Guns.CustomEditor
                         //do variables for Explosive
                         case 2:
                             EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletTraitInformation").FindPropertyRelative("C_explosionPrefab"));
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletTraitInformation").FindPropertyRelative("f_explosionDamage"));
                             EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletTraitInformation").FindPropertyRelative("f_explosionSize"));
                             EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletTraitInformation").FindPropertyRelative("f_explosionKnockbackDistance"));
-                            EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletTraitInformation").FindPropertyRelative("f_explosionLingerTime"));
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletTraitInformation").FindPropertyRelative("f_explosionLifeTime"));
 
                             break;
                         //do variables for Homing

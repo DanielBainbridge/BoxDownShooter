@@ -1,11 +1,6 @@
 using Enemy;
-using Newtonsoft.Json.Bson;
-using System.Linq.Expressions;
-using System.Net.Http.Headers;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.UIElements;
+using Explosion;
 using static Gun.GunModule;
 
 namespace Gun
@@ -64,7 +59,7 @@ namespace Gun
         private float f_distanceTravelled;
         private int i_bulletPiercedCount = 0;
         private int i_ricochetCount = 0;
-        private int i_enemiesChained = 0;
+        private int i_targetsChained = 0;
         private Transform C_homingTarget;
 
 
@@ -133,7 +128,7 @@ namespace Gun
             f_distanceTravelled = 0;
             i_bulletPiercedCount = 0;
             i_ricochetCount = 0;
-            i_enemiesChained = 0;
+            i_targetsChained = 0;
 
             //bullet effect colour/ particles bullet trait mesh **stubbed**
             //UpdateBulletGraphics()
@@ -223,21 +218,23 @@ namespace Gun
         }
         private bool CheckHit()
         {
-
-            if (Physics.SphereCast(transform.position - (transform.forward * S_baseInformation.f_size * 1.01f), S_baseInformation.f_size, (transform.position - S_previousPosition).normalized, out RaycastHit hitInfo, Vector3.Distance(S_previousPosition, transform.position), ~LayerMask.GetMask("Bullet")))
+            Collider[] collisions = Physics.OverlapCapsule(S_previousPosition, transform.position, S_baseInformation.f_size, ~LayerMask.GetMask("Bullet"));
+            if (Physics.SphereCast(S_previousPosition, S_baseInformation.f_size, (transform.position - S_previousPosition).normalized, out RaycastHit hitInfo, Vector3.Distance(S_previousPosition, transform.position), ~LayerMask.GetMask("Bullet")))
             {
-                OnHit(hitInfo);
-                return true;
+                return OnHit(hitInfo.transform);
+            }
+            else if (collisions.Length > 0)
+            {
+                return OnHit(collisions[0].transform);
             }
             return false;
         }
-        public void OnHit(RaycastHit hit)
+        //bool returns if bullet is destroyed
+        public bool OnHit(Transform objectHit)
         {
-            Transform objectHit = hit.transform;
-
 
             Vector3 hitDirection = (objectHit.position - transform.position);
-            hitDirection = new Vector3(hitDirection.x, 0, hitDirection.z);
+            hitDirection = new Vector3(transform.forward.x, 0, transform.forward.z);
 
             Enemy.EnemyBase enemyBase = objectHit.GetComponent<EnemyBase>();
             PlayerController playerController = objectHit.GetComponent<PlayerController>();
@@ -247,67 +244,96 @@ namespace Gun
 
             if (!isPlayer && !isEnemy)
             {
-                C_poolOwner.MoveToOpen(this);
-                return;
+                if (S_bulletTrait.e_bulletTrait == BulletTrait.Explosive)
+                {
+                    ExplosionGenerator.MakeExplosion(transform.position, S_bulletTrait.C_explosionPrefab, S_bulletTrait.f_explosionSize, S_bulletTrait.f_explosionDamage, S_bulletTrait.f_explosionKnockbackDistance, S_bulletTrait.f_explosionLifeTime);
+                }
+                C_poolOwner.MoveToOpen(this);                
+                return true;
             }
 
 
             switch (S_bulletTrait.e_bulletTrait)
             {
                 case BulletTrait.Standard:
-                    if (isPlayer && !S_baseInformation.b_playerOwned && (playerController.e_playerState != PlayerController.PlayerState.Invincible || playerController.e_playerState != PlayerController.PlayerState.Dodge))
+                    if (isPlayer && !S_baseInformation.b_playerOwned && (playerController.e_playerState != PlayerController.PlayerState.Invincible && playerController.e_playerState != PlayerController.PlayerState.Dodge))
                     {
                         //do damage
                         playerController.DamagePlayer(S_baseInformation.f_damage);
                         playerController.AddVelocityToPlayer(hitDirection * S_baseInformation.f_knockBack);
                         C_poolOwner.MoveToOpen(this);
+                        return true;
                     }
-                    else if (isEnemy)
+                    else if (isEnemy && S_baseInformation.b_playerOwned && (enemyBase.e_enemyState != EnemyBase.EnemyState.Invincible && enemyBase.e_enemyState != EnemyBase.EnemyState.Dodge))
                     {
                         enemyBase.DamageEnemy((int)S_baseInformation.f_damage);
                         enemyBase.AddVelocityToEnemy(hitDirection * S_baseInformation.f_knockBack);
 
                         C_poolOwner.MoveToOpen(this);
+                        return true;
                     }
                     break;
                 case BulletTrait.Pierce:
-                    if (isPlayer && !S_baseInformation.b_playerOwned && (playerController.e_playerState != PlayerController.PlayerState.Invincible || playerController.e_playerState != PlayerController.PlayerState.Dodge))
+                    if (isPlayer && !S_baseInformation.b_playerOwned && (playerController.e_playerState != PlayerController.PlayerState.Invincible && playerController.e_playerState != PlayerController.PlayerState.Dodge))
                     {
                         //do damage
                         playerController.DamagePlayer(S_baseInformation.f_damage);
+                        playerController.AddVelocityToPlayer(hitDirection * S_baseInformation.f_knockBack);
                         i_bulletPiercedCount += 1;
 
                         if (i_bulletPiercedCount == S_bulletTrait.i_pierceCount)
                         {
                             C_poolOwner.MoveToOpen(this);
+                            return true;
                         }
+                        return false;
+                    }
+                    else if (isEnemy && S_baseInformation.b_playerOwned && (enemyBase.e_enemyState != EnemyBase.EnemyState.Invincible && enemyBase.e_enemyState != EnemyBase.EnemyState.Dodge))
+                    {
+                        enemyBase.DamageEnemy(S_baseInformation.f_damage);
+                        enemyBase.AddVelocityToEnemy(hitDirection * S_baseInformation.f_knockBack);
+                        i_bulletPiercedCount += 1;
+
+                        if (i_bulletPiercedCount == S_bulletTrait.i_pierceCount)
+                        {
+                            C_poolOwner.MoveToOpen(this);
+                            return true;
+                        }
+                        return false;
                     }
                     break;
                 case BulletTrait.Explosive:
-                    if (isPlayer && !S_baseInformation.b_playerOwned && (playerController.e_playerState != PlayerController.PlayerState.Invincible || playerController.e_playerState != PlayerController.PlayerState.Dodge))
+                    if (isPlayer && !S_baseInformation.b_playerOwned && (playerController.e_playerState != PlayerController.PlayerState.Invincible && playerController.e_playerState != PlayerController.PlayerState.Dodge))
                     {
                         playerController.DamagePlayer(S_baseInformation.f_damage);
-                        //create explosion with explosion size for amount of time and then 
-
+                        C_poolOwner.MoveToOpen(this);
+                        
+                        return true;
                     }
+                    //create explosion with explosion size for amount of time and then
+                        C_poolOwner.MoveToOpen(this);
+                    ExplosionGenerator.MakeExplosion(transform.position, S_bulletTrait.C_explosionPrefab, S_bulletTrait.f_explosionSize, S_bulletTrait.f_explosionDamage, S_bulletTrait.f_explosionKnockbackDistance, S_bulletTrait.f_explosionLifeTime);
                     break;
                 case BulletTrait.Homing:
-                    if (isPlayer && !S_baseInformation.b_playerOwned && (playerController.e_playerState != PlayerController.PlayerState.Invincible || playerController.e_playerState != PlayerController.PlayerState.Dodge))
+                    if (isPlayer && !S_baseInformation.b_playerOwned && (playerController.e_playerState != PlayerController.PlayerState.Invincible && playerController.e_playerState != PlayerController.PlayerState.Dodge))
                     {
                         playerController.DamagePlayer(S_baseInformation.f_damage);
                         playerController.AddVelocityToPlayer(hitDirection * S_baseInformation.f_knockBack);
                         C_homingTarget = null;
                         C_poolOwner.MoveToOpen(this);
+                        return true;
                     }
-                    else if (isEnemy)
+                    else if (isEnemy && S_baseInformation.b_playerOwned && (enemyBase.e_enemyState != EnemyBase.EnemyState.Invincible && enemyBase.e_enemyState != EnemyBase.EnemyState.Dodge))
                     {
                         enemyBase.DamageEnemy((int)S_baseInformation.f_damage);
                         enemyBase.AddVelocityToEnemy(hitDirection * S_baseInformation.f_knockBack);
                         C_poolOwner.MoveToOpen(this);
+                        return true;
                     }
+                    return false;
                     break;
             }
-
+            return false;
 
         }
         private void ApplyBulletEffect(bool isPlayer)
