@@ -147,11 +147,10 @@ namespace Gun
                     }
                 }
                 timesFiredThisFrame += 1;
+                Vector3 recoil = -C_gunHolder.forward * f_recoil;
 
-                if (C_gunHolder.GetComponent<PlayerController>())
-                {
-                    C_gunHolder.GetComponent<PlayerController>().AddVelocityToPlayer(-C_gunHolder.forward * f_recoil);
-                }
+                C_gunHolder.GetComponent<Combatant>().AddVelocity(recoil);
+                
 
                 f_timeUntilNextFire += f_timeBetweenBulletShots;
             }

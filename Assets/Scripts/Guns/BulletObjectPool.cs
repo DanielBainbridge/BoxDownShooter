@@ -11,7 +11,7 @@ namespace Gun
         List<Bullet> lC_freeBullets = new List<Bullet>();
         List<Bullet> lC_inUseBullets = new List<Bullet>();
         int i_totalBullets;
-
+        public Gun C_gunOwner = null;
 
         public void CreatePool(Gun gun)
         {
@@ -33,6 +33,7 @@ namespace Gun
                 obj.SetActive(false);
                 obj.GetComponent<Renderer>().material = Resources.Load<Material>("Materials/POC_BulletMaterial");
             }
+            C_gunOwner = gun;
         }
 
         public void ResizePool(Gun gun)
