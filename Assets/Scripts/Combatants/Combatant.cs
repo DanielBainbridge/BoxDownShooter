@@ -71,7 +71,7 @@ public class Combatant : MonoBehaviour
     /// </summary>
     #region RuntimeVariables
     protected float f_currentHealth;
-    [HideInInspector] public CombatState e_combatState = CombatState.Normal;
+    public CombatState e_combatState = CombatState.Normal;
 
     protected Vector3 S_acceleration;
     protected Vector3 S_velocity = Vector3.zero;
@@ -283,6 +283,7 @@ public class Combatant : MonoBehaviour
     public void Damage(float damage)
     {
         f_currentHealth -= damage;
+        StartCoroutine(ChangeStateForSeconds(CombatState.Invincible, f_invincibleTime));
         if (f_currentHealth <= 0)
         {
             Die();
@@ -299,7 +300,8 @@ public class Combatant : MonoBehaviour
     {
         gameObject.SetActive(false);
         b_isDead = true;
-        Invoke("Respawn", 10);
+        ChangeState(CombatState.Normal);
+        Invoke("Respawn", 5);
     }
 
     public void Respawn()

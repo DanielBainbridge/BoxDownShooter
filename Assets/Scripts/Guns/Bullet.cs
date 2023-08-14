@@ -306,9 +306,10 @@ namespace Gun
 
             //do boolean calcs
             bool isPlayer = combatant.CompareTag("Player");
-            bool isDodging = (combatant.e_combatState != Combatant.CombatState.Dodge && combatant.e_combatState != Combatant.CombatState.Invincible);
-            bool shouldHit = (isPlayer && !S_baseInformation.b_playerOwned) && isDodging ||
-                (!isPlayer && S_baseInformation.b_playerOwned) && isDodging;
+            bool isDodging = (combatant.e_combatState == Combatant.CombatState.Dodge);
+            bool isInvincible = (combatant.e_combatState == Combatant.CombatState.Invincible);
+            bool shouldHit = (!(isPlayer && !S_baseInformation.b_playerOwned) && (!isDodging && !isInvincible)) ||
+                (!(!isPlayer && S_baseInformation.b_playerOwned) && (isDodging && !isInvincible));
 
 
             switch (S_bulletTrait.e_bulletTrait)
@@ -318,9 +319,10 @@ namespace Gun
                     {
                         //do damage
                         DoBaseHit(combatant);
+                        C_poolOwner.MoveToOpen(this);
+                        return true;
                     }
-                    C_poolOwner.MoveToOpen(this);
-                    return true;
+                    return false;                    
                 case BulletTrait.Pierce:
                     if (shouldHit)
                     {
@@ -352,22 +354,18 @@ namespace Gun
                                 }
                             }
                         }
-                        return false;
                     }
-                    C_poolOwner.MoveToOpen(this);
-                    return true;
-
-                    return true;
-                    break;
+                    return false;
                 case BulletTrait.Explosive:
                     if (shouldHit)
                     {
                         DoBaseHit(combatant);
                         //create explosion with explosion size for amount of time and then
-                        C_poolOwner.MoveToOpen(this);
                         ExplosionGenerator.MakeExplosion(transform.position, S_bulletTrait.C_explosionPrefab, S_bulletTrait.f_explosionSize, S_bulletTrait.f_explosionDamage, S_bulletTrait.f_explosionKnockbackDistance, S_bulletTrait.f_explosionLifeTime);
+                        C_poolOwner.MoveToOpen(this);
+                        return true;
                     }
-                    return true;
+                    return false;
                 case BulletTrait.Homing:
                     if (shouldHit)
                     {
