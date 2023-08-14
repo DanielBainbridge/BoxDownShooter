@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 071c43044ab867c418018aae7aec895f, type: 3}
-  m_Name: Smallest Trigger
+  m_Name: TEST(Trigger)
   m_EditorClassIdentifier: 
-  C_meshPrefab: {fileID: 7967008281835788938, guid: 3e730eccf149d164aac166c769e9ef86, type: 3}
+  C_meshPrefab: {fileID: 7590545507729207469, guid: 7a79342c3be006f4f952227d60d869c6, type: 3}
   e_moduleType: 0
-  f_baseDamage: 5
-  f_fireRate: 16
+  f_baseDamage: 11
+  f_fireRate: 8
   f_bulletSpeed: 16
   f_knockBack: 0
   S_bulletEffectInformation:
-    e_bulletEffect: 0
+    e_bulletEffect: 1
     f_effectTime: 0
     f_tickDamage: 0
     i_amountOfTicks: 0
@@ -44,8 +44,8 @@ MonoBehaviour:
   f_bulletRange: 0
   f_recoil: 0
   b_burstTrue: 0
-  i_burstCount: 0
-  f_burstInterval: 0
+  i_burstCount: 2
+  f_burstInterval: 4
   S_shotPatternInformation:
     e_shotPattern: 0
     b_randomSpread: 0

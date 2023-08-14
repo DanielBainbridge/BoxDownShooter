@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 071c43044ab867c418018aae7aec895f, type: 3}
-  m_Name: Smallest Trigger
+  m_Name: Piercing(Clip)
   m_EditorClassIdentifier: 
-  C_meshPrefab: {fileID: 7967008281835788938, guid: 3e730eccf149d164aac166c769e9ef86, type: 3}
-  e_moduleType: 0
-  f_baseDamage: 5
-  f_fireRate: 16
-  f_bulletSpeed: 16
+  C_meshPrefab: {fileID: 5685094855679449847, guid: b6a1130fb723eb246b287ebd5514b93d, type: 3}
+  e_moduleType: 1
+  f_baseDamage: 0
+  f_fireRate: 0
+  f_bulletSpeed: 0
   f_knockBack: 0
   S_bulletEffectInformation:
     e_bulletEffect: 0
@@ -28,12 +28,12 @@ MonoBehaviour:
     f_chainLength: 0
     i_ricochetCount: 0
     f_vampirePercent: 0
-  f_reloadSpeed: 0
-  f_movementPenalty: 0
-  i_clipSize: 0
+  f_reloadSpeed: 2.3
+  f_movementPenalty: 1
+  i_clipSize: 15
   S_bulletTraitInformation:
-    e_bulletTrait: 0
-    i_pierceCount: 0
+    e_bulletTrait: 1
+    i_pierceCount: 2
     f_explosionSize: 0
     C_explosionPrefab: {fileID: 0}
     f_explosionKnockbackDistance: 0

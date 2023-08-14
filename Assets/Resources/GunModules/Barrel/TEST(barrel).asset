@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 071c43044ab867c418018aae7aec895f, type: 3}
-  m_Name: Smallest Trigger
+  m_Name: TEST(barrel)
   m_EditorClassIdentifier: 
-  C_meshPrefab: {fileID: 7967008281835788938, guid: 3e730eccf149d164aac166c769e9ef86, type: 3}
-  e_moduleType: 0
-  f_baseDamage: 5
-  f_fireRate: 16
-  f_bulletSpeed: 16
+  C_meshPrefab: {fileID: 8038238213136356792, guid: ab7c92014ba9992489fbc7816cf51665, type: 3}
+  e_moduleType: 2
+  f_baseDamage: 0
+  f_fireRate: 0
+  f_bulletSpeed: 0
   f_knockBack: 0
   S_bulletEffectInformation:
     e_bulletEffect: 0
@@ -40,16 +40,16 @@ MonoBehaviour:
     f_explosionLingerTime: 0
     f_homingStrength: 0
     f_homingDelayTime: 0
-  f_bulletSize: 0
-  f_bulletRange: 0
-  f_recoil: 0
+  f_bulletSize: 0.2
+  f_bulletRange: 7
+  f_recoil: 4
   b_burstTrue: 0
   i_burstCount: 0
   f_burstInterval: 0
   S_shotPatternInformation:
-    e_shotPattern: 0
-    b_randomSpread: 0
-    i_shotCount: 0
+    e_shotPattern: 2
+    b_randomSpread: 1
+    i_shotCount: 5
     f_multiShotDistance: 0
-    f_maxAngle: 0
+    f_maxAngle: 45
     f_waveSpeed: 0

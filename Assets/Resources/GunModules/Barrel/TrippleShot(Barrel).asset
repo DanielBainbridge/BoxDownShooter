@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 071c43044ab867c418018aae7aec895f, type: 3}
-  m_Name: MultiShot(Barrel)
+  m_Name: TrippleShot(Barrel)
   m_EditorClassIdentifier: 
   C_meshPrefab: {fileID: 627584051598180029, guid: 96f1ae12589bf174295762fc5a8f779e, type: 3}
   e_moduleType: 2
@@ -40,16 +40,16 @@ MonoBehaviour:
     f_explosionLingerTime: 0
     f_homingStrength: 0
     f_homingDelayTime: 0
-  f_bulletSize: 0.3
-  f_bulletRange: 5
-  f_recoil: 2.5
+  f_bulletSize: 0.25
+  f_bulletRange: 15
+  f_recoil: 3.5
   b_burstTrue: 0
   i_burstCount: 0
   f_burstInterval: 0
   S_shotPatternInformation:
     e_shotPattern: 1
     b_randomSpread: 0
-    i_shotCount: 2
-    f_multiShotDistance: 0.65
+    i_shotCount: 3
+    f_multiShotDistance: 0.75
     f_maxAngle: 0
     f_waveSpeed: 0
