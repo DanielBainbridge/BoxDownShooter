@@ -41,7 +41,7 @@ MonoBehaviour:
     f_homingStrength: 0
     f_homingDelayTime: 0
   f_bulletSize: 0.35
-  f_bulletRange: 9
+  f_bulletRange: 11
   f_recoil: 0.5
   b_burstTrue: 0
   i_burstCount: 0

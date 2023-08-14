@@ -24,7 +24,7 @@ RenderSettings:
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 4
+  m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
@@ -50578,15 +50578,15 @@ PrefabInstance:
     - target: {fileID: 3986387071626004617, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
       propertyPath: aC_moduleArray.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: 4a5c18fd8b9844445b99fb30377fa342, type: 2}
+      objectReference: {fileID: 11400000, guid: 817a37e2a584c0f468916bc63ba419d6, type: 2}
     - target: {fileID: 3986387071626004617, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
       propertyPath: aC_moduleArray.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: d477e66b5993e144280c79ace3821b4e, type: 2}
+      objectReference: {fileID: 11400000, guid: dd90a2e223edaa3448b9526c50c00155, type: 2}
     - target: {fileID: 3986387071626004617, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
       propertyPath: aC_moduleArray.Array.data[2]
       value: 
-      objectReference: {fileID: 11400000, guid: 7a0dff10cedf06844881c19dc22a713b, type: 2}
+      objectReference: {fileID: 11400000, guid: a25ec9250464e234db4692a1fdd869aa, type: 2}
     - target: {fileID: 4292797111230307391, guid: 9006ee7f57c66bd459626c07748ad680, type: 3}
       propertyPath: m_Name
       value: TestCharacter
