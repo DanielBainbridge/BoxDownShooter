@@ -58,10 +58,11 @@ namespace Gun
             //bullet trait deppendent
             [Rename("Bullet Type")] public BulletTrait e_bulletTrait;
             [Rename("Pierce Count")] public int i_pierceCount;
-            [Rename("Explosion Diameter")] public float f_explosionSize;
             [Rename("Explosion Prefab")] public GameObject C_explosionPrefab;
+            [Rename("Explosion Diameter")] public float f_explosionSize;
+            [Rename("Explosion Damage")] public float f_explosionDamage;
             [Rename("Explosion Knockback Distance")] public float f_explosionKnockbackDistance;
-            [Rename("Explosion Linger Time")] public float f_explosionLingerTime;
+            [Rename("Explosion Life Time")] public float f_explosionLifeTime;
             [Rename("Homing Strength"), Range(0, 1)] public float f_homingStrength;
             [Rename("Homing Delay")] public float f_homingDelayTime;
         }
@@ -103,14 +104,14 @@ namespace Gun
 
         //Trigger Group
         [Rename("Base Damage")] public float f_baseDamage;
-        [Rename("Fire Rate")] public float f_fireRate;
+        [Rename("Bullets Fired Per Second")] public float f_fireRate;
         [Rename("Bullet Speed")] public float f_bulletSpeed;
         [Rename("Knock Back")] public float f_knockBack;
         public BulletEffectInfo S_bulletEffectInformation;
 
 
         //Clip Group
-        [Rename("Reload Speed")] public float f_reloadSpeed;
+        [Rename("Reload Time")] public float f_reloadSpeed;
         [Rename("Movement Penalty")] public float f_movementPenalty;
         [Rename("Clip Size")] public int i_clipSize;
         public BulletTraitInfo S_bulletTraitInformation;
@@ -131,6 +132,7 @@ namespace Gun
             GameObject newGunModule = Instantiate(C_meshPrefab, worldPos, Quaternion.identity);
             newGunModule.name = name;
             newGunModule.tag = "Gun Module";
+            newGunModule.layer = 6;
         }
 
     }
@@ -234,9 +236,10 @@ namespace Guns.CustomEditor
                         //do variables for Explosive
                         case 2:
                             EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletTraitInformation").FindPropertyRelative("C_explosionPrefab"));
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletTraitInformation").FindPropertyRelative("f_explosionDamage"));
                             EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletTraitInformation").FindPropertyRelative("f_explosionSize"));
                             EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletTraitInformation").FindPropertyRelative("f_explosionKnockbackDistance"));
-                            EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletTraitInformation").FindPropertyRelative("f_explosionLingerTime"));
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty("S_bulletTraitInformation").FindPropertyRelative("f_explosionLifeTime"));
 
                             break;
                         //do variables for Homing
