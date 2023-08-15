@@ -19,7 +19,7 @@ MonoBehaviour:
   f_bulletSpeed: 16
   f_knockBack: 0
   S_bulletEffectInformation:
-    e_bulletEffect: 0
+    e_bulletEffect: 1
     f_effectTime: 0
     f_tickDamage: 0
     i_amountOfTicks: 0
@@ -34,10 +34,11 @@ MonoBehaviour:
   S_bulletTraitInformation:
     e_bulletTrait: 0
     i_pierceCount: 0
-    f_explosionSize: 0
     C_explosionPrefab: {fileID: 0}
+    f_explosionSize: 0
+    f_explosionDamage: 0
     f_explosionKnockbackDistance: 0
-    f_explosionLingerTime: 0
+    f_explosionLifeTime: 0
     f_homingStrength: 0
     f_homingDelayTime: 0
   f_bulletSize: 0
