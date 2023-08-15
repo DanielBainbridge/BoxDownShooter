@@ -33,7 +33,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: 3012
   stringTagMap:
     MotionVector: User
     RenderType: Transparent
@@ -131,7 +131,7 @@ Material:
     - _CullMode: 2
     - _CullModeForward: 2
     - _DECAY_AMOUNT: 0
-    - _Decay_edge_size: 1.37
+    - _Decay_edge_size: 0.71
     - _DepthOffsetEnable: 0
     - _Displacement: 0
     - _Displacement_Scale: 1
@@ -145,7 +145,7 @@ Material:
     - _Edge_texture_size: 1.57
     - _EnableBlendModePreserveSpecularLighting: 0
     - _EnableFogOnTransparent: 1
-    - _FadeSize_Careful: 0.39
+    - _FadeSize_Careful: 0.14
     - _Float: 4.79
     - _Lines_Size: -0.09
     - _Lines_speed: 1
@@ -159,7 +159,7 @@ Material:
     - _RefractionModel: 0
     - _RenderQueueType: 4
     - _RequireSplitLighting: 0
-    - _Secondary_Decay_size: 0.38
+    - _Secondary_Decay_size: 0.2
     - _Secondary_Edge_size: 5.1
     - _SrcBlend: 1
     - _StencilRef: 0
@@ -178,7 +178,7 @@ Material:
     - _TransparentCullMode: 2
     - _TransparentDepthPostpassEnable: 0
     - _TransparentDepthPrepassEnable: 0
-    - _TransparentSortPriority: 0
+    - _TransparentSortPriority: 12
     - _TransparentWritingMotionVec: 0
     - _TransparentZWrite: 0
     - _USE_GRADIENT_FOR_OVERLAY: 0
@@ -194,7 +194,7 @@ Material:
     - _normalfloatstrength: 0.31
     - _scalefloat: 5.84
     m_Colors:
-    - _Center: {r: 0, g: 0, b: 0, a: 0}
+    - _Center: {r: 0, g: 4.92, b: 0, a: 0}
     - _Circuit_lines: {r: 0.6924444, g: 0.1496084, b: 0.7735849, a: 0}
     - _Circuit_lines_var: {r: 0.4622642, g: 0.128649, b: 0.3233497, a: 0}
     - _Corruption_Base_2: {r: 0.3679245, g: 0.06768423, b: 0.3570724, a: 0}

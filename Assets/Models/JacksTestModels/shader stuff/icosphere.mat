@@ -92,7 +92,7 @@ Material:
     - _speed: 1
     - _tiling: 6.44
     m_Colors:
-    - _Color: {r: 0.14635813, g: 2.9564342, b: 5.5908804, a: 0}
+    - _Color: {r: 0.29271626, g: 5.9714117, b: 11.181761, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
