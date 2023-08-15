@@ -34,19 +34,19 @@ public class CameraDolly : MonoBehaviour
         Physics.Raycast(C_camera.transform.position, C_camera.transform.forward, out hitInfo, S_offsetVector.y * 1.2f);
         Vector3 cameraCenterPos = new Vector3(hitInfo.point.x, S_playerPosition.y, hitInfo.point.z);
 
-        Vector3 lookOffset = (S_playerPosition + S_playerLookDirection * f_focusRadius) / 2.0f;
-        Vector3 nextCameraPos = S_offsetVector + lookOffset;
+        Vector3 lookOffset = S_playerLookDirection * f_lookSrength;
+        Vector3 nextCameraPos = (S_playerPosition + S_offsetVector) + lookOffset;
 
         float playerDistance = Vector3.Distance(S_playerPosition, cameraCenterPos);
 
-        float t = 1f;
-        if (f_focusRadius < playerDistance)
-        {
-            t = Mathf.Min(t, f_focusRadius / playerDistance);
-            nextCameraPos += (S_playerPosition - cameraCenterPos).normalized * (t * (f_focusRadius));
-        }
+        //float t = 1f;
+        //if (f_focusRadius < playerDistance)
+        //{
+        //    t = Mathf.Min(1, f_focusRadius / playerDistance);
+        //    nextCameraPos += (S_playerPosition - cameraCenterPos).normalized * (t * (f_focusRadius));
+        //}
 
-        C_camera.transform.position = Vector3.Lerp(C_camera.transform.position, nextCameraPos, t * Time.deltaTime);
+        C_camera.transform.position = Vector3.Lerp(C_camera.transform.position, nextCameraPos, playerDistance / f_focusRadius);
     }
     private void OnDrawGizmos()
     {
