@@ -77,7 +77,7 @@ public class Combatant : MonoBehaviour
     protected Vector3 S_velocity = Vector3.zero;
     protected float f_rotationalAcceleration;
     protected float f_rotationalVelocity;
-    protected bool b_isDead = false;
+    public bool b_isDead = false;
     protected int i_bulletLayerMask;
     protected bool b_fireCancelWhileDodging;
     [Range(0, 1)] protected float f_slowMultiplier = 1;
@@ -301,7 +301,7 @@ public class Combatant : MonoBehaviour
         gameObject.SetActive(false);
         b_isDead = true;
         ChangeState(CombatState.Normal);
-        Invoke("Respawn", 5);
+        //Invoke("Respawn", 5);
     }
 
     public void Respawn()
