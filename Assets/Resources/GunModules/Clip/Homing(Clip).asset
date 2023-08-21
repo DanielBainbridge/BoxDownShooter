@@ -30,14 +30,15 @@ MonoBehaviour:
     f_vampirePercent: 0
   f_reloadSpeed: 1.5
   f_movementPenalty: 2.5
-  i_clipSize: 6
+  i_clipSize: 18
   S_bulletTraitInformation:
     e_bulletTrait: 3
     i_pierceCount: 0
-    f_explosionSize: 0
     C_explosionPrefab: {fileID: 0}
+    f_explosionSize: 0
+    f_explosionDamage: 0
     f_explosionKnockbackDistance: 0
-    f_explosionLingerTime: 0
+    f_explosionLifeTime: 0
     f_homingStrength: 0.15
     f_homingDelayTime: 0.1
   f_bulletSize: 0
